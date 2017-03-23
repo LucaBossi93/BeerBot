@@ -1,50 +1,49 @@
-// movement.ino
-// Recipe of funcmoetions regarding the movement
+// MOVEMENT SUPPORT FUNCTIONS //
 
-// DEFINITIONS
+#define RIGHT 0                     // To turn right when rotating
+#define LEFT 1                      // To turn left when rotating
+#define DIR_FORWARD 1               // Clockwise
+#define DIR_BACKWARD 0              // Counter-clockwise
+#define MOVEMENT_TIME 1300          // Maximum time of movement
 
-#define RIGHT 0  // to turn right when rotating
-#define LEFT 1  // to turn left when rotating
-#define DIR_FORWARD 1  //clockwise
-#define DIR_BACKWARD 0  //counter-clockwise
-#define MOVEMENT_TIME 1300  // maximum time of movement
+// VARIABLES //
 
-int STBY = 8; // standby pin
+int STBY = 8;                       // Standby pin
 
-// MOTOR A: connected between A01 and A02
-int PWMA = 2; // speed control
-int AIN1 = 3; // direction
-int AIN2 = 4; // direction
+// Motor A: connected between A01 and A02
+int PWMA = 2;                       // Speed control
+int AIN1 = 3;                       // Direction
+int AIN2 = 4;                       // Direction
 
-// MOTOR B:  connected between B01 and B02
-int PWMB = 5; // speed control
-int BIN1 = 6; // direction
-int BIN2 = 7; // direction
+// Motor B: connected between B01 and B02
+int PWMB = 5;                       // Speed control
+int BIN1 = 6;                       // Direction
+int BIN2 = 7;                       // Direction
 
-long starting_time;   // when the robot starts to move forward
+long starting_time;                 // Tells when the robot starts to move forward
 
-// FUNCTIONS
+// FUNCTIONS //
 
-// movement set-up
+// Movement set-up
 void setupMovement() {
-  // setting I/O
+  // Set I/O
   pinMode(STBY, OUTPUT);
-
+  // Set motor A pins
   pinMode(PWMA, OUTPUT);
   pinMode(AIN1, OUTPUT);
   pinMode(AIN2, OUTPUT);
-
+  // Set motor B pins
   pinMode(PWMB, OUTPUT);
   pinMode(BIN1, OUTPUT);
   pinMode(BIN2, OUTPUT);
 }
 
-// stops the robot
+// Stops the robot
 void stopRobot() {
   digitalWrite(STBY, LOW);
 }
 
-// rotation on the spot in order to detect someone
+// Rotation on the spot
 void rotate(int vel, boolean dir) {
   if (dir == LEFT) {
     moveMotor(1, vel, DIR_BACKWARD);
@@ -56,32 +55,32 @@ void rotate(int vel, boolean dir) {
   }
 }
 
-// move the robot forward
+// Move the robot forward
 void moveForward(int vel) {
   moveMotor(1, vel, DIR_FORWARD);
   moveMotor(0, vel, DIR_FORWARD);
 }
 
-// move the robot backward
-void moveBackward(int vel) {
+// Move the robot backward
+void moveBackward(int vel, int backwardDelay) {
   starting_time = millis();
   moveMotor(1, vel, DIR_BACKWARD);
   moveMotor(0, vel, DIR_BACKWARD);
 
-  // it moves forward for a fixed amount of time
-  delay(300);
+  // It moves backward for a certain amount of time
+  delay(backwardDelay);
 
   stopRobot();
 }
 
-//Move specific motor at speed and direction
+// Move specific motor at a certain speed and direction
 void moveMotor(int motor, int sp, boolean dir) {
+  // Motor: 0 for B 1 for A
+  // Speed: 0 is off, and 255 is full speed
+  // Direction: 0 clockwise, 1 counter-clockwise
 
-  //motor: 0 for B 1 for A
-  //speed: 0 is off, and 255 is full speed
-  //direction: 0 clockwise, 1 counter-clockwise
-
-  digitalWrite(STBY, HIGH); //disable standby
+  // Disable standby
+  digitalWrite(STBY, HIGH);
 
   boolean inPin1 = LOW;
   boolean inPin2 = HIGH;

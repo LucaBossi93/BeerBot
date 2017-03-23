@@ -31,7 +31,9 @@ bool end_interaction = 0;               // Manage the end of the interaction
 int anomaly_distance;                   // Distance acquired by the IR sensor
 int ground_limit = 11;                  // Minimum distance for which the IR output is considered ground
 int is_ground_counter = 0;              // Counter needed to have an effective detection of anomalies
-int obstacle_limit = 5;                // Maximum distance for which the IR output is considered obstacle
+int obstacle_limit = 5;                 // Maximum distance for which the IR output is considered obstacle
+int backwardDelay = 300;                // Amount of time the robot has to move backward
+int forwardDelay = 2000;                // Amount of time the robot has to move forward
 
 // People detection (Nicola)
 int detection_ping_counter = 0;
@@ -47,13 +49,13 @@ NewPing detection_sonar(TRIGGER_PIN_DETECTION, ECHO_PIN_DETECTION, MAX_DISTANCE_
 SharpIR SharpIR(IR_PIN, model);
 
 // Millis
-long starting_time_anomaly_IR;          // Tells when the IR starts to ping
 long start_stop_look_for_ground;        // The robot has detected the ground? (TODO)
 long starting_time_rotation;            // Tells when the robot starts to rotate to detect people
 long starting_time_turning;             // Tells when the robot starts to rotate to detect ground
 long starting_time_movement;            // Tells when the robot starts to move
 long starting_time_detection_sonar;     // Tells when the sonar starts to ping
 long starting_time_interaction;         // Tells when interactions with users starts
+// long starting_time_anomaly_IR;       // Tells when the IR starts to ping
 
 void setup() {
   // Initialize the serial port
@@ -64,7 +66,7 @@ void setup() {
   setupMovement();
 
   // Initialize millis
-  starting_time_anomaly_IR = millis();
+  // starting_time_anomaly_IR = millis();
   starting_time_detection_sonar = millis();
 
   // Initialize other variables
@@ -74,7 +76,7 @@ void setup() {
 
 void loop() {
   // Detect if there is a border or an obstacle
-  anomalyDetect(10);
+  anomalyDetect();
   // Process the previous information
   processAnomalyDetection();
 
@@ -91,18 +93,22 @@ void loop() {
 }
 
 // Border and obstacle IR detection
-void anomalyDetect(int ping_time) {
+void anomalyDetect() {
   // if (millis() - starting_time_anomaly_IR > ping_time) {
-    // Acquire border/obstacle distance
-    anomaly_distance = SharpIR.distance();
-    Serial.print("Looking for anomalies, got value: ");
-    Serial.println(anomaly_distance);
-    // Change the counter consequently
-    if (anomaly_distance < ground_limit && anomaly_distance > obstacle_limit && anomaly_distance != 0) {
-      is_ground_counter++;
-    } else {
-      is_ground_counter--;
-    }
+  // Acquire border/obstacle distance
+  anomaly_distance = SharpIR.distance();
+  // Change the counter consequently
+  if (anomaly_distance < ground_limit && anomaly_distance > obstacle_limit && anomaly_distance != 0) {
+    Serial.print("Ground detected, got value: ");
+    Serial.print(anomaly_distance);
+    is_ground_counter++;
+  } else {
+    Serial.print("Anomaly detected, got value: ");
+    Serial.print(anomaly_distance);
+    is_ground_counter--;
+  }
+  Serial.print(", with counter: ");
+  Serial.println(is_ground_counter);
   // }
 }
 
@@ -113,8 +119,7 @@ void processAnomalyDetection() {
     is_ground_counter = 2;
     // If it's the "first" ground detected after an anomaly process it
     if (!ground_detected) {
-      Serial.print("Ground detected, with value: ");
-      Serial.println(anomaly_distance);
+      Serial.println("SWITCHED TO GROUND");
       ground_detected = true;
       setLookForGround(false);
     }
@@ -122,28 +127,25 @@ void processAnomalyDetection() {
     is_ground_counter = 0;
     stopRobot();
     if (ground_detected) {
-      Serial.print("No more ground, with value: ");
-      Serial.println(anomaly_distance);
+      Serial.println("SWITCHED TO ANOMALY");
       ground_detected = false;
       if (!look_for_ground) {
         setLookForGround(true);
       }
     }
   }
-  starting_time_anomaly_IR = millis();
+  // starting_time_anomaly_IR = millis();
   // delay(10);
 }
 
 // Manage the robot looking for ground
 void setLookForGround(bool b) {
   if (b) {
-    // Serial.println("I'm looking for ground");
     look_for_ground = b;
-    moveBackward(sp);
+    moveBackward(sp, backwardDelay);
     // Get the sense of rotation;
     rotate_left = random(2);
   } else {
-    // Serial.println("I'm going to stop looking for ground");
     look_for_ground = false;
     moved = 0;
   }
@@ -155,15 +157,15 @@ void moveRobot() {
   if (look_for_ground) {
     // Turn left or right depending on "rotate_left"
     rotate(sp, rotate_left);
-    starting_time_turning = millis();
-    while (millis() - starting_time_turning < 1000 && look_for_ground) {
+    /* starting_time_turning = millis();
+      while (millis() - starting_time_turning < 1000 && look_for_ground) {
       // Serial.println("I'm rotating looking for ground");
       anomalyDetect(50);
       if (anomaly_distance < ground_limit && anomaly_distance > obstacle_limit && anomaly_distance != 0) {
         setLookForGround(false);
       }
-      starting_time_anomaly_IR = millis();
-    }
+      // starting_time_anomaly_IR = millis();
+      }*/
   }
   else if (!moved) {
     // Serial.println("I'm moving free");
@@ -171,7 +173,7 @@ void moveRobot() {
   }
 }
 
-// Manage people detections via sonar <----------
+// Manage people detections via sonar
 void peopleDetect() {
   detection_distance = detection_sonar.ping_cm();
   // Serial.print("Value of 'detection_distance' is: ");
@@ -203,7 +205,7 @@ void processPeopleDetection() {
   // If needed the robot starts to look around in order to detect someone
   if (detection_ping_counter >= 10) {
     // Randomly rotate left or rigth
-    // Serial.println("I have to rotate!");
+    Serial.println("Looking for people");
     rotate(sp, random(2));
     starting_time_rotation = millis();
     while (millis() - starting_time_rotation < ROTATION_TIME && !flag) {
@@ -217,12 +219,11 @@ void processPeopleDetection() {
           stopRobot();
           moveForward(sp);
           moved = 1;
-          // It moves forward for a fixed amount of time
+          // It moves forward for a fixed amount of time while checking for anomalies
           starting_time_movement = millis();
-          while (millis() - starting_time_movement < 1000) {
+          while (millis() - starting_time_movement < forwardDelay) {
             // Serial.println("I'm moving forward");
-            delay(50);
-            anomalyDetect(50);
+            anomalyDetect();
             processAnomalyDetection();
             if (look_for_ground) {
               break;
@@ -230,9 +231,11 @@ void processPeopleDetection() {
               moveRobot();
             }
           }
-          // Then I stop the robot and salute
-          stopRobot();
-          sayHi();
+          if (!look_for_ground) {
+            // Then I stop the robot and salute
+            stopRobot();
+            sayHi();
+          }
           // Finally break the loop
           flag = 1;
         }
@@ -256,15 +259,13 @@ void processPeopleDetection() {
       moveForward(sp);
       moved = 1;
       starting_time_movement = millis();
-      while (millis() - starting_time_movement < 1000) {
-        // Serial.println("I'm moving forward");
-        delay(50);
-        anomalyDetect(50);
+      while (millis() - starting_time_movement < forwardDelay) {
+        Serial.println("I'm moving forward");
+        anomalyDetect();
         processAnomalyDetection();
         if (look_for_ground) {
           break;
-        }
-        else {
+        } else {
           moveRobot();
         }
       }
@@ -277,10 +278,10 @@ void processPeopleDetection() {
 
 // TODO: we have to model and implement the interaction with the user
 // TODO: we have to stop rotating somewhere
-// Interact with the suer
+// Interact with the detected person
 void sayHi() {
   starting_time_interaction = millis();
-  // Serial.println("Hey man!");
+  Serial.println("INTERACTING WITH A PERSON");
   // Interact with the person
   while (millis() - starting_time_interaction < INTERACTION_TIME && detection_ping_counter <= 4) {
     // Serial.println("I'm making friends");
