@@ -77,9 +77,18 @@ void setup() {
 
   mp3_set_serial (Serial); //set Serial for DFPlayer-mini mp3 module 
   mp3_set_volume (30);  // sets the volume of the speaker
+
+  setupMustache(); // set up of the mustache movement
+  setupEyebrow(); // set up of the movement of the eyebrows
 }
 
 void loop() {
+
+  // initializing the mustache animation
+  menageMustache();
+  // initializing the eyebrows animation
+  menageEyebrow();
+  
   // Detect if there is a border or an obstacle
   anomalyDetect();
   // Process the previous information
@@ -136,6 +145,8 @@ void processAnomalyDetection() {
       ground_detected = false;
       if (!look_for_ground) {
         setLookForGround(true);
+        setMustacheAnimin(2);   //TODO reset in the library to the "idle state"
+        setPosition(25);      //TODO reset somewhere to 0
       }
     }
   }
@@ -159,7 +170,7 @@ void setLookForGround(bool b) {
 // Manage the movement of the robot
 void moveRobot() {
 
-  attractPeople(random(3) + 7);
+  attractPeople(random(3) + 7);   //TODO will the audio start or not?
   
   // Look for ground if the robot has to
   if (look_for_ground) {
@@ -288,6 +299,8 @@ void processPeopleDetection() {
 // TODO: we have to stop rotating somewhere
 // Interact with the detected person
 void sayHi() {
+  setMustacheAnimin(1);
+  setPosition(-25);
   starting_time_interaction = millis();
   int counter = 0;
   Serial.println("INTERACTING WITH A PERSON");
@@ -309,6 +322,8 @@ void sayHi() {
     processPeopleDetection();
   }
   moved = 0;
+  setMustacheAnimin(3);
+  setPosition(0);
 }
 
 void interact(int value){

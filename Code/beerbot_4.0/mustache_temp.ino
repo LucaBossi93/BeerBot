@@ -13,7 +13,7 @@
 // Others
 int i, j = 0;                                 // Counters to menage the loops
 int mustacheCurrentAction = 0;                // Current action inside an animation
-int mustacheCurrentAnim = 1;                  // Current animation
+int mustacheCurrentAnim = 3;                  // Current animation
 
 // Servo mototors
 Servo motor;
@@ -83,7 +83,7 @@ void menageMustache() {
   }
 }
 
-// ANIMATIOS //
+// ANIMATIONS //
 
 // Move the mustache up and down
 void mustacheUpDown() {
