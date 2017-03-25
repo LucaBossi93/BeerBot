@@ -59,7 +59,7 @@ void menageEyebrow() {
       setPosition(-25);
       break;
     default:
-      mustacheTips(0);
+//      mustacheTips(0);
       break;
   }
 }
