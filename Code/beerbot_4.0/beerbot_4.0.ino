@@ -7,6 +7,8 @@
 
 // INCLUSIONS //
 
+#include <SoftwareSerial.h>
+#include <DFPlayer_Mini_Mp3.h>
 #include <NewPing.h>
 #include <SharpIR.h>
 
@@ -16,7 +18,7 @@
 #define ECHO_PIN_DETECTION 11           // Arduino pin 11 tied to echo pin of the detection sonar
 #define MAX_DISTANCE_BORDER 200         // Maximum distance we want to ping for (in centimeters)
 #define MAX_DISTANCE_DETECTION 150      // Maximum distance we want to ping for (in centimeters)
-#define INTERACTION_TIME 5000           // Maximum time of interaction with the user 
+#define INTERACTION_TIME 10000           // Maximum time of interaction with the user 
 #define ROTATION_TIME 1000              // Maximum time of rotation 
 #define IR_PIN A0                       // Arduino analog pin 0 tied to the IR sensor
 #define model 1080                      // Model of the IR sensor
@@ -72,6 +74,9 @@ void setup() {
   // Initialize other variables
   ground_detected = false;
   look_for_ground = true;
+
+  mp3_set_serial (Serial); //set Serial for DFPlayer-mini mp3 module 
+  mp3_set_volume (30);  // sets the volume of the speaker
 }
 
 void loop() {
@@ -153,6 +158,9 @@ void setLookForGround(bool b) {
 
 // Manage the movement of the robot
 void moveRobot() {
+
+  attractPeople(random(3) + 7);
+  
   // Look for ground if the robot has to
   if (look_for_ground) {
     // Turn left or right depending on "rotate_left"
@@ -281,12 +289,17 @@ void processPeopleDetection() {
 // Interact with the detected person
 void sayHi() {
   starting_time_interaction = millis();
+  int counter = 0;
   Serial.println("INTERACTING WITH A PERSON");
   // Interact with the person
   while (millis() - starting_time_interaction < INTERACTION_TIME && detection_ping_counter <= 4) {
     // Serial.println("I'm making friends");
+    if(counter % 15 == 0){
+      interact(random(6) + 1);
+    }
     delay(200);
     peopleDetect();
+    counter++;
   }
   // Once done, disengage
   if (detection_ping_counter <= 4) {
@@ -297,3 +310,13 @@ void sayHi() {
   }
   moved = 0;
 }
+
+void interact(int value){
+  mp3_play (value);   //play 0001.mp3
+  delay (3000);       //3 sec, time delay to allow the audio to finish playing
+}
+
+void attractPeople(int value){
+  mp3_play (value);   // play audio file
+}
+
