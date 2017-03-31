@@ -10,7 +10,7 @@
 
 // VARIABLES //
 
-// Others
+// Miscellaneous
 int i, j = 0;                                 // Counters to menage the loops
 int mustacheCurrentAction = 0;                // Current action inside an animation
 int mustacheCurrentAnim = 2;                  // Current animation
@@ -26,26 +26,8 @@ int positionDelta = 0;                        // Delta to be applied on the defa
 
 // Millise
 long mustacheMillis;                          // Tells how often update position
-long mustacheChangeAnim;                      // Tells when change animation
 
-// PROGRAM //
-
-/* void setup()
-  {
-  setupMustache();
-  }
-
-  void loop()
-  {
-  menageMustache();
-
-  if (millis() - mustacheChangeAnim > 2000) {
-    setMustacheAnimin(random(1, 4));
-    mustacheChangeAnim = millis();
-  }
-  } */
-
-// FUNCTIONS //
+// SUPPORT FUNCTIONS //
 
 // Setup the movement (call this in the setup)
 void setupMustache()
@@ -75,16 +57,13 @@ void menageMustache() {
       mustacheTalk();
       break;
     case 2:
-      mustacheTalk();
-      //mustacheUpDown();
+      mustacheUpDown();
       break;
     case 3:
-      mustacheTalk();
-      //mustacheTips();
+      mustacheTips();
       break;
     default:
-      mustacheTalk();
-      //mustacheUpDown();
+      mustacheUpDown();
       break;
   }
 }

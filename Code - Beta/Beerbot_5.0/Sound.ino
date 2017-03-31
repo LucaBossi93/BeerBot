@@ -7,7 +7,7 @@
 
 // VARIABLES //
 
-// Others
+// Miscellaneous
 int currentTalk;                              // Current talk being played
 int currentSound;                             // Current sound in a talk being played
 
@@ -17,15 +17,15 @@ long soundMillis;                             // Tells how often change sound
 // Durations
 int duration [9] =  {4, 4, 4, 4, 4, 4, 4, 4, 4 };
 
-// FUNCTIONS //
+// SUPPORT FUNCTIONS //
 
 // Setup the sound system (call this in the setup)
 void setupSound()
 {
   // Set Serial for DFPlayer-mini mp3 module
   mp3_set_serial(Serial);
-  // Sets the volume of the speaker
-  mp3_set_volume(30);
+  // Sets the volume of the speaker (30)
+  mp3_set_volume(5);
 }
 
 // Sets the current talk

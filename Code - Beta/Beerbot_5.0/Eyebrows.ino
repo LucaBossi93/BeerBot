@@ -10,7 +10,7 @@
 
 // VARIABLES //
 
-// Others
+// Miscellaneous
 int eyebrowCurrentPosition = 0;               // Current eyebrow position
 bool inPosition = true;                       // Tells if the eyebrow are in the deisred position
 
@@ -26,7 +26,7 @@ int eyebrowPositionDelta = 0;                 // Delta to be applied on the defa
 // Millis
 long eyebrowMillis;                           // Tells how often update position
 
-// FUNCTIONS //
+// SUPPORT FUNCTIONS //
 
 // Setup the movement (call this in the setup)
 void setupEyebrow()
@@ -65,10 +65,7 @@ void menageEyebrow() {
 }
 
 void setPosition(int p) {
-  if (eyebrowCurrentPosition != p){
-    eyebrowMotor.write(eyebrowPosition + p);
-  }
-  /*if (millis() - eyebrowMillis > 5 && !inPosition) {
+  if (millis() - eyebrowMillis > 5 && !inPosition) {
     if (eyebrowPositionDelta - p < 0) {
       eyebrowPositionDelta++;
       eyebrowMotor.write(eyebrowPosition + eyebrowPositionDelta);
@@ -78,5 +75,5 @@ void setPosition(int p) {
     }
     if (eyebrowPositionDelta == p)
       inPosition = true;
-  }*/
+  }
 }

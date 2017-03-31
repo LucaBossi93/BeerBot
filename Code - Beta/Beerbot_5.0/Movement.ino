@@ -22,7 +22,7 @@ int BIN2 = 7;                       // Direction
 
 long starting_time;                 // Tells when the robot starts to move forward
 
-// FUNCTIONS //
+// SUPPORT FUNCTIONS //
 
 // Movement set-up
 void setupMovement() {
@@ -62,15 +62,9 @@ void moveForward(int vel) {
 }
 
 // Move the robot backward
-void moveBackward(int vel, int backwardDelay) {
-  starting_time = millis();
+void moveBackward(int vel) {
   moveMotor(1, vel, DIR_BACKWARD);
   moveMotor(0, vel, DIR_BACKWARD);
-
-  // It moves backward for a certain amount of time
-  delay(backwardDelay);
-
-  stopRobot();
 }
 
 // Move specific motor at a certain speed and direction
