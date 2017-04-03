@@ -1,4 +1,4 @@
-// BEERBOT 5.0 //
+// BEERBOT 6.0 //
 
 // INCLUSIONS //
 
