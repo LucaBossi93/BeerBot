@@ -37,7 +37,7 @@ void setupBeheviour() {
 void menageBeheviour() {
   switch (current_state) {
     case 1:
-      // I'm rotating looking for people. I rotate for some time, I cooldown and then I repeat
+      // LOOK FOR PEOPLE - I'm rotating looking for people. I rotate for some time, I cooldown and then I repeat
       // In this phase I don't need to look for ground since I'm rotating in place
       // Detect if there is a person
       peopleDetect();
@@ -47,7 +47,7 @@ void menageBeheviour() {
       rotateWithCooldown(1500, 300);
       break;
     case 2:
-      // I'm looking for ground. I don't need to look for people while I do it
+      // LOOK FOR GROUND - I'm looking for ground. I don't need to look for people while I do it
       // Detect if there is an anomaly
       anomalyDetect();
       // Process the information
@@ -56,7 +56,7 @@ void menageBeheviour() {
       rotate(sp, rotate_left);
       break;
     case 3:
-      // I've detected a person and I'm moving towards him. I only detect the anomalies but I don't
+      // FORWARD - I've detected a person and I'm moving towards him. I only detect the anomalies but I don't
       // process them since I just want to stop instead of starting looking for ground
       // Detect if there is an anomaly
       anomalyDetect();
@@ -66,11 +66,10 @@ void menageBeheviour() {
       moveForwardWithTimeout(1500);
       break;
     case 4:
-      // I'm moving bacwards
-      moveBackwards();
+      // GOODBYE - (TODO)
       break;
     case 5:
-      // I'm saying hi. I look for people, if the time is over or nobody is watching start looking
+      // GREET - I'm saying hi. I look for people, if the time is over or nobody is watching start looking
       // for people again
       // Detect if there is a person
       peopleDetect();
@@ -80,10 +79,35 @@ void menageBeheviour() {
       sayHi(5000);
       break;
     case 6:
-      // Say goodbye
+      // ROAMING - Simply move forward and rotate when anomaly is found.
+      // Detect if there is an anomaly
+      anomalyDetect();
+      // Process the information
+      processAnomalyDetection();
+      // I'm moving forward
+      moveForward(sp);
+      break;
+    case 7:
+      // SINGING - (TODO)
+      break;
+    case 8:
+      // SUGGESTION DRIVE - (TODO)
+      break;
+    case 9:
+      // BEER FACT - (TODO)
+      break;
+    case 10:
+      // MUSTACHE SHOW - (TODO)
+      break;
+    case 11:
+      // INVITE - (TODO)
+      break;
+    case 12:
+      // HELP - (TODO)
       break;
     default:
-      // I'm rotating looking for people
+      // Go to the look for people case
+      current_state = 1;
       break;
   }
 }
@@ -146,11 +170,6 @@ void moveForwardWithTimeout(int timeout) {
   } else {
     moveForward(sp);
   }
-}
-
-
-void moveBackwards() {
-  // TODO: move backwards and than do something else
 }
 
 // Interact with the detected person

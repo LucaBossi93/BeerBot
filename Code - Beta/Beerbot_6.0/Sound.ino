@@ -15,7 +15,10 @@ int currentSound;                             // Current sound in a talk being p
 long soundMillis;                             // Tells how often change sound
 
 // Durations
-int duration [9] =  {4, 4, 4, 4, 4, 4, 4, 4, 4 };
+int duration [39] =  {4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+                      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+                      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+                     };
 
 // SUPPORT FUNCTIONS //
 
