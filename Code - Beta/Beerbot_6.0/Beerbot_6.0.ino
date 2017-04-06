@@ -13,7 +13,8 @@
 #define MAX_DISTANCE_DETECTION 150      // Maximum distance we want to ping for (in centimeters)
 #define INTERACTION_TIME 5000           // Maximum time of interaction with the user 
 #define ROTATION_TIME 1000              // Maximum time of rotation 
-#define IR_PIN A0                       // Arduino analog pin 0 tied to the IR sensor
+#define IR_PIN_LEFT A0                  // Arduino analog pin 0 tied to the left IR sensor
+#define IR_PIN_RIGTH A1                 // Arduino analog pin 1 tied to the rigth IR sensor
 #define model 1080                      // Model of the IR sensor
 
 // VARIABLES //
@@ -26,7 +27,8 @@ bool rotate_left;                       // Tells if the robot has to rotate left
 
 // Sensors
 NewPing detection_sonar(TRIGGER_PIN_DETECTION, ECHO_PIN_DETECTION, MAX_DISTANCE_DETECTION);
-SharpIR SharpIR(IR_PIN, model);
+SharpIR left_IR(IR_PIN_LEFT, model);
+SharpIR rigth_IR(IR_PIN_RIGTH, model);
 
 // CODE //
 

@@ -28,7 +28,7 @@ void setupSound()
   // Set Serial for DFPlayer-mini mp3 module
   mp3_set_serial(Serial);
   // Sets the volume of the speaker (30)
-  mp3_set_volume(5);
+  mp3_set_volume(30);
 }
 
 // Sets the current talk
@@ -42,7 +42,7 @@ void setTalk(int i) {
 
 // Menage the sound (call this in the loop)
 void menageSound() {
-  switch (mustacheCurrentAnim) {
+  switch (currentTalk) {
     case 1:
       talk();
       break;
