@@ -1,5 +1,15 @@
 // ANOMALY DETECTION SUPPORT FUNCTIONS //
 
+// INCLUSIONS //
+
+#include <SharpIR.h>
+
+// DEFINITIONS
+
+#define IR_PIN_LEFT A0                  // Arduino analog pin 0 tied to the left IR sensor
+#define IR_PIN_RIGTH A1                 // Arduino analog pin 1 tied to the rigth IR sensor
+#define model 1080                      // Model of the IR sensor
+
 // VARIABLES //
 
 // Miscellaneous
@@ -13,7 +23,9 @@ int is_ground_counter_left = 0;         // Counter needed to have an effective d
 int is_ground_counter_rigth = 0;        // Counter needed to have an effective detection of anomalies
 int obstacle_limit = 4  ;               // Maximum distance for which the IR output is considered obstacle
 
-// Millis
+// Sensors
+SharpIR left_IR(IR_PIN_LEFT, model);
+SharpIR rigth_IR(IR_PIN_RIGTH, model);
 
 // SUPPORT FUNCTIONS //
 

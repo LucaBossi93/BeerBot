@@ -61,7 +61,9 @@ void menageBeheviour() {
       moveForwardWithTimeout(1500);
       break;
     case 4:
-      // GOODBYE - (TODO)
+      // GOODBYE - Stay still and say goodbye
+      // Set the animation
+      goodbye();
       break;
     case 5:
       // GREET - I'm saying hi. I look for people, if the time is over or nobody is watching start looking
@@ -102,7 +104,9 @@ void menageBeheviour() {
       // INVITE - (TODO)
       break;
     case 12:
-      // HELP - (TODO)
+      // HELP - Stay still and call for help
+      // Setup the animation
+      help();
       break;
     default:
       // Go to the look for people case
@@ -195,6 +199,26 @@ void beerFact() {
   if (resetNeeded) {
     // K_ANIMATOR - Set the animations for this state
     resetAndSet(2, 1, 1);
+  }
+}
+
+// Stay still and call for help
+void help() {
+  // Reset the variables if needed
+  if (resetNeeded) {
+    // K_ANIMATOR - Set the animations for this state
+    resetAndSet(3, 4, 1);
+    stopRobot();
+  }
+}
+
+// Stay still and say goodbye
+void goodbye() {
+  // Reset the variables if needed
+  if (resetNeeded) {
+    // K_ANIMATOR - Set the animations for this state
+    resetAndSet(2, 1, 1);
+    stopRobot();
   }
 }
 

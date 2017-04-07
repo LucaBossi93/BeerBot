@@ -1,5 +1,17 @@
 // PEOPLE DETECTION SUPPORT FUNCTIONS //
 
+// INCLUSIONS //
+
+#include <Adafruit_MLX90614.h>
+#include <NewPing.h>
+#include <Wire.h>
+
+// DEFINITIONS //
+
+#define TRIGGER_PIN_DETECTION 12        // Arduino pin 12 tied to trigger pin of the detection sonar
+#define ECHO_PIN_DETECTION 11           // Arduino pin 11 tied to echo pin of the detection sonar
+#define MAX_DISTANCE_DETECTION 150      // Maximum distance we want to ping for (in centimeters)
+
 // VARIABLES //
 
 // Miscellaneous
@@ -8,20 +20,33 @@ int awake_increment = 3;
 int detection_distance;                 // Distance detected by the sonar
 int detection_min = 10;                 // Minimum distance to be considered a person
 int detection_max = 150;                // Maximum distance to be considered a person
+int temperature_min = 30;               // Minimum temperature to be considered a person
+int temperature_max = 40;               // Maximum temperature to be considered a person
+int temperature;                        // Detected temperature
 int person_detected;                    // Tells if a person has been detected
+int peopleCounter = 0;                  // Counter for crowd detection
+int totalCounter = 0;                   // Counter for crowd detection
+int isCrowdPercentage = 0.5;             // Percentage for which a crowd is detected
+
+// Sensors
+NewPing detection_sonar(TRIGGER_PIN_DETECTION, ECHO_PIN_DETECTION, MAX_DISTANCE_DETECTION);
+Adafruit_MLX90614 mlx = Adafruit_MLX90614();
 
 // SUPPORT FUNCTIONS //
 
 // Setup people detection
 void setupPeopleDetection() {
   person_detected = false;
+  mlx.begin();
 }
 
 // Manage people detections via sonar
 void peopleDetect() {
   // Acquire the distance
   detection_distance = detection_sonar.ping_cm();
-  if (detection_distance > detection_min && detection_distance < detection_max) {
+  // Acquire the temperature
+  temperature = mlx.readObjectTempC();
+  if ((detection_distance > detection_min && detection_distance < detection_max) && (temperature > temperature_min && temperature < temperature_max)) {
     no_detection_ping_counter = no_detection_ping_counter - awake_increment;
     Serial.print("Person detected, with distance: ");
   } else {
@@ -68,5 +93,29 @@ void setPersonDetected(bool b) {
     setRotateLeft(random(2));
     // K_STATE - Look for person
     setState(1);
+  }
+}
+
+void countPeople() {
+  // Acquire the temperature
+  temperature = mlx.readObjectTempC();
+  // Process
+  if (temperature > temperature_min && temperature < temperature_max)
+    peopleCounter++;
+  else
+    totalCounter++;
+}
+
+bool isCrowd() {
+  if (totalCounter / peopleCounter > isCrowdPercentage) {
+    // Reset values for the next call
+    peopleCounter = 0;
+    totalCounter = 0;
+    return true;
+  } else {
+    // Reset values for the next call
+    peopleCounter = 0;
+    totalCounter = 0;
+    return false;
   }
 }
