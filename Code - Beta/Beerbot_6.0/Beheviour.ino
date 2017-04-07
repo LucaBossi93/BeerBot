@@ -1,23 +1,18 @@
 // BEHEVIOUR SUPPORT FUNCTIONS //
 
-// List of states:
-// 1 - Rotating looking for people
-// 2 - Looking for ground
-// 3 - Moving towards someone
-// 4 - Moving bacwards
-// 5 - Saying hi
-
 // VARIABLES //
 
 // Robot state
 int current_state;                      // Current state of the robot
 int previous_state;                     // Previous state of the robot
+int current_action;                     // Action inside a state
 
 // Miscellaneous
 bool resetNeeded;                       // Tells if we need to reset the animation
-bool nextAction;                        // Tells if I have to skip to next action
+bool nextState;                         // Tells if I have to skip to next action
 // Millis
-long starting_time_action;              // Tells when the robot starts to perform an action
+long starting_time_state;              // Tells when the robot starts to perform a state
+long starting_time_action;             // Tells when the robot starts to perform an action
 
 // SUPPORT FUNCTIONS //
 
@@ -27,10 +22,10 @@ void setupBeheviour() {
   current_state = 1;
   previous_state = 1;
   resetNeeded = true;
-  nextAction = false;
+  nextState = false;
 
   // Initialize millis
-  starting_time_action = millis();
+  starting_time_state = millis();
 }
 
 // Menage the animation of the robot
@@ -94,7 +89,11 @@ void menageBeheviour() {
       // SUGGESTION DRIVE - (TODO)
       break;
     case 9:
-      // BEER FACT - (TODO)
+      // BEER FACT - Move left and right a bit and talk
+      // Setup the animation and talk
+      beerFact();
+      // Move left and right
+      moveLeftRigth(500, 50);
       break;
     case 10:
       // MUSTACHE SHOW - (TODO)
@@ -124,6 +123,15 @@ void resetState() {
   resetNeeded = true;
 }
 
+void resetAndSet(int a, int b, int c) {
+  starting_time_state = millis();
+  starting_time_action = millis();
+  resetNeeded = false;
+  current_action = 1;
+  // K_ANIMATOR - Set the animations for this state
+  setAllAnimations(a, b, c);
+}
+
 // Set all animations
 void setAllAnimations(int a, int b, int c) {
   setEyebrowPosition(a);
@@ -137,18 +145,16 @@ void setAllAnimations(int a, int b, int c) {
 void rotateWithCooldown(int rotationTime, int cooldown) {
   // Reset the variables if needed
   if (resetNeeded) {
-    starting_time_action = millis();
-    resetNeeded = false;
     // K_ANIMATOR - Set the animations for this state
-    setAllAnimations(2, 1, 2);
+    resetAndSet(2, 1, 2);
   }
   // Rotate
-  if (millis() - starting_time_action < rotationTime) {
+  if (millis() - starting_time_state < rotationTime) {
     rotate(sp, rotate_left);
   } else {
     stopRobot();
-    if (millis() - starting_time_action > rotationTime + cooldown) {
-      starting_time_action = millis();
+    if (millis() - starting_time_state > rotationTime + cooldown) {
+      starting_time_state = millis();
     }
   }
 }
@@ -157,13 +163,11 @@ void rotateWithCooldown(int rotationTime, int cooldown) {
 void moveForwardWithTimeout(int timeout) {
   // Reset the variables if needed
   if (resetNeeded) {
-    starting_time_action = millis();
-    resetNeeded = false;
     // K_ANIMATOR - Set the animations for this state
-    setAllAnimations(2, 2, 2);
+    resetAndSet(2, 2, 2);
   }
   // If I don't have detected an anomaly or I've finished, go forward
-  if (millis() - starting_time_action > timeout || !isGroundLazy()) {
+  if (millis() - starting_time_state > timeout || !isGroundLazy()) {
     stopRobot();
     setState(5);
     Serial.println("STOP!!!");
@@ -176,14 +180,57 @@ void moveForwardWithTimeout(int timeout) {
 void sayHi(int timeout) {
   // Reset the variables if needed
   if (resetNeeded) {
-    starting_time_action = millis();
-    resetNeeded = false;
     // K_ANIMATOR - Set the animations for this state
-    setAllAnimations(2, 1, 1);
+    resetAndSet(2, 1, 1);
   }
-
   // If I've finished search for someone else. PeopleDetection will take care of the case in which
   // everyone left
-  if (millis() - starting_time_action > timeout)
+  if (millis() - starting_time_state > timeout)
     setState(1);
+}
+
+// Tell the person a fact about beer
+void beerFact() {
+  // Reset the variables if needed
+  if (resetNeeded) {
+    // K_ANIMATOR - Set the animations for this state
+    resetAndSet(2, 1, 1);
+  }
+}
+
+// MOVEMENTS //
+
+// Moves left and right
+void moveLeftRigth(int oscillation_time, int velocity) {
+  switch (current_action) {
+    case 1:
+      rotate(velocity, true);
+      current_action = 2;
+      break;
+    case 2:
+      // If I've finished with this action perform the next one
+      if (millis() - starting_time_action > oscillation_time / 2) {
+        rotate(velocity, false);
+        current_action = 3;
+      }
+      break;
+    case 3:
+      // If I've finished with this action perform the next one
+      if (millis() - starting_time_action > oscillation_time * 3 / 2) {
+        rotate(velocity, true);
+        current_action = 3;
+      }
+      break;
+    case 4:
+      // If I've finished with this action perform the next one
+      if (millis() - starting_time_action > oscillation_time * 2) {
+        starting_time_action = millis();
+        rotate(velocity, true);
+        current_action = 3;
+      }
+      break;
+    default:
+      current_action = 1;
+      break;
+  }
 }

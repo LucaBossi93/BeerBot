@@ -3,10 +3,8 @@
 // VARIABLES //
 
 // Miscellaneous
-bool ground_detected_left;              // Tells if there is ground on front-left
-bool ground_detected_rigth;             // Tells if there is ground on front-rigth
-bool ground_detected_left_lazy;         // Tells if there is ground on front-left
-bool ground_detected_rigth_lazy;        // Tells if there is ground on front-rigth
+bool ground_detected;                   // Tells if there is ground on front of the robot
+bool ground_detected_lazy;              // Tells if there is ground on front of the robot
 bool look_for_ground;                   // Tells if the robot has to look for ground
 int anomaly_distance_left;              // Distance acquired by the left IR sensor
 int anomaly_distance_rigth;             // Distance acquired by the rigth IR sensor
@@ -21,10 +19,8 @@ int obstacle_limit = 4  ;               // Maximum distance for which the IR out
 
 // Setup the anomaly detection
 void setupAnomalyDetection() {
-  ground_detected_left = false;
-  ground_detected_rigth = false;
-  ground_detected_left_lazy = false;
-  ground_detected_rigth_lazy = false;
+  ground_detected = false;
+  ground_detected_lazy = false;
   look_for_ground = true;
 }
 
@@ -46,7 +42,7 @@ void anomalyDetect() {
   // Serial.print(", with counter: ");
   // Serial.println(is_ground_counter_left);
   // And then the rigth one
-  if (anomaly_distance < ground_limit && anomaly_distance > obstacle_limit && anomaly_distance != 0) {
+  if (anomaly_distance_rigth < ground_limit && anomaly_distance_rigth > obstacle_limit && anomaly_distance_rigth != 0) {
     // Serial.print(" RIGTH: ground detected, got value: ");
     // Serial.print(anomaly_distance);
     is_ground_counter_rigth++;
