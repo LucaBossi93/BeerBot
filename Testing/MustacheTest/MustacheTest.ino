@@ -6,7 +6,7 @@
 
 // DEFINITIONS //
 
-#define SERVO_PIN_MUSTACHE 23     // First servo pin of the rigth mustache
+#define SERVO_PIN_MUSTACHE 22     // First servo pin of the rigth mustache
 
 // VARIABLES //
 
@@ -21,13 +21,31 @@ Servo motor;
 // Sensors
 
 // Positions
-int motorPosition = 90;                       // Default position of the servo
-int motorPositionHigh = 110;                  // High position of the servo
-int motorPositionLow = 70;                    // Low position of the servo
+int motorPosition = 115;                       // Default position of the servo (+25)
+int motorPositionHigh = 130;                  // High position of the servo (+25)
+int motorPositionLow = 85;                    // Low position of the servo (+25)
 int positionDelta = 0;                        // Delta to be applied on the default position
 
 // Millise
 long mustacheMillis;                          // Tells how often update position
+long mustacheChangeAnim;
+
+// CODE //
+
+void setup() {
+  // put your setup code here, to run once:
+  setupMustache();
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  menageMustache();
+
+  if (millis() - mustacheChangeAnim > 5000) {
+    setMustacheAnimin(random(1, 6));
+    mustacheChangeAnim = millis();
+  }
+}
 
 // SUPPORT FUNCTIONS //
 
