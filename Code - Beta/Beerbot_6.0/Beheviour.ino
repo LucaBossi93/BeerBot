@@ -1,5 +1,9 @@
 // BEHEVIOUR SUPPORT FUNCTIONS //
 
+// DEFINITIONS //
+
+#define WAIT_FOR_ANSWER 10000
+
 // VARIABLES //
 
 // Robot state
@@ -108,6 +112,31 @@ void menageBeheviour() {
       // Setup the animation
       help();
       break;
+    case 20:
+      // FOAMTOUCH - Stay still and ask for touching the foam
+      foamTouch();
+      break;
+    case 21:
+      // FOAMTOUCHED - Stay still and speak
+      foamTouched();
+      break;
+    case 23:
+      // ASKFORGENDER - Stay still and ask for gender
+      //
+      askForGender();
+      break;
+    case 24:
+      // MANINTERACTION - Stay still and speak
+      manInteraction();
+      break;
+    case 25:
+      // WOMANINTERACTION - Stay still and ask speak
+      womanInteraction();
+      break;
+    case 39:
+      // TIMEOUT - Stay still and ask speak
+      timeout();
+      break;
     default:
       // Go to the look for people case
       current_state = 1;
@@ -212,6 +241,94 @@ void help() {
   }
 }
 
+// Stay still and ask for touch the foam
+void foamTouch() {
+  // Reset the variables if needed
+  if (resetNeeded) {
+    // K_ANIMATOR - Set the animations for this state
+    resetAndSet(1, 1, 1);
+    stopRobot();
+  }
+
+  if (millis() - starting_time_state > WAIT_FOR_ANSWER) {
+    //Go to state 39 - Timeout
+    setState(39);
+
+  }  else if (getFoamTouched ()) {
+    //Go to state 21 -  Foam touched
+    setState(21);
+  }
+
+}
+// Stay still and speak
+void foamTouched() {
+  // Reset the variables if needed
+  if (resetNeeded) {
+    // K_ANIMATOR - Set the animations for this state
+    resetAndSet(2, 1, 1);
+    stopRobot();
+  }
+  //TO-DO condizione d'uscita
+
+}
+// Stay still and ask for gender
+void askForGender() {
+  // Reset the variables if needed
+  if (resetNeeded) {
+    // K_ANIMATOR - Set the animations for this state
+    resetAndSet(1, 1, 1);
+    stopRobot();
+  }
+
+  if (millis() - starting_time_state > WAIT_FOR_ANSWER) {
+    //Go to state 39 - Timeout
+    setState(39);
+
+  } else if (getHandleTouched ()) {
+    //Go to state 25 - Woman interaction
+    setState(25);
+
+  } else if (getFoamTouched ()) {
+    //Go to state 24 -  Man interaction
+    setState(24);
+  }
+
+}
+
+// Stay still and speak
+void manInteraction() {
+  // Reset the variables if needed
+  if (resetNeeded) {
+    // K_ANIMATOR - Set the animations for this state
+    resetAndSet(3, 1, 1);
+    stopRobot();
+  }
+  //TO-DO condizione d'uscita
+}
+
+
+// Stay still and speak
+void womanInteraction() {
+  // Reset the variables if needed
+  if (resetNeeded) {
+    // K_ANIMATOR - Set the animations for this state
+    resetAndSet(2, 1, 1);
+    stopRobot();
+  }
+  //TO-DO condizione d'uscita
+}
+
+
+// Stay still and speak
+void timeout() {
+  // Reset the variables if needed
+  if (resetNeeded) {
+    // K_ANIMATOR - Set the animations for this state
+    resetAndSet(3, 1, 1);
+    stopRobot();
+  }
+  //TO-DO condizione d'uscita
+}
 // Stay still and say goodbye
 void goodbye() {
   // Reset the variables if needed
