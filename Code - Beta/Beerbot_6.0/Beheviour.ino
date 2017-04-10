@@ -114,27 +114,32 @@ void menageBeheviour() {
       break;
     case 20:
       // FOAMTOUCH - Stay still and ask for touching the foam
+      // Setup the animation
       foamTouch();
       break;
     case 21:
       // FOAMTOUCHED - Stay still and speak
+      // Setup the animation
       foamTouched();
       break;
     case 23:
       // ASKFORGENDER - Stay still and ask for gender
-      //
+      // Setup the animation
       askForGender();
       break;
     case 24:
       // MANINTERACTION - Stay still and speak
+      // Setup the animation
       manInteraction();
       break;
     case 25:
-      // WOMANINTERACTION - Stay still and ask speak
+      // WOMANINTERACTION - Stay still and speak
+      // Setup the animation
       womanInteraction();
       break;
     case 39:
-      // TIMEOUT - Stay still and ask speak
+      // TIMEOUT - Stay still and speak
+      // Setup the animation
       timeout();
       break;
     default:
@@ -249,17 +254,16 @@ void foamTouch() {
     resetAndSet(1, 1, 1);
     stopRobot();
   }
-
+  // Wait for input or timeout
   if (millis() - starting_time_state > WAIT_FOR_ANSWER) {
-    //Go to state 39 - Timeout
+    // Go to state 39 (TIMEOUT)
     setState(39);
-
-  }  else if (getFoamTouched ()) {
-    //Go to state 21 -  Foam touched
+  }  else if (getFoamTouched()) {
+    // Go to state 21 (FOAMTOUCHED)
     setState(21);
   }
-
 }
+
 // Stay still and speak
 void foamTouched() {
   // Reset the variables if needed
@@ -268,9 +272,9 @@ void foamTouched() {
     resetAndSet(2, 1, 1);
     stopRobot();
   }
-  //TO-DO condizione d'uscita
-
+  // TODO
 }
+
 // Stay still and ask for gender
 void askForGender() {
   // Reset the variables if needed
@@ -279,20 +283,17 @@ void askForGender() {
     resetAndSet(1, 1, 1);
     stopRobot();
   }
-
+  // Wait for input or timeout
   if (millis() - starting_time_state > WAIT_FOR_ANSWER) {
-    //Go to state 39 - Timeout
+    // Go to state 39 (TIMEOUT)
     setState(39);
-
   } else if (getHandleTouched ()) {
-    //Go to state 25 - Woman interaction
+    // Go to state 25 (WOMANINTERACTION)
     setState(25);
-
   } else if (getFoamTouched ()) {
-    //Go to state 24 -  Man interaction
+    // Go to state 24 (MANINTERACTION)
     setState(24);
   }
-
 }
 
 // Stay still and speak
@@ -303,9 +304,8 @@ void manInteraction() {
     resetAndSet(3, 1, 1);
     stopRobot();
   }
-  //TO-DO condizione d'uscita
+  // TODO
 }
-
 
 // Stay still and speak
 void womanInteraction() {
@@ -315,9 +315,8 @@ void womanInteraction() {
     resetAndSet(2, 1, 1);
     stopRobot();
   }
-  //TO-DO condizione d'uscita
+  // TODO
 }
-
 
 // Stay still and speak
 void timeout() {
@@ -327,8 +326,9 @@ void timeout() {
     resetAndSet(3, 1, 1);
     stopRobot();
   }
-  //TO-DO condizione d'uscita
+  // TODO
 }
+
 // Stay still and say goodbye
 void goodbye() {
   // Reset the variables if needed
@@ -337,6 +337,7 @@ void goodbye() {
     resetAndSet(2, 1, 1);
     stopRobot();
   }
+  // TODO
 }
 
 // MOVEMENTS //

@@ -55,6 +55,11 @@ void menageSound() {
   }
 }
 
+// Return the length of the current sound
+int getPlayDuration() {
+  return duration(currentSound);
+}
+
 // ANIMATIONS //
 
 // CASE 1 - Play "talk" sound
