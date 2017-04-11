@@ -24,6 +24,7 @@ int temperature_min = 30;               // Minimum temperature to be considered 
 int temperature_max = 40;               // Maximum temperature to be considered a person
 int temperature;                        // Detected temperature
 int person_detected;                    // Tells if a person has been detected
+int person_detected_lazy;               // Tells if a person has been detected
 int peopleCounter = 0;                  // Counter for crowd detection
 int totalCounter = 0;                   // Counter for crowd detection
 int isCrowdPercentage = 0.5;             // Percentage for which a crowd is detected
@@ -77,6 +78,29 @@ void processPeopleDetection() {
       setPersonDetected(true);
     }
   }
+}
+
+// Process the detection of people. This lazy version doesn't call setPersonDetected
+void processPeopleDetectionLazy() {
+  if (no_detection_ping_counter >= 12) {
+    // Normalize the value
+    no_detection_ping_counter = 12;
+    if (person_detected_lazy) {
+      Serial.println("SWITCHED TO NO PERSON DETECTED");
+      person_detected_lazy = false;
+    }
+  } else if (no_detection_ping_counter <= 0) {
+    // Normalize the value
+    no_detection_ping_counter = 0;
+    if (!person_detected_lazy) {
+      Serial.println("SWITCHED TO PERSON DETECTED");
+      person_detected_lazy = true;
+    }
+  }
+}
+
+bool isPersonLazy() {
+  return person_detected_lazy;
 }
 
 // Manage the robot looking for people. This makes the state of the robot change.

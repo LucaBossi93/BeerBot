@@ -55,6 +55,9 @@ void setMustacheAnimin(int i) {
 // Menage the movement (call this in the loop)
 void menageMustache() {
   switch (mustacheCurrentAnim) {
+    case 0:
+      // Still, just do nothing at all
+      break;
     case 1:
       // Talk
       mustacheTalk();
@@ -83,174 +86,174 @@ void menageMustache() {
 
 // ANIMATIONS //
 
-// Up and down, centered, normal width
-void mustacheTalk() {
-  if (millis() - mustacheMillis > 10) {
-    // Compute position
-    switch (mustacheCurrentAction) {
-      case 1:
-        positionDelta++;
-        // If I've finished with this action perform the next one
-        if (positionDelta > 7)
-          mustacheCurrentAction = 2;
-        break;
-      case 2:
-        positionDelta--;
-        // If I've finished with this action perform the next one
-        if (positionDelta < -7)
-          mustacheCurrentAction = 3;
-        break;
-      case 3:
-        positionDelta++;
-        // If I've finished with this action perform the next one
-        if (positionDelta > 0)
+  // Up and down, centered, normal width
+  void mustacheTalk() {
+    if (millis() - mustacheMillis > 10) {
+      // Compute position
+      switch (mustacheCurrentAction) {
+        case 1:
+          positionDelta++;
+          // If I've finished with this action perform the next one
+          if (positionDelta > 7)
+            mustacheCurrentAction = 2;
+          break;
+        case 2:
+          positionDelta--;
+          // If I've finished with this action perform the next one
+          if (positionDelta < -7)
+            mustacheCurrentAction = 3;
+          break;
+        case 3:
+          positionDelta++;
+          // If I've finished with this action perform the next one
+          if (positionDelta > 0)
+            mustacheCurrentAction = 1;
+          break;
+        default:
           mustacheCurrentAction = 1;
-        break;
-      default:
-        mustacheCurrentAction = 1;
-        break;
+          break;
+      }
+      // Set position
+      motor.write(motorPosition + positionDelta);
+      // Reset time
+      mustacheMillis = millis();
     }
-    // Set position
-    motor.write(motorPosition + positionDelta);
-    // Reset time
-    mustacheMillis = millis();
   }
-}
 
 
-// Up and down, centered higher, higher width
-void mustacheShout() {
-  if (millis() - mustacheMillis > 5) {
-    // Compute position
-    switch (mustacheCurrentAction) {
-      case 1:
-        positionDelta++;
-        // If I've finished with this action perform the next one
-        if (positionDelta > 9)
-          mustacheCurrentAction = 2;
-        break;
-      case 2:
-        positionDelta--;
-        // If I've finished with this action perform the next one
-        if (positionDelta < -9)
-          mustacheCurrentAction = 3;
-        break;
-      case 3:
-        positionDelta++;
-        // If I've finished with this action perform the next one
-        if (positionDelta > 0)
+  // Up and down, centered higher, higher width
+  void mustacheShout() {
+    if (millis() - mustacheMillis > 5) {
+      // Compute position
+      switch (mustacheCurrentAction) {
+        case 1:
+          positionDelta++;
+          // If I've finished with this action perform the next one
+          if (positionDelta > 9)
+            mustacheCurrentAction = 2;
+          break;
+        case 2:
+          positionDelta--;
+          // If I've finished with this action perform the next one
+          if (positionDelta < -9)
+            mustacheCurrentAction = 3;
+          break;
+        case 3:
+          positionDelta++;
+          // If I've finished with this action perform the next one
+          if (positionDelta > 0)
+            mustacheCurrentAction = 1;
+          break;
+        default:
           mustacheCurrentAction = 1;
-        break;
-      default:
-        mustacheCurrentAction = 1;
-        break;
+          break;
+      }
+      // Set position
+      motor.write(motorPositionHigh + positionDelta);
+      // Reset time
+      mustacheMillis = millis();
     }
-    // Set position
-    motor.write(motorPositionHigh + positionDelta);
-    // Reset time
-    mustacheMillis = millis();
   }
-}
 
 
-// Up and down, centered lower, smaller width
-void mustacheWhisper() {
-  if (millis() - mustacheMillis > 7) {
-    // Compute position
-    switch (mustacheCurrentAction) {
-      case 1:
-        positionDelta++;
-        // If I've finished with this action perform the next one
-        if (positionDelta > 6)
-          mustacheCurrentAction = 2;
-        break;
-      case 2:
-        positionDelta--;
-        // If I've finished with this action perform the next one
-        if (positionDelta < -6)
-          mustacheCurrentAction = 3;
-        break;
-      case 3:
-        positionDelta++;
-        // If I've finished with this action perform the next one
-        if (positionDelta > 0)
+  // Up and down, centered lower, smaller width
+  void mustacheWhisper() {
+    if (millis() - mustacheMillis > 7) {
+      // Compute position
+      switch (mustacheCurrentAction) {
+        case 1:
+          positionDelta++;
+          // If I've finished with this action perform the next one
+          if (positionDelta > 6)
+            mustacheCurrentAction = 2;
+          break;
+        case 2:
+          positionDelta--;
+          // If I've finished with this action perform the next one
+          if (positionDelta < -6)
+            mustacheCurrentAction = 3;
+          break;
+        case 3:
+          positionDelta++;
+          // If I've finished with this action perform the next one
+          if (positionDelta > 0)
+            mustacheCurrentAction = 1;
+          break;
+        default:
           mustacheCurrentAction = 1;
-        break;
-      default:
-        mustacheCurrentAction = 1;
-        break;
+          break;
+      }
+      // Set position
+      motor.write(motorPositionLow + positionDelta);
+      // Reset time
+      mustacheMillis = millis();
     }
-    // Set position
-    motor.write(motorPositionLow + positionDelta);
-    // Reset time
-    mustacheMillis = millis();
   }
-}
 
-// Up and down, centered lower, mini width
-void mustacheScared() {
-  if (millis() - mustacheMillis > 2) {
-    // Compute position
-    switch (mustacheCurrentAction) {
-      case 1:
-        positionDelta++;
-        // If I've finished with this action perform the next one
-        if (positionDelta > 6)
-          mustacheCurrentAction = 2;
-        break;
-      case 2:
-        positionDelta--;
-        // If I've finished with this action perform the next one
-        if (positionDelta < -6)
-          mustacheCurrentAction = 3;
-        break;
-      case 3:
-        positionDelta++;
-        // If I've finished with this action perform the next one
-        if (positionDelta > 0)
+  // Up and down, centered lower, mini width
+  void mustacheScared() {
+    if (millis() - mustacheMillis > 2) {
+      // Compute position
+      switch (mustacheCurrentAction) {
+        case 1:
+          positionDelta++;
+          // If I've finished with this action perform the next one
+          if (positionDelta > 6)
+            mustacheCurrentAction = 2;
+          break;
+        case 2:
+          positionDelta--;
+          // If I've finished with this action perform the next one
+          if (positionDelta < -6)
+            mustacheCurrentAction = 3;
+          break;
+        case 3:
+          positionDelta++;
+          // If I've finished with this action perform the next one
+          if (positionDelta > 0)
+            mustacheCurrentAction = 1;
+          break;
+        default:
           mustacheCurrentAction = 1;
-        break;
-      default:
-        mustacheCurrentAction = 1;
-        break;
+          break;
+      }
+      // Set position
+      motor.write(motorPosition + positionDelta);
+      // Reset time
+      mustacheMillis = millis();
     }
-    // Set position
-    motor.write(motorPosition + positionDelta);
-    // Reset time
-    mustacheMillis = millis();
   }
-}
 
-// Up and down, centered lower, mini width
-void mustacheTips() {
-  if (millis() - mustacheMillis > 10) {
-    // Compute position
-    switch (mustacheCurrentAction) {
-      case 1:
-        positionDelta++;
-        // If I've finished with this action perform the next one
-        if (positionDelta > 30)
-          mustacheCurrentAction = 2;
-        break;
-      case 2:
-        positionDelta--;
-        // If I've finished with this action perform the next one
-        if (positionDelta < -30)
-          mustacheCurrentAction = 3;
-        break;
-      case 3:
-        positionDelta++;
-        // If I've finished with this action perform the next one
-        if (positionDelta > 0)
+  // Up and down, centered lower, mini width
+  void mustacheTips() {
+    if (millis() - mustacheMillis > 10) {
+      // Compute position
+      switch (mustacheCurrentAction) {
+        case 1:
+          positionDelta++;
+          // If I've finished with this action perform the next one
+          if (positionDelta > 30)
+            mustacheCurrentAction = 2;
+          break;
+        case 2:
+          positionDelta--;
+          // If I've finished with this action perform the next one
+          if (positionDelta < -30)
+            mustacheCurrentAction = 3;
+          break;
+        case 3:
+          positionDelta++;
+          // If I've finished with this action perform the next one
+          if (positionDelta > 0)
+            mustacheCurrentAction = 1;
+          break;
+        default:
           mustacheCurrentAction = 1;
-        break;
-      default:
-        mustacheCurrentAction = 1;
-        break;
+          break;
+      }
+      // Set position
+      motor.write(motorPosition + positionDelta);
+      // Reset time
+      mustacheMillis = millis();
     }
-    // Set position
-    motor.write(motorPosition + positionDelta);
-    // Reset time
-    mustacheMillis = millis();
   }
-}
