@@ -36,14 +36,14 @@ void setupBeheviour() {
 void menageBeheviour() {
   switch (current_state) {
     case 1:
-      // LOOK FOR PEOPLE - I'm rotating looking for people. I rotate for some time, I cooldown and then I repeat
-      // In this phase I don't need to look for ground since I'm rotating in place
-      // Detect if there is a person
-      peopleDetect();
+      // FORWARD - I've detected a person and I'm moving towards him. I only detect the anomalies but I don't
+      // process them since I just want to stop instead of starting looking for ground
+      // Detect if there is an anomaly
+      anomalyDetect();
       // Process the information
-      processPeopleDetection();
-      // Perform the rotation
-      rotateWithCooldown(1500, 300);
+      processAnomalyDetectionLazy();
+      // I'm moving towards someone
+      moveForwardWithTimeout(1500);
       break;
     case 2:
       // LOOK FOR GROUND - I'm looking for ground. I don't need to look for people while I do it
@@ -55,21 +55,38 @@ void menageBeheviour() {
       rotate(sp, rotate_left);
       break;
     case 3:
-      // FORWARD - I've detected a person and I'm moving towards him. I only detect the anomalies but I don't
-      // process them since I just want to stop instead of starting looking for ground
+      // LOOK FOR PEOPLE - I'm rotating looking for people. I rotate for some time, I cooldown and then I repeat
+      // In this phase I don't need to look for ground since I'm rotating in place
+      // Detect if there is a person
+      peopleDetect();
+      // Process the information
+      processPeopleDetection();
+      // Perform the rotation
+      rotateWithCooldown(1500, 300);
+      break;
+    case 4:
+      // ROAMING - Simply move forward and rotate when anomaly is found.
       // Detect if there is an anomaly
       anomalyDetect();
       // Process the information
-      processAnomalyDetectionLazy();
-      // I'm moving towards someone
-      moveForwardWithTimeout(1500);
-      break;
-    case 4:
-      // GOODBYE - Stay still and say goodbye
-      // Set the animation
-      goodbye();
+      processAnomalyDetection();
+      // I'm moving forward
+      moveForward(sp);
       break;
     case 5:
+      // SINGING - (TODO)
+      break;
+    case 6:
+      // BEER FACT - Move left and right a bit and talk
+      // Setup the animation and talk
+      beerFact();
+      // Move left and right
+      moveLeftRigth(500, 50);
+      break;
+    case 7:
+      // MUSTACHE SHOW - (TODO)
+      break;
+    case 8:
       // GREET - I'm saying hi. I look for people, if the time is over or nobody is watching start looking
       // for people again
       // Detect if there is a person
@@ -79,38 +96,30 @@ void menageBeheviour() {
       // Say hi
       sayHi(5000);
       break;
-    case 6:
-      // ROAMING - Simply move forward and rotate when anomaly is found.
-      // Detect if there is an anomaly
-      anomalyDetect();
-      // Process the information
-      processAnomalyDetection();
-      // I'm moving forward
-      moveForward(sp);
-      break;
-    case 7:
-      // SINGING - (TODO)
-      break;
-    case 8:
-      // SUGGESTION DRIVE - (TODO)
-      break;
     case 9:
-      // BEER FACT - Move left and right a bit and talk
-      // Setup the animation and talk
-      beerFact();
-      // Move left and right
-      moveLeftRigth(500, 50);
-      break;
-    case 10:
-      // MUSTACHE SHOW - (TODO)
-      break;
-    case 11:
       // INVITE - (TODO)
       break;
-    case 12:
+    case 10:
+      // GOODBYE - Stay still and say goodbye
+      // Set the animation
+      goodbye();
+      break;
+    case 11:
       // HELP - Stay still and call for help
       // Setup the animation
       help();
+      break;
+    case 12:
+      // COUNTPEOPLE - (TODO)
+      break;
+    case 13:
+      // INTERACTIONSINGLEPERSON - (TODO)
+      break;
+    case 14:
+      // INTERACTIONMULTIPLE - (TODO)
+      break;
+    case 15:
+      // STATICPEOPLE - (TODO)
       break;
     case 16:
       // BEER GAME INVITE - Stay still and invite people to play
@@ -129,6 +138,8 @@ void menageBeheviour() {
       // BEER GAME END - Stay still and invite to kiss or have a beer
       // Setup the animation
       beerGameEnd();
+    case 19:
+      // NA
       break;
     case 20:
       // FOAM TOUCH - Stay still and ask for touching the foam
@@ -155,10 +166,63 @@ void menageBeheviour() {
       // Setup the animation
       womanInteraction();
       break;
+    case 26:
+      // BEERLIFTREQUEST - (TODO)
+      break;
+    case 27:
+      // HANDLETOUCHEDINTERACTION - (TODO)
+      break;
+    case 28:
+      // HANDLETOUCHEDSURPRISED - (TODO)
+      break;
+    case 29:
+      // REQUESTCLAPPING - (TODO)
+      break;
+    case 30:
+      // LOWCLAPPING - (TODO)
+      break;
+    case 31:
+      // HIGHCLAPPING - (TODO)
+      break;
+    case 32:
+      // REQUESTSCREAMING: - Stay still and speak
+      // Setup the animation
+      requestScreaming();
+      break;
+    case 33:
+      // LOWSCREAMING: - Stay still and speak
+      // Setup the animation
+      lowScreaming();
+      break;
+    case 34:
+      // MEDSCREAMING: - Stay still and speak
+      // Setup the animation
+      medScreaming();
+      break;
+    case 35:
+      // HIGHSCREAMING: - Stay still and speak
+      // Setup the animation
+      highScream();
+      break;
+    case 36:
+      // REACTCLAPPING - (TODO)
+      break;
+    case 37:
+      // MAGICSHOWBEGIN - (TODO)
+      break;
+    case 38:
+      // MAGICSHOWEND - (TODO)
+      break;
     case 39:
       // TIMEOUT - Stay still and speak
       // Setup the animation
       timeout();
+      break;
+    case 40:
+      // WINEPREFERENCE - (TODO)
+      break;
+    case 41:
+      // BEERPREFERENCE - (TODO)
       break;
     default:
       // Go to the look for people case
@@ -225,7 +289,7 @@ void moveForwardWithTimeout(int timeout) {
   // If I don't have detected an anomaly or I've finished, go forward
   if (millis() - starting_time_state > timeout || !isGroundLazy()) {
     stopRobot();
-    setState(5);
+    setState(5); //ERROR
     Serial.println("STOP!!!");
   } else {
     moveForward(sp);
@@ -242,7 +306,7 @@ void sayHi(int timeout) {
   // If I've finished search for someone else. PeopleDetection will take care of the case in which
   // everyone left
   if (millis() - starting_time_state > timeout)
-    setState(1);
+    setState(1);//ERROR
 }
 
 // Tell the person a fact about beer
@@ -290,7 +354,11 @@ void foamTouched() {
     resetAndSet(2, 1, 1);
     stopRobot();
   }
-  // TODO
+  if (millis() - starting_time_state > getPlayDuration())
+  {
+    // Go to state 6 (BEERFACT)
+    setState(6)
+  }
 }
 
 // Stay still and ask for gender
@@ -302,7 +370,7 @@ void askForGender() {
     stopRobot();
   }
   // Wait for input or timeout
-  if (millis() - starting_time_state > WAIT_FOR_ANSWER) {
+  if (millis() - starting_time_state > WAIT_FOR_ANSWER ) {
     // Go to state 39 (TIMEOUT)
     setState(39);
   } else if (getHandleTouched ()) {
@@ -322,7 +390,10 @@ void manInteraction() {
     resetAndSet(3, 1, 1);
     stopRobot();
   }
-  // TODO
+  if (millis() - starting_time_state > getPlayDuration())
+  {
+    // TODO
+  }
 }
 
 // Stay still and speak
@@ -333,7 +404,106 @@ void womanInteraction() {
     resetAndSet(2, 1, 1);
     stopRobot();
   }
-  // TODO
+  if (millis() - starting_time_state > getPlayDuration())
+  {
+    // TODO
+  }
+}
+
+// Stay still and ask for screaming
+void requestScreaming() {
+  // Reset the variables if needed
+  if (resetNeeded) {
+    // K_ANIMATOR - Set the animations for this state
+    resetAndSet(1, 1, 1);
+    stopRobot();
+  }
+  // Wait for input or timeout
+  if (millis() - starting_time_state > WAIT_FOR_ANSWER) {
+    // Go to state 33 (LOWSCREAMING)
+    setState(33);
+  }
+}
+
+// Stay still and speak
+void lowScreaming() {
+  // Reset the variables if needed
+  if (resetNeeded) {
+    // K_ANIMATOR - Set the animations for this state
+    resetAndSet(3, 1, 1);
+    stopRobot();
+  }
+  if (millis() - starting_time_state > WAIT_FOR_ANSWER) {
+    // Detect sound
+    getVolumeContinuous()
+  } else {
+    switch (getVolumeContinuous()) {
+      case 0:
+        // Go to state 39 (TIMEOUT)
+        setState(39);
+        break;
+      case 1:
+        // Go to state 34 (MEDSCREAMING)
+        setState(34);
+        break;
+      case 2:
+        // Go to state 35(HIGHSCREAMING)
+        setState(35);
+        break;
+      default:
+        // Go to state 39 (TIMEOUT)
+        setState(39);
+        break;
+    }
+  }
+}
+
+// Stay still and speak
+void medScreaming() {
+  // Reset the variables if needed
+  if (resetNeeded) {
+    // K_ANIMATOR - Set the animations for this state
+    resetAndSet(3, 1, 1);
+    stopRobot();
+  }
+  if (millis() - starting_time_state > WAIT_FOR_ANSWER) {
+    // Detect sound
+    getVolumeContinuous()
+  } else {
+    switch (getVolumeContinuous()) {
+      case 0:
+        // Go to state 39 (TIMEOUT)
+        setState(39);
+        break;
+      case 1:
+        // Go to state 39 (TIMEOUT)
+        setState(39);
+        break;
+      case 2:
+        // Go to state 35 (HIGHSCREAMING)
+        setState(35);
+        break;
+      default:
+        // Go to state 39 (TIMEOUT)
+        setState(39);
+        break;
+    }
+  }
+}
+
+// Stay still and speak
+void highScreaming() {
+  // Reset the variables if needed
+  if (resetNeeded) {
+    // K_ANIMATOR - Set the animations for this state
+    resetAndSet(2, 1, 1);
+    stopRobot();
+  }
+  if (millis() - starting_time_state > getPlayDuration())
+  {
+    // Go to state 6 (BEERFACT)
+    setState(6)
+  }
 }
 
 // Stay still and speak
@@ -344,8 +514,12 @@ void timeout() {
     resetAndSet(3, 1, 1);
     stopRobot();
   }
-  // TODO
+  if (millis() - starting_time_state > getPlayDuration())
+  {
+    // TODO
+  }
 }
+
 
 // Stay still and say goodbye
 void goodbye() {
