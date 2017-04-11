@@ -205,9 +205,11 @@ void menageBeheviour() {
       break;
     case 37:
       // MAGICSHOWBEGIN - (TODO)
+      magicShowBegin();
       break;
     case 38:
       // MAGICSHOWEND - (TODO)
+      magicShowEnd();
       break;
     case 39:
       // TIMEOUT - Stay still and speak
@@ -577,6 +579,53 @@ void highScreaming() {
   }
 }
 
+// Stay still and speak
+void magicShowBegin() {
+  // Reset the variables if needed
+  if (resetNeeded) {
+    // K_ANIMATOR - Set the animations for this state
+    resetAndSet(1, 1, 1);
+    stopRobot();
+  }
+  if (millis() - starting_time_state > WAIT_FOR_ANSWER) {
+    // Detect sound
+    getVolumeContinuous()
+  } else {
+    switch (getVolumeContinuous()) {
+      case 0:
+        // Go to state 39 (TIMEOUT)
+        setState(39);
+        break;
+      case 1:
+        // Go to state 38 (MAGICSHOWEND)
+        setState(39);
+        break;
+      case 2:
+        // Go to state 38 (MAGICSHOWEND)
+        setState(35);
+        break;
+      default:
+        // Go to state 39 (TIMEOUT)
+        setState(39);
+        break;
+    }
+  }
+}
+
+// Stay still and speak
+void magicShowEnd() {
+  // Reset the variables if needed
+  if (resetNeeded) {
+    // K_ANIMATOR - Set the animations for this state
+    resetAndSet(2, 1, 1);
+    stopRobot();
+  }
+  if (millis() - starting_time_state > getPlayDuration())
+  {
+    // Go to state 4 (ROAMING)
+    setState(4)
+  }
+}
 // Stay still and speak
 void timeout() {
   // Reset the variables if needed
