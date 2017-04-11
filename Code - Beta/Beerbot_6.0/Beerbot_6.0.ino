@@ -20,7 +20,7 @@ void setup() {
   setupAll();
 
   // K_ANIMATOR - Initialize animations
-  setTalk(2);
+  setTalk(0, false);
   setEyebrowPosition(1);
   setMustacheAnimin(2);
 }
@@ -34,7 +34,7 @@ void loop() {
   // K_ANIMATOR - Manage the eyebrows animation
   menageEyebrow();
   // K_ANIMATOR - Menage the sound
-  menageSound();
+  // menageSound();
 }
 
 // SUPPORT FUNCTIONS //

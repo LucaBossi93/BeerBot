@@ -1,13 +1,6 @@
 // SOUND SUPPORT FUNCTIONS //
 
-// INCLUSIONS //
-
-#include <SoftwareSerial.h>
-#include <DFPlayer_Mini_Mp3.h>
-
-#define POOLS 41   //number of pools
-// indices of each pool to be called in setTalk
-/*
+/* Indices of each pool to be called in setTalk:
    1 - moveforwarddelay
    2 - lookforground
    3 - lookforpeople
@@ -50,6 +43,15 @@
    40 - singing
 */
 
+// INCLUSIONS //
+
+#include <SoftwareSerial.h>
+#include <DFPlayer_Mini_Mp3.h>
+
+// DEFINITIONS //
+
+#define POOLS 41   //number of pools
+
 // VARIABLES //
 
 
@@ -57,7 +59,7 @@ int pool_sizes[POOLS] = {3, 3, 3, 2, 12, 3, 9, 6, 4, 1, 3, 3,
                          3, 1, 2, 1, 2, 1, 5, 1, 1, 5, 1, 3, 3,
                          2, 2, 5, 4, 3, 1, 1, 1, 2, 1, 4, 1, 1,
                          5, 3
-                        }    // number of audio files for each pool
+                        };                    // Number of audio files for each pool
 // Miscellaneous
 int currentTalk;                              // Current talk being played
 int currentSound;                             // Current sound in a talk being played
@@ -74,7 +76,7 @@ int duration [107] =  {2, 1, 1, 2, 3, 3, 2, 2, 3, 5, 10, 6, 8, 9,
                        7, 11, 10, 2, 4, 3, 5, 6, 5, 2, 4, 4, 6, 3,
                        2, 4, 3, 4, 6, 3, 13, 6, 5, 2, 2, 10, 2, 2,
                        2, 3, 6, 5, 3, 1, 2, 3, 4
-                      };
+                      };                       // Duration of each audio file
 
 // SUPPORT FUNCTIONS //
 
@@ -97,48 +99,39 @@ void setTalk(int i, boolean rep) {
   playAudio(currentTalk, rep);
 }
 
-
-// Return the length of the current sound
+// Return the duration of the current sound
 int getPlayDuration() {
-  return duration(currentSound * 1000);
+  return duration[currentSound] * 1000;
 }
 
-// ANIMATIONS //
-
-//CASE 0 - silence
+// CASE 0 - Silence
 void silence() {
   //do nothing
 }
 
 void playAudio(int index, boolean rep) {
-
   if (rep) {
     if (millis() - soundMillis > duration[currentSound]) {
-      currentSound = random(pool_sizes[index-1]) + computeStartingPoint(index-1);
+      currentSound = random(pool_sizes[index - 1]) + computeStartingPoint(index - 1);
       mp3_play (currentSound);
       soundMillis = millis();
     }
-  }
-  else {
+  } else {
     if (index == 0) {
       silence();
-    }
-    else {
-      currentSound = random(pool_sizes[index-1]) + computeStartingPoint(index-1);
+    } else {
+      currentSound = random(pool_sizes[index - 1]) + computeStartingPoint(index - 1);
       mp3_play(currentSound);
     }
   }
 }
 
-// compute the starting point of each pool
+// Compute the starting point of each pool
 int computeStartingPoint(int index) {
-
   int sum = 0;
   for (int i = 0; i < index; i++) {
     sum += pool_sizes[i];
   }
 
   return sum;
-
 }
-
