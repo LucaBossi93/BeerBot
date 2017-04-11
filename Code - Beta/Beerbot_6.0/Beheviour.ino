@@ -130,10 +130,11 @@ void menageBeheviour() {
       // STATICPEOPLE - (TODO)
       break;
     case 16:
-      // BEERGAMEINVITE - (TODO)
+      // BEER GAME INVITE - Stay still and invite people to play
+      // Setup the animation
+      beerGameInvite();
       break;
     case 17:
-<<<<<<< HEAD
       // BEER GAME SELECTION - Select two persons
       // Detect the people
       peopleDetect();
@@ -141,38 +142,36 @@ void menageBeheviour() {
       processPeopleDetectionLazy();
       // Setup the animation, look for people and select them
       beerGameSelection();
-=======
-      // BEERGAMESELECTION - (TODO)
->>>>>>> 47639f9d34c3a20a2d99ba915dcdb2c8fd1545f6
       break;
     case 18:
-      // BEERGAMEEND - (TODO)
-      break;
+      // BEER GAME END - Stay still and invite to kiss or have a beer
+      // Setup the animation
+      beerGameEnd();
     case 19:
       // NA
       break;
     case 20:
-      // FOAMTOUCH - Stay still and ask for touching the foam
+      // FOAM TOUCH - Stay still and ask for touching the foam
       // Setup the animation
       foamTouch();
       break;
     case 21:
-      // FOAMTOUCHED - Stay still and speak
+      // FOAM TOUCHED - Stay still and speak
       // Setup the animation
       foamTouched();
       break;
     case 23:
-      // ASKFORGENDER - Stay still and ask for gender
+      // ASK FOR GENDER - Stay still and ask for gender
       // Setup the animation
       askForGender();
       break;
     case 24:
-      // MANINTERACTION - Stay still and speak
+      // MAN INTERACTION - Stay still and speak
       // Setup the animation
       manInteraction();
       break;
     case 25:
-      // WOMANINTERACTION - Stay still and speak
+      // WOMAN INTERACTION - Stay still and speak
       // Setup the animation
       womanInteraction();
       break;
@@ -598,53 +597,6 @@ void highScreaming() {
 }
 
 // Stay still and speak
-void magicShowBegin() {
-  // Reset the variables if needed
-  if (resetNeeded) {
-    // K_ANIMATOR - Set the animations for this state
-    resetAndSet(1, 1, 1);
-    stopRobot();
-  }
-  if (millis() - starting_time_state > WAIT_FOR_ANSWER) {
-    // Detect sound
-    getVolumeContinuous()
-  } else {
-    switch (getVolumeContinuous()) {
-      case 0:
-        // Go to state 39 (TIMEOUT)
-        setState(39);
-        break;
-      case 1:
-        // Go to state 38 (MAGICSHOWEND)
-        setState(39);
-        break;
-      case 2:
-        // Go to state 38 (MAGICSHOWEND)
-        setState(35);
-        break;
-      default:
-        // Go to state 39 (TIMEOUT)
-        setState(39);
-        break;
-    }
-  }
-}
-
-// Stay still and speak
-void magicShowEnd() {
-  // Reset the variables if needed
-  if (resetNeeded) {
-    // K_ANIMATOR - Set the animations for this state
-    resetAndSet(2, 1, 1);
-    stopRobot();
-  }
-  if (millis() - starting_time_state > getPlayDuration())
-  {
-    // Go to state 4 (ROAMING)
-    setState(4)
-  }
-}
-// Stay still and speak
 void timeout() {
   // Reset the variables if needed
   if (resetNeeded) {
@@ -668,6 +620,99 @@ void goodbye() {
     stopRobot();
   }
   // TODO
+}
+
+// Stay still and invite people to play
+void beerGameInvite() {
+  // Reset the variables if needed
+  if (resetNeeded) {
+    // K_ANIMATOR - Set the animations for this state
+    resetAndSet(2, 1, 1);
+    stopRobot();
+  }
+  // When I've finished talking change state
+  if (millis() - starting_time_state > getPlayDuration()) {
+    // Go to state 17 (BEER GAME SELECTION)
+    setState(17);
+  }
+}
+
+// Look for people and select them
+void beerGameSelection() {
+  switch (current_action) {
+    case 1:
+      // K_ANIMATOR - Set the animations for this action
+      setAllAnimations(1, 0, 0);
+      // Set the rotation
+      rotate(velocity, random(2));
+      // Switch to the next action
+      current_action = 2;
+      starting_time_action = millis();
+      break;
+    case 2:
+      // When a person is detected stop and talk
+      if (millis() - starting_time_action > random(100, 10000) && isPersonLazy()) {
+        stopRobot()
+        // K_ANIMATOR - Set the animations for this action
+        setAllAnimations(2, 1, 0);
+        // Switch to next action
+        current_action = 3;
+        starting_time_action = millis();
+      } else if (millis() - starting_time_action > WAIT_FOR_ANSWER) {
+        // Go to state 39 (TIMEOUT)
+      }
+      break;
+    case 3:
+      // If I've finished with this action perform the next one
+      if (millis() - starting_time_action > getPlayDuration()) {
+        // K_ANIMATOR - Set the animations for this action
+        setAllAnimations(1, 0, 0);
+        // Set the rotation
+        rotate(velocity, random(2));
+        // Switch to the next action
+        current_action = 4;
+        starting_time_action = millis();
+      }
+      break;
+    case 4:
+      // When a person is detected stop and talk
+      if (millis() - starting_time_action > random(100, 10000) && isPersonLazy()) {
+        stopRobot()
+        // K_ANIMATOR - Set the animations for this action
+        setAllAnimations(2, 1, 0);
+        // Switch to next action
+        current_action = 5;
+        starting_time_action = millis();
+      } else if (millis() - starting_time_action > WAIT_FOR_ANSWER) {
+        // Go to state 39 (TIMEOUT)
+      }
+      break;
+    case 5:
+      // If I've finished with this action perform the next one
+      if (millis() - starting_time_action > getPlayDuration()) {
+        // Go to state 18 (BEER GAME END)
+        setState(18);
+      }
+      break;
+    default:
+      current_action = 1;
+      break;
+  }
+}
+
+// Stay still and invite to kiss or offer a beer
+void beerGameEnd() {
+  // Reset the variables if needed
+  if (resetNeeded) {
+    // K_ANIMATOR - Set the animations for this state
+    resetAndSet(2, 1, 1);
+    stopRobot();
+  }
+  // When I've finished talking change state
+  if (millis() - starting_time_state > getPlayDuration()) {
+    // Go to state 4 (ROAMING)
+    setState(4);
+  }
 }
 
 // Invite the person inside the pub
