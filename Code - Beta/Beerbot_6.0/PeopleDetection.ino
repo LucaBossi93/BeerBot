@@ -120,7 +120,8 @@ void setPersonDetected(bool b) {
   }
 }
 
-void countPeople() {
+// Counts how much people there is
+void peopleCount() {
   // Acquire the temperature
   temperature = mlx.readObjectTempC();
   // Process
@@ -130,6 +131,8 @@ void countPeople() {
     totalCounter++;
 }
 
+
+// Process the information about the cunted people
 bool isCrowd() {
   if (totalCounter / peopleCounter > isCrowdPercentage) {
     // Reset values for the next call

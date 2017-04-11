@@ -98,6 +98,8 @@ void menageBeheviour() {
       break;
     case 9:
       // INVITE - (TODO)
+      // Setup the animation
+      invite();
       break;
     case 10:
       // GOODBYE - Stay still and say goodbye
@@ -110,7 +112,13 @@ void menageBeheviour() {
       help();
       break;
     case 12:
-      // COUNTPEOPLE - (TODO)
+      // COUNTPEOPLE - Count how much people there is
+      // Setup the animation
+      countPeople();
+      // Move left and right
+      moveLeftRigth(500, 50);
+      // Count people
+      peopleCount()
       break;
     case 13:
       // INTERACTIONSINGLEPERSON - (TODO)
@@ -130,6 +138,7 @@ void menageBeheviour() {
       // BEER GAME SELECTION - Select two persons
       // Detect the people
       peopleDetect();
+      // Detect the people
       processPeopleDetectionLazy();
       // Setup the animation, look for people and select them
       beerGameSelection();
@@ -622,6 +631,38 @@ void beerGameEnd() {
   if (millis() - starting_time_state > getPlayDuration()) {
     // Go to state 4 (ROAMING)
     setState(4);
+  }
+}
+
+// Invite the person inside the pub
+void invite() {
+  // Reset the variables if needed
+  if (resetNeeded) {
+    // K_ANIMATOR - Set the animations for this state
+    resetAndSet(2, 1, 1);
+    stopRobot();
+  }
+  if (millis() - starting_time_state > getPlayDuration())
+  {
+    // TODO
+  }
+}
+
+// Counts how many people there is and changes state accordingly
+countPeople() {
+  // Reset the variables if needed
+  if (resetNeeded) {
+    // K_ANIMATOR - Set the animations for this state
+    resetAndSet(1, 0, 0);
+    stopRobot();
+  }
+  if (millis() - starting_time_state > 3000)
+  {
+    if (isCrowd()) {
+      // TODO
+    } else {
+      // TODO
+    }
   }
 }
 
