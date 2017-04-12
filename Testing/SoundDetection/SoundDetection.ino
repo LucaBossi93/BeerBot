@@ -13,6 +13,39 @@
 int volume;                             // Volume registered by the microphone
 int volumeCounter = 0;                  // Counter to get volume over time
 int acquisitionCounter = 0;             // Times the acquisition has been performed
+int acquisitionTime = 5000;
+
+// Millis
+int testStartingTime;
+
+// CODE //
+
+void setup() {
+  // Initialize the serial port
+  Serial.begin(9600);
+  // Initialize the millis
+  testStartingTime = millis();
+}
+
+void loop() {
+  if (millis() - testStartingTime < acquisitionTime) {
+    detectVolumeContinuous();
+    Serial.print("Volume: ");
+    Serial.print(volume);
+    Serial.print(", with counters: [");
+    Serial.print(volumeCounter);
+    Serial.print(", ");
+    Serial.print(acquisitionCounter);
+    Serial.println("]");
+    // delay(10);
+  } else {
+    // Reset the millis
+    testStartingTime = millis();
+    Serial.print("GOT SOUND LEVEL: ");
+    Serial.println(getVolumeContinuous());
+    delay(1000);
+  }
+}
 
 // SUPPORT FUNCTIONS //
 
