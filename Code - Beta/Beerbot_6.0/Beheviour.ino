@@ -9,6 +9,7 @@
 // Robot state
 int current_state;                      // Current state of the robot
 int previous_state;                     // Previous state of the robot
+int next_state;                          // Next state for specific states (BEERFACT)
 int current_action;                     // Action inside a state
 
 // Miscellaneous
@@ -347,9 +348,28 @@ void sayHiAnim(int timeout) {
   }
   // If I've finished search for someone else. PeopleDetection will take care of the case in which
   // everyone left
-  if (millis() - starting_time_state > timeout)
-    // Go to state 4 (ROAMING)
-    setState(4);
+  if (millis() - starting_time_state > getPlayDuration()){
+    int ran = random(4);
+    switch (ran){
+      case 0:
+        next_state = 12;
+        // Go to state 6 (BEERFACT)
+        setState(6);
+      case 1:
+        //Go to state 23 (ASKGENDER)
+        setState(23);
+      case 2:
+        // Go to state 26 (BEERLIFTREQUEST)
+        setState(26);
+      case 3:
+        // Go to state 20 (FOAMTOUCH)
+        setState(20);
+      default:
+        next_state = 12;
+        // Go to state 6 (BEERFACT)
+        setState(6);
+    }
+  }
 }
 
 // Tell the person a fact about beer
@@ -359,6 +379,8 @@ void beerFactAnim() {
     // K_ANIMATOR - Set the animations for this state
     resetAndSet(2, 1, 5, false);
   }
+  // Go to the next state
+  setState(next_state);
 }
 
 // Stay still and call for help
@@ -530,8 +552,9 @@ void highClappingAnim() {
   }
   if (millis() - starting_time_state > getPlayDuration())
   {
-    // Go to state 6 (BEERFACT)
-    setState(6);
+    
+    // Go to state 9 (INVITE)
+    setState(9);
   }
 }
 
@@ -635,6 +658,7 @@ void highScreamingAnim() {
   }
   if (millis() - starting_time_state > getPlayDuration())
   {
+    next_state = 9;
     // Go to state 6 (BEERFACT)
     setState(6);
   }
@@ -809,6 +833,7 @@ void interactionSinglePersonAnim() {
   if (millis() - starting_time_state > getPlayDuration()) {
     int ran = random(3);
     if (!ran){
+      next_state = 29;
       // Go to state 6 (BEERFACT)
       setState(6);
     }
