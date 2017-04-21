@@ -157,7 +157,9 @@ void menageBeheviour() {
       // Setup the animation
       beerGameEndAnim();
     case 19:
-      // NA
+      // TIMEOUT - Stay still and speak
+      // Setup the animation
+      timeoutAnim();
       break;
     case 20:
       // FOAM TOUCH - Stay still and ask for touching the foam
@@ -249,9 +251,7 @@ void menageBeheviour() {
       magicShowEndAnim();
       break;
     case 39:
-      // TIMEOUT - Stay still and speak
-      // Setup the animation
-      timeoutAnim();
+      
       break;
     case 40:
       //ASK PREFERENCE - Stay still and speak
@@ -349,7 +349,7 @@ void sayHiAnim(int timeout) {
   // everyone left
   if (millis() - starting_time_state > timeout)
     // Go to state 4 (ROAMING)
-    setState(4);//ERROR
+    setState(4);
 }
 
 // Tell the person a fact about beer
@@ -381,8 +381,8 @@ void foamTouchAnim() {
   }
   // Wait for input or timeout
   if (millis() - starting_time_state > WAIT_FOR_ANSWER) {
-    // Go to state 39 (TIMEOUT)
-    setState(39);
+    // Go to state 19 (TIMEOUT)
+    setState(19);
   }  else if (getFoamTouched()) {
     // Go to state 21 (FOAMTOUCHED)
     setState(21);
@@ -399,8 +399,15 @@ void foamTouchedAnim() {
   }
   if (millis() - starting_time_state > getPlayDuration())
   {
-    // Go to state 6 (BEERFACT)
-    setState(6);
+    if(random(2)){
+      // Go to state 15 (STATICPEOPLE)
+      setState(15)
+    }
+    else{
+      // Go to state 12 (COUNTPEOPLE)
+      setState(12);
+    }
+    
   }
 }
 
@@ -414,8 +421,8 @@ void askForGenderAnim() {
   }
   // Wait for input or timeout
   if (millis() - starting_time_state > WAIT_FOR_ANSWER ) {
-    // Go to state 39 (TIMEOUT)
-    setState(39);
+    // Go to state 19 (TIMEOUT)
+    setState(19);
   } else if (getHandleTouched ()) {
     // Go to state 25 (WOMANINTERACTION)
     setState(25);
@@ -435,7 +442,14 @@ void manInteractionAnim() {
   }
   if (millis() - starting_time_state > getPlayDuration())
   {
-    // TODO
+    if(random(2)){
+      // Go to state 15 (STATICPEOPLE)
+      setState(15)
+    }
+    else{
+      // Go to state 12 (COUNTPEOPLE)
+      setState(12);
+    }
   }
 }
 
@@ -449,9 +463,17 @@ void womanInteractionAnim() {
   }
   if (millis() - starting_time_state > getPlayDuration())
   {
-    // TODO
+    if(random(2)){
+      // Go to state 15 (STATICPEOPLE)
+      setState(15)
+    }
+    else{
+      // Go to state 12 (COUNTPEOPLE)
+      setState(12);
+    }
   }
 }
+
 // Stay still and ask for clapping
 void requestClappingAnim() {
   // Reset the variables if needed
@@ -523,8 +545,8 @@ void reactClappingAnim() {
   }
   if (millis() - starting_time_state > getPlayDuration())
   {
-    // Go to state 4 (ROAMING)
-    setState(4);
+    // Go to state 3 (LOOKFORPEOPLE)
+    setState(3);
   }
 }
 
@@ -554,8 +576,8 @@ void lowScreamingAnim() {
   if (millis() - starting_time_state > WAIT_FOR_ANSWER) {
     switch (getVolumeContinuous()) {
       case 0:
-        // Go to state 39 (TIMEOUT)
-        setState(39);
+        // Go to state 19 (TIMEOUT)
+        setState(19);
         break;
       case 1:
         // Go to state 34 (MEDSCREAMING)
@@ -566,8 +588,8 @@ void lowScreamingAnim() {
         setState(35);
         break;
       default:
-        // Go to state 39 (TIMEOUT)
-        setState(39);
+        // Go to state 19 (TIMEOUT)
+        setState(19);
         break;
     }
   }
@@ -584,20 +606,20 @@ void medScreamingAnim() {
   if (millis() - starting_time_state > WAIT_FOR_ANSWER) {
     switch (getVolumeContinuous()) {
       case 0:
-        // Go to state 39 (TIMEOUT)
-        setState(39);
+        // Go to state 19 (TIMEOUT)
+        setState(19);
         break;
       case 1:
-        // Go to state 39 (TIMEOUT)
-        setState(39);
+        // Go to state 19 (TIMEOUT)
+        setState(19);
         break;
       case 2:
         // Go to state 35 (HIGHSCREAMING)
         setState(35);
         break;
       default:
-        // Go to state 39 (TIMEOUT)
-        setState(39);
+        // Go to state 19 (TIMEOUT)
+        setState(19);
         break;
     }
   }
@@ -628,7 +650,8 @@ void timeoutAnim() {
   }
   if (millis() - starting_time_state > getPlayDuration())
   {
-    // TODO
+    // Go to state 4 (ROAMING)
+    setState(4);
   }
 }
 
@@ -641,7 +664,8 @@ void goodbyeAnim() {
     resetAndSet(2, 1, 9, false);
     stopRobot();
   }
-  // TODO
+  // Go to state 4 (ROAMING)
+  setState(4);
 }
 
 // Stay still and invite people to play
@@ -681,7 +705,8 @@ void beerGameSelectionAnim() {
         current_action = 3;
         starting_time_action = millis();
       } else if (millis() - starting_time_action > WAIT_FOR_ANSWER) {
-        // Go to state 39 (TIMEOUT)
+        // Go to state 19 (TIMEOUT)
+        setState(19);
       }
       break;
     case 3:
@@ -706,7 +731,8 @@ void beerGameSelectionAnim() {
         current_action = 5;
         starting_time_action = millis();
       } else if (millis() - starting_time_action > WAIT_FOR_ANSWER) {
-        // Go to state 39 (TIMEOUT)
+        // Go to state 19 (TIMEOUT)
+        setState(19);
       }
       break;
     case 5:
@@ -732,8 +758,8 @@ void beerGameEndAnim() {
   }
   // When I've finished talking change state
   if (millis() - starting_time_state > getPlayDuration()) {
-    // Go to state 4 (ROAMING)
-    setState(4);
+    // Go to state 15 (STATICPEOPLE)
+    setState(15);
   }
 }
 
@@ -747,7 +773,8 @@ void inviteAnim() {
   }
   if (millis() - starting_time_state > getPlayDuration())
   {
-    // TODO
+    // Go to state 10 (GOODBYE)
+    setState(10);
   }
 }
 
@@ -762,9 +789,11 @@ void countPeopleAnim() {
   if (millis() - starting_time_state > 3000)
   {
     if (isCrowd()) {
-      // TODO
+      // Go to state 14 (INTERACTIONMULTIPLEPERSON)
+      setState(14);
     } else {
-      // TODO
+      // Go to state 13 (INTERACTIONSINGLEPERSON)
+      setState(13);
     }
   }
 }
@@ -778,8 +807,19 @@ void interactionSinglePersonAnim() {
   }
   // When I've finished talking change state
   if (millis() - starting_time_state > getPlayDuration()) {
-    // Go to state 4 (ROAMING)
-    setState(4);
+    int ran = random(3);
+    if (!ran){
+      // Go to state 6 (BEERFACT)
+      setState(6);
+    }
+    else if (ran){
+      // Go to state 40 (ASKPREFERENCE)
+      setState(40);
+    }
+    else{
+      // Go to state 37 (MAGICSHOWBEGIN)
+      setState(37);
+    }
   }
 }
 
@@ -792,8 +832,14 @@ void interactionMultiplePersonAnim() {
   }
   // When I've finished talking change state
   if (millis() - starting_time_state > getPlayDuration()) {
-    // Go to state 4 (ROAMING)
-    setState(4);
+    if (random(2)){
+      // Go to state 16 (BEERGAMEINVITE)
+      setState(16);
+    }
+    else{
+      // Go to state 32 (REQUESTSCREAMING)
+      setState(32);
+    }
   }
 }
 
@@ -806,8 +852,8 @@ void staticPeopleAnim() {
   }
   // When I've finished talking change state
   if (millis() - starting_time_state > getPlayDuration()) {
-    // Go to state 4 (ROAMING)
-    setState(4);
+    // Go to state 3 (LOOKFORPEOPLE)
+    setState(3);
   }
 }
 
@@ -825,20 +871,20 @@ void magicShowBeginAnim() {
   } else {
     switch (getVolumeContinuous()) {
       case 0:
-        // Go to state 39 (TIMEOUT)
-        setState(39);
+        // Go to state 19 (TIMEOUT)
+        setState(19);
         break;
       case 1:
         // Go to state 38 (MAGICSHOWEND)
-        setState(39);
+        setState(38);
         break;
       case 2:
         // Go to state 38 (MAGICSHOWEND)
-        setState(35);
+        setState(38);
         break;
       default:
-        // Go to state 39 (TIMEOUT)
-        setState(39);
+        // Go to state 19 (TIMEOUT)
+        setState(19);
         break;
     }
   }
@@ -854,8 +900,8 @@ void magicShowEndAnim() {
   }
   if (millis() - starting_time_state > getPlayDuration())
   {
-    // Go to state 4 (ROAMING)
-    setState(4);
+    // Go to state 15 (STATICPEOPLE)
+    setState(15);
   }
 }
 
@@ -872,8 +918,8 @@ void beerLiftRequestAnim() {
     // Go to state 27 (HANDLE TOUCHED INTERACTION)
     setState(27);
   } else if (millis() - starting_time_state > WAIT_FOR_ANSWER) {
-    // Go to state 39 (TIMEOUT)
-    setState(39);
+    // Go to state 19 (TIMEOUT)
+    setState(19);
   }
 }
 
@@ -885,7 +931,14 @@ void handleTouchedInteractionAnim() {
     stopRobot();
   }
   if (millis() - starting_time_state > getPlayDuration()) {
-    // TODO
+    if(random(2)){
+      // Go to state 15 (STATICPEOPLE)
+      setState(15)
+    }
+    else{
+      // Go to state 12 (COUNTPEOPLE)
+      setState(12);
+    }
   }
 }
 
@@ -897,7 +950,8 @@ void handleTouchedSurprisedAnim() {
     stopRobot();
   }
   if (millis() - starting_time_state > getPlayDuration()) {
-    // TODO
+    // Go to state 3 (LOOKFORPEOPLE)
+    setState(3);
   }
 }
 
@@ -911,8 +965,8 @@ void askPreferenceAnim() {
   }
   // Wait for input or timeout
   if (millis() - starting_time_state > WAIT_FOR_ANSWER ) {
-    // Go to state 39 (TIMEOUT)
-    setState(39);
+    // Go to state 19 (TIMEOUT)
+    setState(19);
   } else if (getHandleTouched ()) {
     // Go to state 41 (WINEPREFERENCE)
     setState(41);
@@ -932,7 +986,8 @@ void winePreferenceAnim() {
   }
   if (millis() - starting_time_state > getPlayDuration())
   {
-    // TODO
+    // Go to state 15 (STATICPEOPLE)
+    setState(15);
   }
 }
 
@@ -946,7 +1001,8 @@ void beerPreferenceAnim() {
   }
   if (millis() - starting_time_state > getPlayDuration())
   {
-    // TODO
+    // Go to state 15 (STATICPEOPLE)
+    setState(15);
   }
 }
 
