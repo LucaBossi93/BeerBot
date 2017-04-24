@@ -35,19 +35,19 @@ void unexpectedTouchDetection() {
   // Process the handle data
   if (touch_handle > detection_treshold_handle && !person_detected_handle) {
     person_detected_handle = true;
-    // TODO - Set state and do something
+    // Go to state 28 (HANDLE TOUCHED SURPRISED)
+    setState(28);
   } else if (touch_handle <= detection_treshold_handle && person_detected_handle) {
     person_detected_handle = false;
-    // TODO - Set state and do something
   }
 
   // Process the foam data
   if (touch_foam > detection_treshold_foam && !person_detected_foam) {
     person_detected_foam = true;
-    // TODO - Set state and do something
+    // Go to state 22 (FOAM TOUCHED SURPRISED)
+    setState(22);
   } else if (touch_foam <= detection_treshold_foam && person_detected_foam) {
     person_detected_foam = false;
-    // TODO - Set state and do something
   }
 }
 
