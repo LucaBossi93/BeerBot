@@ -1,0 +1,9 @@
+TODO:
+- Set Arduino ports
+- Implement emergency state
+- Check all random bisections
+- Check if lookforpeople has reset
+- Implement static people by adding a checking state (if static 12, else roam)
+- 10 goes in 15?
+- When you get in 3 or 4, you should also get in 4 or 3 with 50%
+- Add invite and goodbye to the static people parallel to countpeople
