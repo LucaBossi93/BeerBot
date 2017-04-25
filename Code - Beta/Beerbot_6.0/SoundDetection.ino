@@ -1,11 +1,7 @@
 // SOUND DETECTION SUPPORT FUNCTIONS //
 
-// INCLUDES //
-
-#include <CapacitiveSensor.h>
-
 // DEFINITIONS //
-#define MIC_PIN A2                      // Arduino pin connected to the microphone
+#define MIC_PIN 6                       // Arduino pin connected to the microphone
 
 // VARIABLES //
 
@@ -21,9 +17,9 @@ void detectVolumeContinuous() {
   // Count this acquisition
   acquisitionCounter++;
   // Acquire
-  volume = analogRead(A0);
+  volume = digitalRead(MIC_PIN);
   // And process it
-  if (volume < 512)
+  if (!volume)
     volumeCounter++;
 }
 

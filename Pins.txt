@@ -1,0 +1,23 @@
+#define IR_PIN_LEFT A0                  // Arduino analog pin 0 tied to the left IR sensor
+#define IR_PIN_RIGTH A1                 // Arduino analog pin 1 tied to the rigth IR sensor
+
+#define SERVO_PIN_EYEBROW 2             // First servo pin of the rigth mustache
+#define SERVO_PIN_MUSTACHE 3     		// First servo pin of the rigth mustache
+
+#define TRIGGER_PIN_DETECTION 4         // Arduino pin 12 tied to trigger pin of the detection sonar
+#define ECHO_PIN_DETECTION 5           	// Arduino pin 11 tied to echo pin of the detection sonar
+
+#define MIC_PIN 6                       // Arduino pin connected to the microphone
+
+#define HANDLE_PIN_A 8                  // First pin of the handle capacitive sensor
+#define HANDLE_PIN_B 9                  // Second pin of the handle capacitive sensor
+#define FOAM_PIN_A 10                   // First pin of the foam capacitive sensor
+#define FOAM_PIN_B 11                   // Second pin of the foam capacitive sensor
+
+#define MOTOR_PIN_PWMA 38               // Arduino digital pin 38 tied to motor A speed control
+#define MOTOR_PIN_AIN2 40               // Arduino digital pin 40 tied to motor A direction
+#define MOTOR_PIN_AIN1 42           	// Arduino digital pin 42 tied to motor A direction
+#define MOTOR_PIN_STBY 44            	// Arduino digital pin 44 tied to the motors standby
+#define MOTOR_PIN_BIN1 46            	// Arduino digital pin 46 tied to motor B direction
+#define MOTOR_PIN_BIN2 48           	// Arduino digital pin 48 tied to motor B direction
+#define MOTOR_PIN_PWMB 50          	// Arduino digital pin 50 tied to motor B speed control

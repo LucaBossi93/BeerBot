@@ -5,7 +5,7 @@
 #include <CapacitiveSensor.h>
 
 // DEFINITIONS //
-#define MIC_PIN A1                      // Arduino pin connected to the microphone
+#define MIC_PIN 7                      // Arduino pin connected to the microphone
 
 // VARIABLES //
 
@@ -40,10 +40,9 @@ void loop() {
     // delay(10);
   } else {
     // Reset the millis
-    testStartingTime = millis();
     Serial.print("GOT SOUND LEVEL: ");
     Serial.println(getVolumeContinuous());
-    delay(1000);
+    testStartingTime = millis();
   }
 }
 
@@ -54,9 +53,9 @@ void detectVolumeContinuous() {
   // Count this acquisition
   acquisitionCounter++;
   // Acquire
-  volume = analogRead(A0);
+  volume = digitalRead(MIC_PIN);
   // And process it
-  if (volume < 512)
+  if (!volume)
     volumeCounter++;
 }
 
