@@ -1,25 +1,24 @@
 // MOVEMENT SUPPORT FUNCTIONS //
 
-#define RIGHT 0                     // To turn right when rotating
-#define LEFT 1                      // To turn left when rotating
-#define DIR_FORWARD 1               // Clockwise
-#define DIR_BACKWARD 0              // Counter-clockwise
-#define MOVEMENT_TIME 1300          // Maximum time of movement
+// DEFINITIONS //
+
+#define RIGHT 0                         // To turn right when rotating
+#define LEFT 1                          // To turn left when rotating
+#define DIR_FORWARD 1                   // Clockwise
+#define DIR_BACKWARD 0                  // Counter-clockwise
+#define MOVEMENT_TIME 1300              // Maximum time of movement
+
+#define MOTOR_PIN_PWMA = 38;            // Arduino digital pin 38 tied to motor A speed control
+#define MOTOR_PIN_AIN2 = 40;            // Arduino digital pin 40 tied to motor A direction
+#define MOTOR_PIN_AIN1 = 42;            // Arduino digital pin 42 tied to motor A direction
+#define MOTOR_PIN_STBY = 44;            // Arduino digital pin 44 tied to the motors standby
+#define MOTOR_PIN_BIN1 = 46;            // Arduino digital pin 46 tied to motor B direction
+#define MOTOR_PIN_BIN2 = 48;            // Arduino digital pin 48 tied to motor B direction
+#define MOTOR_PIN_PWMB = 50;            // Arduino digital pin 50 tied to motor B speed control
 
 // VARIABLES //
 
-int STBY = 8;                       // Standby pin
-
-// Motor A: connected between A01 and A02
-int PWMA = 2;                       // Speed control
-int AIN1 = 3;                       // Direction
-int AIN2 = 4;                       // Direction
-
-// Motor B: connected between B01 and B02
-int PWMB = 5;                       // Speed control
-int BIN1 = 6;                       // Direction
-int BIN2 = 7;                       // Direction
-
+// Millis
 long starting_time;                 // Tells when the robot starts to move forward
 
 // SUPPORT FUNCTIONS //
@@ -27,15 +26,15 @@ long starting_time;                 // Tells when the robot starts to move forwa
 // Movement set-up
 void setupMovement() {
   // Set I/O
-  pinMode(STBY, OUTPUT);
+  pinMode(MOTOR_PIN_STBY, OUTPUT);
   // Set motor A pins
-  pinMode(PWMA, OUTPUT);
-  pinMode(AIN1, OUTPUT);
-  pinMode(AIN2, OUTPUT);
+  pinMode(MOTOR_PIN_PWMA, OUTPUT);
+  pinMode(MOTOR_PIN_AIN1, OUTPUT);
+  pinMode(MOTOR_PIN_AIN2, OUTPUT);
   // Set motor B pins
-  pinMode(PWMB, OUTPUT);
-  pinMode(BIN1, OUTPUT);
-  pinMode(BIN2, OUTPUT);
+  pinMode(MOTOR_PIN_PWMB, OUTPUT);
+  pinMode(MOTOR_PIN_BIN1, OUTPUT);
+  pinMode(MOTOR_PIN_BIN2, OUTPUT);
 }
 
 // Stops the robot

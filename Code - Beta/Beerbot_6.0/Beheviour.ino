@@ -17,6 +17,7 @@ int current_action;                     // Action inside a state
 // Miscellaneous
 bool resetNeeded;                       // Tells if we need to reset the animation
 bool nextState;                         // Tells if I have to skip to next action
+
 // Millis
 long starting_time_state;              // Tells when the robot starts to perform a state
 long starting_time_action;             // Tells when the robot starts to perform an action

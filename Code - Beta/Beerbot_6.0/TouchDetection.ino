@@ -4,11 +4,18 @@
 
 #include <CapacitiveSensor.h>
 
+// DEFINITIONS //
+
+#define HANDLE_PIN_A 8                  // First pin of the handle capacitive sensor
+#define HANDLE_PIN_B 9                  // Second pin of the handle capacitive sensor
+#define FOAM_PIN_A 10                   // First pin of the foam capacitive sensor
+#define FOAM_PIN_B 11                   // Second pin of the foam capacitive sensor
+
 // VARIABLES //
 
 // Sensors
-CapacitiveSensor cs_handle = CapacitiveSensor(8, 4);    // Use pins 27 and 26
-CapacitiveSensor cs_foam = CapacitiveSensor(29, 28);    // Use pins 29 and 28
+CapacitiveSensor cs_handle = CapacitiveSensor(HANDLE_PIN_A, HANDLE_PIN_B);
+CapacitiveSensor cs_foam = CapacitiveSensor(FOAM_PIN_A, FOAM_PIN_B);
 
 // Miscellaneous
 int detection_treshold_handle = 80;     // A person is detected if the input is higher than this

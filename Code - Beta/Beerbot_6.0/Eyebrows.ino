@@ -6,7 +6,7 @@
 
 // DEFINITIONS //
 
-#define SERVO_PIN_EYEBROW 22                  // First servo pin of the rigth mustache
+#define SERVO_PIN_EYEBROW 2                   // First servo pin of the rigth mustache
 
 // VARIABLES //
 
