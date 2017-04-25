@@ -1,28 +1,33 @@
 TODO:
-- Implement emergency state
-- Check all random bisections
-- Check if lookforpeople has reset
-- Implement static people by adding a checking state (if static 12, else roam)
-- 10 goes in 15?
-- When you get in 3 or 4, you should also get in 4 or 3 with 50%
-- Add invite and goodbye to the static people parallel to countpeople
 
+MAYBE:
+- Implement emergency state
+- Do sing
+- Robot always moving
+ 
 DONE:
 - Set Arduino ports
+- Check if lookforpeople has reset
+- Implement static people by adding a checking state (if static 12, else roam)
+- Check all random bisections (add state 0 with disambiguation)
+- 10 goes in 15?
+- When you get in 3 or 4, you should also get in 4 or 3 with 50%
 
 REDO AUDIO:
-17
-18
-19
-20
-52
-59
-70
-71
-78
-90
-91
-92
-95
-100
-106
+17 - Lo sapevi che nell'800 Londra fu letteralmente travolta dalla birra? Una delle cisterne della fabbrica di birra Meux si ruppe e la città venne invasa da circa un milione e mezzo di litri di birra.
+18 - Lo sapevi che la prima IPA venne realizzata per puro caso? Quando la Gran Bretagna volle inviare le sue pale ales ai coloni dell'India, alle birre vennero aggiunti più alcol e luppoli per preservarle più a lungo. Il risultato fu una birra amara e alcolica che venne chiamata Indian Pale Ale
+19 - Lo sapevi che in ogni istante lo zero virgola sette per cento della popolazione mondiale è ubriaca? Sono circa 50 milioni di persone! Indovina un po' chi ne è la causa principale? AHAHAHA
+20 - Sai che ho anche una cugina molto famosa? La Marijuana. I luppoli della birra, infatti, fanno parte della stessa famiglia di piante da fiore.
+52 - Perchè continuate a fissarmi? Cosa siete, un gruppo di ingegneri sfigati?
+59 - Ti rendi conto che stai accarezzando una birra finta invece di berne una vera? Entra nel locale e rimedia!
+78 - Così mi piaci! Ora dentro a prenderne una che ho da fare qui!
+90 - Ora sì che si ragiona! Meritate un premio, vi racconterò qualcosa di interessante sulla birra.
+91 - E' possibile che stia parlando soltanto io?! Fatemi sentire la vostra voce, dai!
+95 - Bravi, avete attirato l'attenzione! Ora vi racconterò qualcosa di interessante sulla birra.
+100 - Sai che sono anche un prestigiatore? Batti le mani e comparirà una birra!
+106 - Sei davvero molto socievole, lasciatelo dire!
+67 - Oooh, così mi fai diventare una rossa! Perchè non entri a prendertene una?
+68 - Ti hanno mai detto che hai degli occhi meravigliosi.. Come quelli di una birra scura al tramonto. Perchè non entri a prendertene una?
+69 - Perchè non mi aggiungi su Facebook, così la prossima volta andiamo insieme a prenderci una birra. Per oggi ordinane una al bancone!
+70 - Lo sapevi che i primi mastri birrai erano donne? Segui la tradizione cominciando a berne una!
+71 - In Germania si credeva che per avere bambini sani e forti le donne incinte dovessero bere 7 pinte di birra al giorno. Ora sappiamo che è vero l'opposto! Se non sei incinta vai al bancone e oridina una birra! (REMOVE?)
