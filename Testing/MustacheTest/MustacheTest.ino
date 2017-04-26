@@ -6,7 +6,7 @@
 
 // DEFINITIONS //
 
-#define SERVO_PIN_MUSTACHE 22     // First servo pin of the rigth mustache
+#define SERVO_PIN_MUSTACHE 2     // First servo pin of the rigth mustache
 
 // VARIABLES //
 
