@@ -20,8 +20,8 @@ int awake_increment = 3;
 int detection_distance;                 // Distance detected by the sonar
 int detection_min = 10;                 // Minimum distance to be considered a person
 int detection_max = 150;                // Maximum distance to be considered a person
-int temperature_min = 30;               // Minimum temperature to be considered a person
-int temperature_max = 40;               // Maximum temperature to be considered a person
+int temperature_min = 24;               // Minimum temperature to be considered a person
+int temperature_max = 34;               // Maximum temperature to be considered a person
 int temperature;                        // Detected temperature
 int person_detected;                    // Tells if a person has been detected
 int person_detected_lazy;               // Tells if a person has been detected

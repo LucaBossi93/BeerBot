@@ -21,7 +21,7 @@ Servo motor;
 // Sensors
 
 // Positions
-int motorPosition = 115;                       // Default position of the servo (+25)
+int motorPosition = 90;                       // Default position of the servo (+25)
 int motorPositionHigh = 130;                  // High position of the servo (+25)
 int motorPositionLow = 85;                    // Low position of the servo (+25)
 int positionDelta = 0;                        // Delta to be applied on the default position
@@ -73,6 +73,9 @@ void setMustacheAnimin(int i) {
 // Menage the movement (call this in the loop)
 void menageMustache() {
   switch (mustacheCurrentAnim) {
+    case 0:
+      // Still, just do nothing at all
+      break;
     case 1:
       // Talk
       mustacheTalk();
@@ -109,13 +112,13 @@ void mustacheTalk() {
       case 1:
         positionDelta++;
         // If I've finished with this action perform the next one
-        if (positionDelta > 7)
+        if (positionDelta > 14)
           mustacheCurrentAction = 2;
         break;
       case 2:
         positionDelta--;
         // If I've finished with this action perform the next one
-        if (positionDelta < -7)
+        if (positionDelta < -14)
           mustacheCurrentAction = 3;
         break;
       case 3:
@@ -144,13 +147,13 @@ void mustacheShout() {
       case 1:
         positionDelta++;
         // If I've finished with this action perform the next one
-        if (positionDelta > 9)
+        if (positionDelta > 18)
           mustacheCurrentAction = 2;
         break;
       case 2:
         positionDelta--;
         // If I've finished with this action perform the next one
-        if (positionDelta < -9)
+        if (positionDelta < -18)
           mustacheCurrentAction = 3;
         break;
       case 3:
@@ -179,13 +182,13 @@ void mustacheWhisper() {
       case 1:
         positionDelta++;
         // If I've finished with this action perform the next one
-        if (positionDelta > 6)
+        if (positionDelta > 12)
           mustacheCurrentAction = 2;
         break;
       case 2:
         positionDelta--;
         // If I've finished with this action perform the next one
-        if (positionDelta < -6)
+        if (positionDelta < -12)
           mustacheCurrentAction = 3;
         break;
       case 3:
@@ -213,13 +216,13 @@ void mustacheScared() {
       case 1:
         positionDelta++;
         // If I've finished with this action perform the next one
-        if (positionDelta > 6)
+        if (positionDelta > 12)
           mustacheCurrentAction = 2;
         break;
       case 2:
         positionDelta--;
         // If I've finished with this action perform the next one
-        if (positionDelta < -6)
+        if (positionDelta < -12)
           mustacheCurrentAction = 3;
         break;
       case 3:

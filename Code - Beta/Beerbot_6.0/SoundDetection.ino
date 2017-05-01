@@ -1,7 +1,7 @@
 // SOUND DETECTION SUPPORT FUNCTIONS //
 
 // DEFINITIONS //
-#define MIC_PIN 6                       // Arduino pin connected to the microphone
+#define MIC_PIN 11                       // Arduino pin connected to the microphone
 
 // VARIABLES //
 
