@@ -4,43 +4,41 @@
    1 - moveforwarddelay
    2 - lookforground
    3 - lookforpeople
-   4 - roaming
-   5 - beerfact
-   6 - mustacheshow
-   7 - greet
-   8 - invite
-   9 - goodbye
-   10 - help
-   11 - singleinteraction
-   12 - multipleinteraction
-   13 - staticpeople
-   14 - beergameinvite
-   15 - beergameselected
-   16 - beergameend
-   17 - foamtouch
-   18 - foamtouched
-   19 - foamtouchedsurprised
-   20 - askgender
-   21 - maninteraction
-   22 - womaninteraction
-   23 - askpreference
-   24 - winepreference
-   25 - beerpreference
-   26 - beerliftrequest
-   27 - handletouchedinteraction
-   28 - handletouchedsurprised
-   29 - requestclapping
-   30 - lowclapping
-   31 - highclapping
-   32 - requestscreaming
-   33 - lowscreaming
-   34 - medscreaming
-   35 - highscreaming
-   36 - reactclapping
-   37 - magicshow
-   38 - magicshowend
-   39 - timeout
-   40 - singing
+   4 - beerfact
+   5 - mustacheshow
+   6 - greet
+   7 - invite
+   8 - goodbye
+   9 - help
+   10 - singleinteraction
+   11 - multipleinteraction
+   12 - staticpeople
+   13 - beergameinvite
+   14 - beergameselected
+   15 - beergameend
+   16 - foamtouch
+   17 - foamtouched
+   18 - foamtouchedsurprised
+   19 - askgender
+   20 - maninteraction
+   21 - womaninteraction
+   22 - askpreference
+   23 - winepreference
+   24 - beerpreference
+   25 - beerliftrequest
+   26 - handletouchedinteraction
+   27 - handletouchedsurprised
+   28 - requestclapping
+   29 - lowclapping
+   30 - highclapping
+   31 - requestscreaming
+   32 - lowscreaming
+   33 - medscreaming
+   34 - highscreaming
+   35 - reactclapping
+   36 - magicshow
+   37 - magicshowend
+   38 - timeout
 */
 
 // INCLUSIONS //
@@ -50,14 +48,14 @@
 
 // DEFINITIONS //
 
-#define POOLS 41   //number of pools
+#define POOLS 37   //number of pools 
 
 // VARIABLES //
 
-int pool_sizes[POOLS] = {3, 3, 3, 2, 12, 3, 9, 6, 4, 1, 3, 3,
-                         3, 1, 1, 1, 2, 1, 5, 1, 1, 5, 1, 3, 3,
-                         2, 2, 5, 4, 3, 1, 1, 1, 2, 1, 4, 1, 1,
-                         5, 3
+int pool_sizes[POOLS] = {3, 3, 3, 12, 3, 9, 6, 4, 1, 3, 3,
+                         3, 1, 2, 1, 2, 1, 5, 1, 1, 5, 1, 3, 3,
+                         2, 2, 4, 3, 1, 1, 1, 2, 1, 4, 1, 1,
+                         5
                         };                    // Number of audio files for each pool
 // Miscellaneous
 int currentTalk;                              // Current talk being played
@@ -100,6 +98,10 @@ void setTalk(int i, boolean rep) {
 
 // Return the duration of the current sound
 int getPlayDuration() {
+  Serial.println("currentSound: ");
+  Serial.println(currentSound);
+  Serial.println("duration: ");
+  Serial.println(duration[currentSound]);
   return duration[currentSound] * 1000;
 }
 

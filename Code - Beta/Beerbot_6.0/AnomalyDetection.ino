@@ -40,7 +40,9 @@ void setupAnomalyDetection() {
 void anomalyDetect() {
   // Acquire border/obstacle distance
   anomaly_distance_left = left_IR.distance();
+  Serial.println(anomaly_distance_left);
   anomaly_distance_rigth = rigth_IR.distance();
+  Serial.println(anomaly_distance_rigth);
   // Change the counter consequently, first the left one
   if (anomaly_distance_left < ground_limit && anomaly_distance_left > obstacle_limit && anomaly_distance_left != 0) {
     // Serial.print("LEFT: ground detected, got value: ");

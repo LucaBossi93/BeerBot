@@ -5,7 +5,7 @@
 // Miscellaneous
 int backwardDelay = 300;                // Amount of time the robot has to move backward
 int forwardDelay = 2000;                // Amount of time the robot has to move forward
-int sp = 250;                           // Default speed
+int sp = 100;                           // Default speed
 bool rotate_left;                       // Tells if the robot has to rotate left or right
 
 // CODE //

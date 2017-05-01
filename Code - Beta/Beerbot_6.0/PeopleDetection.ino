@@ -10,7 +10,7 @@
 
 #define TRIGGER_PIN_DETECTION 12        // Arduino pin 12 tied to trigger pin of the detection sonar
 #define ECHO_PIN_DETECTION 11           // Arduino pin 11 tied to echo pin of the detection sonar
-#define MAX_DISTANCE_DETECTION 150      // Maximum distance we want to ping for (in centimeters)
+#define MAX_DISTANCE_DETECTION 200      // Maximum distance we want to ping for (in centimeters)
 
 // VARIABLES //
 
@@ -19,10 +19,11 @@ int no_detection_ping_counter = 0;
 int awake_increment = 3;
 int detection_distance;                 // Distance detected by the sonar
 int detection_min = 10;                 // Minimum distance to be considered a person
-int detection_max = 150;                // Maximum distance to be considered a person
-int temperature_min = 24;               // Minimum temperature to be considered a person
-int temperature_max = 34;               // Maximum temperature to be considered a person
+int detection_max = 200;                // Maximum distance to be considered a person
+int temperature_min = 10;               // Minimum temperature to be considered a person
+int temperature_max = 38;               // Maximum temperature to be considered a person
 int temperature;                        // Detected temperature
+int temperatureAmbient;                  // Detected ambient temperature
 int person_detected;                    // Tells if a person has been detected
 int person_detected_lazy;               // Tells if a person has been detected
 int peopleCounter = 0;                  // Counter for crowd detection
@@ -47,7 +48,8 @@ void peopleDetect() {
   detection_distance = detection_sonar.ping_cm();
   // Acquire the temperature
   temperature = mlx.readObjectTempC();
-  if ((detection_distance > detection_min && detection_distance < detection_max) && (temperature > temperature_min && temperature < temperature_max)) {
+  temperatureAmbient = mlx.readAmbientTempC();
+  if ((detection_distance > detection_min && detection_distance < detection_max) && (temperature > temperatureAmbient + temperatureAmbient * 0.1) && (temperature > temperature_min && temperature < temperature_max)) {
     no_detection_ping_counter = no_detection_ping_counter - awake_increment;
     Serial.print("Person detected, with distance: ");
   } else {
