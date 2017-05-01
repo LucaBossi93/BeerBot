@@ -7,12 +7,12 @@
 // VARIABLES //
 
 // Sensors
-CapacitiveSensor cs_handle = CapacitiveSensor(8, 9);    // Use pins 27 and 26
-CapacitiveSensor cs_foam = CapacitiveSensor(10, 11);    // Use pins 29 and 28
+CapacitiveSensor cs_foam = CapacitiveSensor(8, 9);    // Use pins 27 and 26
+CapacitiveSensor cs_handle = CapacitiveSensor(10, 11);    // Use pins 29 and 28
 
 // Miscellaneous
 int detection_treshold_handle = 3500;     // A person is detected if the input is higher than this
-int detection_treshold_foam = 3550;       // A person is detected if the input is higher than this
+int detection_treshold_foam = 5000;       // A person is detected if the input is higher than this
 bool person_detected_handle;            // Tells if a person is touching the handle
 bool person_detected_foam;              // Tells if a person is touching the foam
 long touch_handle;                      // Output of the handle touch sensor
@@ -40,7 +40,7 @@ void setupTouchDetection() {
 void unexpectedTouchDetection() {
   // Get the input
   touch_handle = cs_handle.capacitiveSensor(30);
-  touch_foam = cs_handle.capacitiveSensor(30);
+  // touch_foam = cs_handle.capacitiveSensor(30);
 
   // Process the handle data
   if (touch_handle > detection_treshold_handle && !person_detected_handle) {
@@ -65,7 +65,7 @@ void unexpectedTouchDetection() {
 void expectedTouchDetection() {
   // Get the input
   touch_handle = cs_handle.capacitiveSensor(30);
-  touch_foam = cs_handle.capacitiveSensor(30);
+  touch_foam = cs_foam.capacitiveSensor(30);
   Serial.print("Person detected handle: ");
   Serial.println(touch_handle);
   Serial.print("Person detected foam: ");

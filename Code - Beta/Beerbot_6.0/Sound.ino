@@ -48,15 +48,16 @@
 
 // DEFINITIONS //
 
-#define POOLS 37   //number of pools 
+#define POOLS 38   //number of pools 
 
 // VARIABLES //
 
 int pool_sizes[POOLS] = {3, 3, 3, 12, 3, 9, 6, 4, 1, 3, 3,
                          3, 1, 2, 1, 2, 1, 5, 1, 1, 5, 1, 3, 3,
-                         2, 2, 4, 3, 1, 1, 1, 2, 1, 4, 1, 1,
+                         2, 2, 5, 4, 3, 1, 1, 1, 2, 1, 4, 1, 1,
                          5
                         };                    // Number of audio files for each pool
+                        
 // Miscellaneous
 int currentTalk;                              // Current talk being played
 int currentSound;                             // Current sound in a talk being played
@@ -65,12 +66,13 @@ int currentSound;                             // Current sound in a talk being p
 long soundMillis;                             // Tells how often change sound
 
 // Durations
-int duration [107] =  {2, 1, 1, 2, 3, 3, 2, 2, 3, 5, 10, 6, 8, 9,
+int duration [112] =  {2, 1, 1, 2, 3, 3, 2, 2, 3, 5, 10, 6, 8, 9,
                        8, 8, 6, 6, 23, 19, 16, 2, 2, 4, 1, 1, 1, 2,
                        1, 1, 1, 1, 1, 3, 8, 5, 6, 6, 9, 3, 3, 2,
                        2, 3, 8, 8, 5, 4, 3, 4, 8, 3, 6, 3, 1, 1,
                        5, 4, 2, 6, 2, 2, 3, 2, 3, 8, 6, 4, 10, 6,
-                       7, 11, 10, 2, 4, 3, 5, 6, 5, 2, 4, 4, 6, 3,
+                       7, 11, 10, 2, 4, 3, 5, 6, 5, 2, 4, 4, 6,
+                       2, 2, 3, 2, 3, 3,
                        2, 4, 3, 4, 6, 3, 13, 6, 5, 2, 2, 10, 2, 2,
                        2, 3, 6, 5, 3, 1, 2, 3, 4
                       };                       // Duration of each audio file
@@ -83,7 +85,7 @@ void setupSound()
   // Set Serial for DFPlayer-mini mp3 module
   mp3_set_serial(Serial);
   // Sets the volume of the speaker (30)
-  mp3_set_volume(30);
+  mp3_set_volume(16);
 }
 
 // Sets the current talk

@@ -5,7 +5,7 @@
 #include <CapacitiveSensor.h>
 
 // DEFINITIONS //
-#define MIC_PIN 7                      // Arduino pin connected to the microphone
+#define MIC_PIN 12                      // Arduino pin connected to the microphone
 
 // VARIABLES //
 

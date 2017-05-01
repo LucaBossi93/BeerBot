@@ -5,7 +5,7 @@
 // Miscellaneous
 int backwardDelay = 300;                // Amount of time the robot has to move backward
 int forwardDelay = 2000;                // Amount of time the robot has to move forward
-int sp = 100;                           // Default speed
+int sp = 150;                           // Default speed
 bool rotate_left;                       // Tells if the robot has to rotate left or right
 
 // CODE //
@@ -14,7 +14,7 @@ void setup() {
   // Initialize the serial port
   Serial.begin(9600);
   // Set a seed for the random number generator
-  randomSeed(1234);
+  //randomSeed(1234);
 
   // Setup everything
   setupAll();

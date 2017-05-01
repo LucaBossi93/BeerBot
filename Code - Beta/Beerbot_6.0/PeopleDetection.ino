@@ -49,17 +49,25 @@ void peopleDetect() {
   // Acquire the temperature
   temperature = mlx.readObjectTempC();
   temperatureAmbient = mlx.readAmbientTempC();
-  if ((detection_distance > detection_min && detection_distance < detection_max) && (temperature > temperatureAmbient + temperatureAmbient * 0.1) && (temperature > temperature_min && temperature < temperature_max)) {
+  if (/*(detection_distance > detection_min && detection_distance < detection_max) && */(temperature > temperatureAmbient + temperatureAmbient * 0.1) && (temperature > temperature_min && temperature < temperature_max)) {
     no_detection_ping_counter = no_detection_ping_counter - awake_increment;
-    Serial.print("Person detected, with distance: ");
+    //Serial.print("Person detected, with distance: ");
+    Serial.print("Person detected, with temperature: ");
   } else {
     // Otherwise decrese the idle counter
     no_detection_ping_counter++;
     Serial.print("No person detected, with distance: ");
   }
-  Serial.print(detection_distance);
+  //Serial.print(detection_distance);
+  //Serial.print(" and counter: ");
+  //Serial.println(no_detection_ping_counter);
+
+  Serial.print(temperature); 
   Serial.print(" and counter: ");
-  Serial.println(no_detection_ping_counter);
+  Serial.println(no_detection_ping_counter); 
+
+  Serial.print("temperature: ");
+  Serial.println(temperatureAmbient * 1.1);
 
 }
 
@@ -108,17 +116,17 @@ bool isPersonLazy() {
 // Manage the robot looking for people. This makes the state of the robot change.
 void setPersonDetected(bool b) {
   if (b) {
-    // Start looking for person
+    // Stop looking for person
     person_detected = true;
     // K_STATE - Move towards the person
-    setState(3);
+    setState(1);
   } else {
-    // Stop looking for person
+    // Start looking for person
     person_detected = false;
     // Set the sense of rotation
     setRotateLeft(random(2));
     // K_STATE - Look for person
-    setState(1);
+    setState(4);
   }
 }
 

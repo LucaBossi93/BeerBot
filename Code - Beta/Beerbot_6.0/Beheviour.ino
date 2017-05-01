@@ -3,8 +3,8 @@
 // DEFINITIONS //
 
 #define WAIT_FOR_ANSWER 5000
-#define CHANGE_RANDOMLY 100000
-#define GUESS 42
+//#define CHANGE_RANDOMLY 100000
+//#define GUESS 42
 
 // VARIABLES //
 
@@ -86,7 +86,6 @@ void menageBeheviour() {
       // process them since I just want to stop instead of starting looking for ground
       // Detect if there is an anomaly
       anomalyDetect();
-      
       // Process the information
       processAnomalyDetectionLazy();
       Serial.println("process anomaly detection lazy");
@@ -113,6 +112,10 @@ void menageBeheviour() {
       processPeopleDetection();
       // Perform the rotation
       rotateWithCooldownAnim(1500, 300);
+      // Process the information
+      processPeopleDetection();
+      // Manage unexpected touch
+      unexpectedTouchDetection();
       // Setup the animation and talk
       lookForPeopleAnim();
       break;
@@ -134,7 +137,15 @@ void menageBeheviour() {
       roamingAnim();
       break;
     case 5:
-      // SING - (TODO)
+      /*// LOOK FOR GROUND - I'm looking for ground. I don't need to look for people while I do it
+        // Detect if there is an anomaly
+        anomalyDetect();
+        // Process the information
+        processAnomalyDetection();
+        // Rotate in place
+        rotate(sp, rotate_left);
+        // Setup the animation
+        lookForGroundAnim();*/
       break;
     case 6:
       // BEER FACT - Move left and right a bit and talk
@@ -229,6 +240,8 @@ void menageBeheviour() {
       // FOAM TOUCH - Stay still and ask for touching the foam
       // Setup the animation
       foamTouchAnim();
+      // look for touch
+      expectedTouchDetection();
       break;
     case 21:
       // FOAM TOUCHED - Stay still and speak
@@ -290,15 +303,11 @@ void menageBeheviour() {
       break;
     case 33:
       // LOW SCREAMING: - Stay still and listen
-      // Acquire the volume
-      detectVolumeContinuous();
       // Setup the animation
       lowScreamingAnim();
       break;
     case 34:
       // MED SCREAMING: - Stay still and listen
-      // Acquire the volume
-      detectVolumeContinuous();
       // Setup the animation
       medScreamingAnim();
       break;
@@ -350,7 +359,7 @@ void rotateWithCooldownAnim(int rotationTime, int cooldown) {
   // Reset the variables if needed
   if (resetNeeded) {
     // K_ANIMATOR - Set the animations for this state
-    resetAndSet(2, 1, 2, false);
+    resetAndSet(2, 1, 3, false);
   }
   // Rotate
   if (millis() - starting_time_state < rotationTime) {
@@ -373,7 +382,7 @@ void moveForwardWithTimeoutAnim(int timeout) {
   // If I don't have detected an anomaly or I've finished, go forward
   if (millis() - starting_time_state > timeout || !isGroundLazy()) {
     stopRobot();
-    // Go to state 6 (GREET)
+    // Go to state 8 (GREET)
     setState(8);
   } else {
     moveForward(sp);
@@ -395,15 +404,19 @@ void greetAnim(int timeout) {
         next_state = 12;
         // Go to state 6 (BEER FACT)
         setState(6);
+        break;
       case 1:
         //Go to state 23 (ASK GENDER)
         setState(23);
+        break;
       case 2:
         // Go to state 26 (BEER LIFT REQUEST)
         setState(26);
+        break;
       case 3:
         // Go to state 20 (FOAM TOUCH)
         setState(20);
+        break;
     }
   }
 }
@@ -441,10 +454,10 @@ void foamTouchAnim() {
     stopRobot();
   }
   // Wait for input or timeout
-  if (millis() - starting_time_state > WAIT_FOR_ANSWER) {
+  if (millis() - starting_time_state > WAIT_FOR_ANSWER + getPlayDuration()) {
     // Go to state 39 (TIMEOUT)
     setState(39);
-  }  else if (getFoamTouched()) {
+  }  else if (getFoamTouched() && millis() - starting_time_state > getPlayDuration()) {
     // Go to state 21 (FOAM TOUCHED)
     setState(21);
   }
@@ -491,13 +504,13 @@ void askGenderAnim() {
     stopRobot();
   }
   // Wait for input or timeout
-  if (millis() - starting_time_state > WAIT_FOR_ANSWER ) {
+  if (millis() - starting_time_state > WAIT_FOR_ANSWER + getPlayDuration() ) {
     // Go to state 39 (TIMEOUT)
     setState(39);
-  } else if (getHandleTouched()) {
+  } else if (getHandleTouched() && millis() - starting_time_state > getPlayDuration()) {
     // Go to state 25 (WOMAN INTERACTION)
     setState(25);
-  } else if (getFoamTouched()) {
+  } else if (getFoamTouched() && millis() - starting_time_state > getPlayDuration()) {
     // Go to state 24 (MAN INTERACTION)
     setState(24);
   }
@@ -563,10 +576,9 @@ void lowClappingAnim() {
     resetAndSet(3, 1, 29, false);
     stopRobot();
   }
-  if (millis() - starting_time_state > WAIT_FOR_ANSWER) {
-    // Detect sound
-    getVolumeContinuous();
-  } else {
+  if (millis() - starting_time_state > getPlayDuration() && millis() - starting_time_state < WAIT_FOR_ANSWER + getPlayDuration()) {
+    detectVolumeContinuous();
+  } else if (millis() - starting_time_state > WAIT_FOR_ANSWER + getPlayDuration()) {
     switch (getVolumeContinuous()) {
       case 0:
         // Go to state 36 (REACTNOCLAPPING)
@@ -598,8 +610,9 @@ void highClappingAnim() {
   }
   if (millis() - starting_time_state > getPlayDuration())
   {
-    // Go to state 9 (INVITE)
-    setState(9);
+    // Go to state 6 (BEERFACT)
+    next_state = 9; // INVITE
+    setState(6);
   }
 }
 
@@ -641,7 +654,9 @@ void lowScreamingAnim() {
     resetAndSet(3, 1, 32, false);
     stopRobot();
   }
-  if (millis() - starting_time_state > WAIT_FOR_ANSWER) {
+  if (millis() - starting_time_state > getPlayDuration() && millis() - starting_time_state < WAIT_FOR_ANSWER + getPlayDuration()) {
+    detectVolumeContinuous();
+  } else if (millis() - starting_time_state > WAIT_FOR_ANSWER + getPlayDuration()) {
     switch (getVolumeContinuous()) {
       case 0:
         // Go to state 39 (TIMEOUT)
@@ -667,7 +682,9 @@ void medScreamingAnim() {
     resetAndSet(3, 1, 33, false);
     stopRobot();
   }
-  if (millis() - starting_time_state > WAIT_FOR_ANSWER) {
+  if (millis() - starting_time_state > getPlayDuration() && millis() - starting_time_state < WAIT_FOR_ANSWER + getPlayDuration()) {
+    detectVolumeContinuous();
+  } else if (millis() - starting_time_state > WAIT_FOR_ANSWER + getPlayDuration()) {
     switch (getVolumeContinuous()) {
       case 0:
         // Go to state 39 (TIMEOUT)
@@ -703,7 +720,7 @@ void highScreamingAnim() {
 // Stay still and speak
 void timeoutAnim() {
   // Reset the variables if needed
-  Serial.print("resetNeeded: "); 
+  Serial.print("resetNeeded: ");
   Serial.println(resetNeeded);
   if (resetNeeded) {
     // K_ANIMATOR - Set the animations for this state
@@ -769,7 +786,7 @@ void beerGameSelectionAnim() {
         // Switch to next action
         current_action = 3;
         starting_time_action = millis();
-      } else if (millis() - starting_time_action > WAIT_FOR_ANSWER) {
+      } else if (millis() - starting_time_action > WAIT_FOR_ANSWER + getPlayDuration()) {
         // Go to state 39 (TIMEOUT)
         setState(39);
       }
@@ -795,7 +812,7 @@ void beerGameSelectionAnim() {
         // Switch to next action
         current_action = 5;
         starting_time_action = millis();
-      } else if (millis() - starting_time_action > WAIT_FOR_ANSWER) {
+      } else if (millis() - starting_time_action > WAIT_FOR_ANSWER + getPlayDuration()) {
         // Go to state 39 (TIMEOUT)
         setState(39);
       }
@@ -929,10 +946,10 @@ void magicShowBeginAnim() {
     resetAndSet(1, 1, 36, false);
     stopRobot();
   }
-  if (millis() - starting_time_state > WAIT_FOR_ANSWER) {
+  if (millis() - starting_time_state > getPlayDuration() && millis() - starting_time_state < WAIT_FOR_ANSWER + getPlayDuration()) {
     // Detect sound
-    getVolumeContinuous();
-  } else {
+    detectVolumeContinuous();
+  } else if (millis() - starting_time_state > WAIT_FOR_ANSWER + getPlayDuration()) {
     switch (getVolumeContinuous()) {
       case 0:
         // Go to state 39 (TIMEOUT)
@@ -940,11 +957,11 @@ void magicShowBeginAnim() {
         break;
       case 1:
         // Go to state 38 (MAGICSHOWEND)
-        setState(39);
+        setState(38);
         break;
       case 2:
         // Go to state 38 (MAGICSHOWEND)
-        setState(35);
+        setState(38);
         break;
     }
   }
@@ -973,11 +990,11 @@ void beerLiftRequestAnim() {
     resetAndSet(1, 1, 25, false);
     stopRobot();
   }
-  if (getHandleTouched())
+  if (millis() - starting_time_state > getPlayDuration() && getHandleTouched())
   {
     // Go to state 27 (HANDLE TOUCHED INTERACTION)
     setState(27);
-  } else if (millis() - starting_time_state > WAIT_FOR_ANSWER) {
+  } else if (millis() - starting_time_state > WAIT_FOR_ANSWER + getPlayDuration()) {
     // Go to state 39 (TIMEOUT)
     setState(39);
   }
@@ -1004,7 +1021,7 @@ void handleTouchedSurprisedAnim() {
   // Reset the variables if needed
   if (resetNeeded) {
     // K_ANIMATOR - Set the animations for this state
-    resetAndSet(3, 4, 18, false);
+    resetAndSet(3, 4, 27, false);
     stopRobot();
   }
   if (millis() - starting_time_state > getPlayDuration()) {
@@ -1022,13 +1039,13 @@ void askPreferenceAnim() {
     stopRobot();
   }
   // Wait for input or timeout
-  if (millis() - starting_time_state > WAIT_FOR_ANSWER ) {
+  if (millis() - starting_time_state > WAIT_FOR_ANSWER + getPlayDuration()) {
     // Go to state 39 (TIMEOUT)
     setState(39);
-  } else if (getHandleTouched ()) {
+  } else if (millis() - starting_time_state > getPlayDuration() && getHandleTouched()) {
     // Go to state 41 (WINEPREFERENCE)
     setState(41);
-  } else if (getFoamTouched ()) {
+  } else if (millis() - starting_time_state > getPlayDuration() &&  getFoamTouched()) {
     // Go to state 42 (BEERPREFERENCE)
     setState(42);
   }
@@ -1064,7 +1081,6 @@ void beerPreferenceAnim() {
   }
 }
 
-
 // Talk while rotating in place
 void lookForPeopleAnim()  {
   // Reset the variables if needed
@@ -1073,13 +1089,28 @@ void lookForPeopleAnim()  {
     resetAndSet(1, 1, 3, true);
     stopRobot();
   }
-  if (random(CHANGE_RANDOMLY) == GUESS) {
+  /*if (random(CHANGE_RANDOMLY) == GUESS) {
     // Go to state 4 (ROAMING)
     setState(4);
-  }
+    }*/
 }
 
-// Talk while rotating in place
+/*// Talk while staying still
+void noGroundScaredAnim() {
+  // Reset the variables if needed
+  if (resetNeeded) {
+    // K_ANIMATOR - Set the animations for this state
+    resetAndSet(1, 1, 2, false);
+    stopRobot();
+  }
+  if (millis() - starting_time_state > getPlayDuration())
+  {
+    // Go to state 5 (LOOK FOR GROUND)
+    setState(5);
+  }
+}*/
+
+// Do nothing
 void lookForGroundAnim() {
   // Reset the variables if needed
   if (resetNeeded) {
@@ -1089,6 +1120,7 @@ void lookForGroundAnim() {
   }
 }
 
+
 // Just move mustaches while moving
 void roamingAnim() {
   // Reset the variables if needed
@@ -1097,10 +1129,10 @@ void roamingAnim() {
     resetAndSet(1, 3, 0, false);
   }
   // I randomly change animation
-  if (random(CHANGE_RANDOMLY) == GUESS) {
+  /*if (random(CHANGE_RANDOMLY) == GUESS) {
     // Go to state 3 (LOOK FOR PEOPLE)
     setState(3);
-  }
+    }*/
 }
 
 // Do nothing
@@ -1113,7 +1145,7 @@ void staticCheckAnim() {
   if (!isPersonLazy())
     // Go to state 3 (LOOK FOR PEOPLE)
     setState(3);
-  else if (millis() - starting_time_state > WAIT_FOR_ANSWER)
+  else if (millis() - starting_time_state > WAIT_FOR_ANSWER + getPlayDuration())
     // Go to state 19 (STATIC CHECK)
     setState(19);
 }

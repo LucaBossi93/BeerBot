@@ -8,13 +8,13 @@
 #define DIR_BACKWARD 0                  // Counter-clockwise
 #define MOVEMENT_TIME 1300              // Maximum time of movement
 
-#define MOTOR_PIN_PWMA 38               // Arduino digital pin 38 tied to motor A speed control
+#define MOTOR_PIN_PWMA 6                // Arduino digital pin 38 tied to motor A speed control
 #define MOTOR_PIN_AIN2 40               // Arduino digital pin 40 tied to motor A direction
 #define MOTOR_PIN_AIN1 42               // Arduino digital pin 42 tied to motor A direction
 #define MOTOR_PIN_STBY 44               // Arduino digital pin 44 tied to the motors standby
 #define MOTOR_PIN_BIN1 46               // Arduino digital pin 46 tied to motor B direction
 #define MOTOR_PIN_BIN2 48               // Arduino digital pin 48 tied to motor B direction
-#define MOTOR_PIN_PWMB 50               // Arduino digital pin 50 tied to motor B speed control
+#define MOTOR_PIN_PWMB 7                // Arduino digital pin 50 tied to motor B speed control
 
 // VARIABLES //
 
