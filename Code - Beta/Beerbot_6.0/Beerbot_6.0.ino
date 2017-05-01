@@ -25,7 +25,6 @@ void setup() {
   setMustacheAnimin(2);
 }
 
-// TODO: for now I'll make everything modular, then I'll optimize by calling stuff only when needed
 void loop() {
   // Menage the beheviour of the robot depending on the current state
   menageBeheviour();
@@ -33,8 +32,6 @@ void loop() {
   menageMustache();
   // K_ANIMATOR - Manage the eyebrows animation
   menageEyebrow();
-  // K_ANIMATOR - Menage the sound
-  // menageSound();
 }
 
 // SUPPORT FUNCTIONS //
