@@ -18,8 +18,8 @@ CapacitiveSensor cs_handle = CapacitiveSensor(HANDLE_PIN_A, HANDLE_PIN_B);
 CapacitiveSensor cs_foam = CapacitiveSensor(FOAM_PIN_A, FOAM_PIN_B);
 
 // Miscellaneous
-int detection_treshold_handle = 5000;   // A person is detected if the input is lower than this
-int detection_treshold_foam = 1600;     // A person is detected if the input is higher than this
+int detection_treshold_handle = 4500;   // A person is detected if the input is lower than this
+int detection_treshold_foam = 1200;     // A person is detected if the input is higher than this
 bool person_detected_handle;            // Tells if a person is touching the handle
 bool person_detected_foam;              // Tells if a person is touching the foam
 long touch_handle;                      // Output of the handle touch sensor

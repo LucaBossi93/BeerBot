@@ -49,7 +49,7 @@ void peopleDetect() {
   // Acquire the temperature
   temperature = mlx.readObjectTempC();
   temperatureAmbient = mlx.readAmbientTempC();
-  if (/*(detection_distance > detection_min && detection_distance < detection_max) && */(temperature > temperatureAmbient + temperatureAmbient * 0.1) && (temperature > temperature_min && temperature < temperature_max)) {
+  if (/*(detection_distance > detection_min && detection_distance < detection_max) && */(temperature > temperatureAmbient * 0.95 + 1) && (temperature > temperature_min && temperature < temperature_max)) {
     no_detection_ping_counter = no_detection_ping_counter - awake_increment;
     //Serial.print("Person detected, with distance: ");
     Serial.print("Person detected, with temperature: ");
@@ -64,11 +64,10 @@ void peopleDetect() {
 
   Serial.print(temperature); 
   Serial.print(" and counter: ");
-  Serial.println(no_detection_ping_counter); 
+  Serial.print(no_detection_ping_counter); 
 
-  Serial.print("temperature: ");
-  Serial.println(temperatureAmbient * 1.1);
-
+  Serial.print("and threshold temperature: ");
+  Serial.println(temperatureAmbient * 0.95 + 1);
 }
 
 // Process the detection of people

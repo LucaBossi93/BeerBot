@@ -133,9 +133,9 @@ void menageBeheviour() {
       // Detect if there is a person
       peopleDetect();
       // Process the information
-       processPeopleDetection();
+      processPeopleDetection();
       // Manage unexpected touch
-       unexpectedTouchDetection();
+      unexpectedTouchDetection();
       break;
     case 5:
       // SCARED NO GROUND - I'm scared. Talk and move back a little.
@@ -147,7 +147,7 @@ void menageBeheviour() {
       // Setup the animation and talk
       beerFactAnim();
       // Move left and right
-      moveLeftRigth(500, 50);
+      moveLeftRigth(500, 150);
       break;
     case 7:
       // MUSTACHE SHOW - (TODO)
@@ -186,7 +186,7 @@ void menageBeheviour() {
       // Setup the animation
       countPeopleAnim();
       // Move left and right
-      moveLeftRigth(500, 100);
+      moveLeftRigth(500, 1500);
       // Count people
       peopleCount();
       break;
@@ -252,6 +252,8 @@ void menageBeheviour() {
       // ASK FOR GENDER - Stay still and ask for gender
       // Setup the animation
       askGenderAnim();
+      // Touch detection
+      expectedTouchDetection();
       break;
     case 24:
       // MAN INTERACTION - Stay still and speak
@@ -331,6 +333,8 @@ void menageBeheviour() {
     case 40:
       //ASK PREFERENCE - Stay still and speak
       askPreferenceAnim();
+      // Touch detection
+      expectedTouchDetection();
       break;
     case 41:
       // WINE PREFERENCE - Stay still and speak
@@ -863,7 +867,8 @@ void countPeopleAnim() {
     resetAndSet(1, 0, 0, false);
     stopRobot();
   }
-  if (millis() - starting_time_state > 3000) {
+  if (millis() - starting_time_state > 5000) {
+    stopRobot();
     if (isCrowd()) {
       // Go to state 14 (INTERACTION MULTIPLE PERSON)
       setState(14);
@@ -1083,10 +1088,10 @@ void lookForPeopleAnim()  {
     resetAndSet(1, 1, 3, true);
     stopRobot();
   }
-  /*if (random(CHANGE_RANDOMLY) == GUESS) {
+  if (millis() - starting_time_state > 10000) {
     // Go to state 4 (ROAMING)
     setState(4);
-    }*/
+  }
 }
 
 // Talk while staying still
