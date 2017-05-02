@@ -6,7 +6,7 @@
 
 // DEFINITIONS //
 
-#define SERVO_PIN_MUSTACHE 2     // First servo pin of the rigth mustache
+#define SERVO_PIN_MUSTACHE 3     // First servo pin of the rigth mustache
 
 // VARIABLES //
 
@@ -42,7 +42,7 @@ void loop() {
   menageMustache();
 
   if (millis() - mustacheChangeAnim > 5000) {
-    setMustacheAnimin(random(1, 6));
+    setMustacheAnimin(2);
     mustacheChangeAnim = millis();
   }
 }
@@ -141,19 +141,19 @@ void mustacheTalk() {
 
 // Up and down, centered higher, higher width
 void mustacheShout() {
-  if (millis() - mustacheMillis > 5) {
+  if (millis() - mustacheMillis > 10) {
     // Compute position
     switch (mustacheCurrentAction) {
       case 1:
         positionDelta++;
         // If I've finished with this action perform the next one
-        if (positionDelta > 18)
+        if (positionDelta > 9)
           mustacheCurrentAction = 2;
         break;
       case 2:
         positionDelta--;
         // If I've finished with this action perform the next one
-        if (positionDelta < -18)
+        if (positionDelta < -9)
           mustacheCurrentAction = 3;
         break;
       case 3:
@@ -167,16 +167,15 @@ void mustacheShout() {
         break;
     }
     // Set position
-    motor.write(motorPositionHigh + positionDelta);
+    motor.write(motorPositionHigh + positionDelta - 40);
     // Reset time
     mustacheMillis = millis();
   }
 }
 
-
 // Up and down, centered lower, smaller width
 void mustacheWhisper() {
-  if (millis() - mustacheMillis > 7) {
+  if (millis() - mustacheMillis > 25) {
     // Compute position
     switch (mustacheCurrentAction) {
       case 1:
@@ -202,7 +201,7 @@ void mustacheWhisper() {
         break;
     }
     // Set position
-    motor.write(motorPositionLow + positionDelta);
+    motor.write(motorPositionLow + positionDelta + 15);
     // Reset time
     mustacheMillis = millis();
   }
@@ -250,13 +249,13 @@ void mustacheTips() {
       case 1:
         positionDelta++;
         // If I've finished with this action perform the next one
-        if (positionDelta > 30)
+        if (positionDelta > 25)
           mustacheCurrentAction = 2;
         break;
       case 2:
         positionDelta--;
         // If I've finished with this action perform the next one
-        if (positionDelta < -30)
+        if (positionDelta < -25)
           mustacheCurrentAction = 3;
         break;
       case 3:
@@ -270,7 +269,7 @@ void mustacheTips() {
         break;
     }
     // Set position
-    motor.write(motorPosition + positionDelta);
+    motor.write(motorPosition + positionDelta + 15);
     // Reset time
     mustacheMillis = millis();
   }

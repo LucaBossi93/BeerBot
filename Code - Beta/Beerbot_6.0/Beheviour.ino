@@ -27,8 +27,8 @@ long starting_time_action;             // Tells when the robot starts to perform
 // Setup the animation
 void setupBeheviour() {
   // Robot is initialized as looking for people
-  current_state = 2;
-  previous_state = 2;
+  current_state = 4;
+  previous_state = 4;
   resetNeeded = true;
   nextState = false;
 
@@ -147,7 +147,7 @@ void menageBeheviour() {
       // Setup the animation and talk
       beerFactAnim();
       // Move left and right
-      moveLeftRigth(500, 150);
+      moveLeftRigth(500, 120);
       break;
     case 7:
       // MUSTACHE SHOW - (TODO)
@@ -186,7 +186,7 @@ void menageBeheviour() {
       // Setup the animation
       countPeopleAnim();
       // Move left and right
-      moveLeftRigth(500, 1500);
+      moveLeftRigth(500, 120);
       // Count people
       peopleCount();
       break;

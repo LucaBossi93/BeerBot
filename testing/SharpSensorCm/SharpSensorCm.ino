@@ -1,6 +1,6 @@
 #include <SharpIR.h>
 
-#define ir A1
+#define ir A0
 
 #define model 1080
 // ir: the pin where your sensor is attached

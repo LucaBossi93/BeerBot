@@ -47,25 +47,25 @@ void anomalyDetect() {
   anomaly_distance_rigth = rigth_IR.distance();
   // Change the counter consequently, first the left one
   if (anomaly_distance_left < ground_limit && anomaly_distance_left > obstacle_limit && anomaly_distance_left != 0) {
-    // Serial.print("LEFT: ground detected, got value: ");
-    // Serial.print(anomaly_distance_left);
+    Serial.print("LEFT: ground detected, got value: ");
+    Serial.println(anomaly_distance_left);
     is_ground_counter_left++;
   } else {
-    // Serial.print("LEFT: anomaly detected, got value: ");
-    // Serial.print(anomaly_distance_left);
-    is_ground_counter_left--;
+    Serial.print("LEFT: anomaly detected, got value: ");
+    Serial.println(anomaly_distance_left);
+    is_ground_counter_left-=4;
   }
   // Serial.print(", with counter: ");
   // Serial.println(is_ground_counter_left);
   // And then the rigth one
   if (anomaly_distance_rigth < ground_limit && anomaly_distance_rigth > obstacle_limit && anomaly_distance_rigth != 0) {
-    // Serial.print("RIGTH: ground detected, got value: ");
-    // Serial.print(anomaly_distance_rigth);
+    Serial.print("RIGTH: ground detected, got value: ");
+    Serial.println(anomaly_distance_rigth);
     is_ground_counter_rigth++;
   } else {
-    // Serial.print("RIGTH: anomaly detected, got value: ");
-    // Serial.print(anomaly_distance_rigth);
-    is_ground_counter_rigth--;
+    Serial.print("RIGTH: anomaly detected, got value: ");
+    Serial.println(anomaly_distance_rigth);
+    is_ground_counter_rigth-=4;
   }
   // Serial.print(", with counter: ");
   // Serial.println(is_ground_counter_rigth);
