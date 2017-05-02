@@ -27,8 +27,8 @@ long starting_time_action;             // Tells when the robot starts to perform
 // Setup the animation
 void setupBeheviour() {
   // Robot is initialized as looking for people
-  current_state = 4;
-  previous_state = 1;
+  current_state = 2;
+  previous_state = 2;
   resetNeeded = true;
   nextState = false;
 
@@ -41,6 +41,8 @@ void setState(int state) {
   previous_state = current_state;
   current_state = state;
   resetNeeded = true;
+  Serial.print(" reset: ");
+  Serial.println(resetNeeded);
 }
 
 // Sets the state as one of the two idle ones
@@ -79,33 +81,36 @@ void setAllAnimations(int a, int b, int c, boolean rep) {
 // Menage the animation of the robot
 void menageBeheviour() {
   Serial.print("state: ");
-  Serial.println(current_state);
+  Serial.print(current_state);
+  Serial.print(" reset: ");
+  Serial.print(resetNeeded);
   switch (current_state) {
     case 1:
       // FORWARD - I've detected a person and I'm moving towards him. I only detect the anomalies but I don't
       // process them since I just want to stop instead of starting looking for ground
+      // I'm moving towards someone
+      moveForwardWithTimeoutAnim(1500);
       // Detect if there is an anomaly
       anomalyDetect();
       // Process the information
       processAnomalyDetectionLazy();
-      Serial.println("process anomaly detection lazy");
-      // I'm moving towards someone
-      moveForwardWithTimeoutAnim(1500);
       break;
     case 2:
       // LOOK FOR GROUND - I'm looking for ground. I don't need to look for people while I do it
+      // Setup the animation and talk
+      lookForGroundAnim();
       // Detect if there is an anomaly
       anomalyDetect();
       // Process the information
       processAnomalyDetection();
       // Rotate in place
       rotate(sp, rotate_left);
-      // Setup the animation and talk
-      lookForGroundAnim();
       break;
     case 3:
       // LOOK FOR PEOPLE - I'm rotating looking for people. I rotate for some time, I cooldown and then I repeat
       // In this phase I don't need to look for ground since I'm rotating in place
+      // Setup the animation and talk
+      lookForPeopleAnim();
       // Detect if there is a person
       peopleDetect();
       // Process the information
@@ -116,11 +121,11 @@ void menageBeheviour() {
       processPeopleDetection();
       // Manage unexpected touch
       unexpectedTouchDetection();
-      // Setup the animation and talk
-      lookForPeopleAnim();
       break;
     case 4:
       // ROAMING - Simply move forward and rotate when anomaly is found.
+      // Setup the animation and talk
+      roamingAnim();
       // Detect if there is an anomaly
       anomalyDetect();
       // Process the information
@@ -128,24 +133,14 @@ void menageBeheviour() {
       // Detect if there is a person
       peopleDetect();
       // Process the information
-      processPeopleDetection();
+       processPeopleDetection();
       // Manage unexpected touch
-      unexpectedTouchDetection();
-      // I'm moving forward
-      moveForward(sp);
-      // Setup the animation and talk
-      roamingAnim();
+       unexpectedTouchDetection();
       break;
     case 5:
-      /*// LOOK FOR GROUND - I'm looking for ground. I don't need to look for people while I do it
-        // Detect if there is an anomaly
-        anomalyDetect();
-        // Process the information
-        processAnomalyDetection();
-        // Rotate in place
-        rotate(sp, rotate_left);
-        // Setup the animation
-        lookForGroundAnim();*/
+      // SCARED NO GROUND - I'm scared. Talk and move back a little.
+      // Setup the animation
+      scaredNoGroundAnim();
       break;
     case 6:
       // BEER FACT - Move left and right a bit and talk
@@ -160,12 +155,12 @@ void menageBeheviour() {
     case 8:
       // GREET - I'm saying hi. I look for people, if the time is over or nobody is watching start looking
       // for people again
+      // Say hi
+      greetAnim(5000);
       // Detect if there is a person
       peopleDetect();
       // Process the information
       processPeopleDetection();
-      // Say hi
-      greetAnim(5000);
       break;
     case 9:
       // INVITE - Invite people inside
@@ -179,19 +174,19 @@ void menageBeheviour() {
       break;
     case 11:
       // HELP - Stay still and call for help (TODO)
+      // Setup the animation and talk
+      helpAnim();
       // Detect if there is an anomaly
       anomalyDetect();
       // Process the information
       processAnomalyDetection();
-      // Setup the animation and talk
-      helpAnim();
       break;
     case 12:
       // COUNT PEOPLE - Count how much people there is
       // Setup the animation
       countPeopleAnim();
       // Move left and right
-      moveLeftRigth(500, 50);
+      moveLeftRigth(500, 100);
       // Count people
       peopleCount();
       break;
@@ -216,12 +211,12 @@ void menageBeheviour() {
       break;
     case 17:
       // BEER GAME SELECTION - Select two persons
+      // Setup the animation, look for people and select them
+      beerGameSelectionAnim();
       // Detect the people
       peopleDetect();
       // Detect the people
       processPeopleDetectionLazy();
-      // Setup the animation, look for people and select them
-      beerGameSelectionAnim();
       break;
     case 18:
       // BEER GAME END - Stay still and invite to kiss or have a beer
@@ -229,12 +224,12 @@ void menageBeheviour() {
       beerGameEndAnim();
     case 19:
       // STATIC CHECK - Stay still and wait for people to leave
+      // Setup the animation
+      staticCheckAnim();
       // Detect the people
       peopleDetect();
       // Detect the people
       processPeopleDetectionLazy();
-      // Setup the animation
-      staticCheckAnim();
       break;
     case 20:
       // FOAM TOUCH - Stay still and ask for touching the foam
@@ -1074,8 +1069,7 @@ void beerPreferenceAnim() {
     resetAndSet(2, 1, 24, false);
     stopRobot();
   }
-  if (millis() - starting_time_state > getPlayDuration())
-  {
+  if (millis() - starting_time_state > getPlayDuration()) {
     // Go to state 19 (STATIC CHECK)
     setState(19);
   }
@@ -1095,31 +1089,34 @@ void lookForPeopleAnim()  {
     }*/
 }
 
-/*// Talk while staying still
-void noGroundScaredAnim() {
+// Talk while staying still
+void scaredNoGroundAnim() {
   // Reset the variables if needed
   if (resetNeeded) {
     // K_ANIMATOR - Set the animations for this state
     resetAndSet(1, 1, 2, false);
+    moveBackward(150);
+  }
+  if (millis() - starting_time_state > getPlayDuration()) {
+    // Go to state 2 (LOOK FOR GROUND)
+    setState(2);
+  } else if (millis() - starting_time_state > 300) {
     stopRobot();
   }
-  if (millis() - starting_time_state > getPlayDuration())
-  {
-    // Go to state 5 (LOOK FOR GROUND)
-    setState(5);
-  }
-}*/
+}
 
 // Do nothing
 void lookForGroundAnim() {
   // Reset the variables if needed
   if (resetNeeded) {
     // K_ANIMATOR - Set the animations for this state
-    resetAndSet(1, 1, 2, false);
+    resetAndSet(1, 2, 0, false);
     stopRobot();
   }
+  if (getCanStop() && millis() - getStartingTimeStop() > 200) {
+    setState(4);
+  }
 }
-
 
 // Just move mustaches while moving
 void roamingAnim() {
@@ -1127,6 +1124,8 @@ void roamingAnim() {
   if (resetNeeded) {
     // K_ANIMATOR - Set the animations for this state
     resetAndSet(1, 3, 0, false);
+    // I'm moving forward
+    moveForward(sp);
   }
   // I randomly change animation
   /*if (random(CHANGE_RANDOMLY) == GUESS) {

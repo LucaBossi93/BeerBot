@@ -21,7 +21,11 @@ int anomaly_distance_rigth;             // Distance acquired by the rigth IR sen
 int ground_limit = 15;                  // Minimum distance for which the IR output is considered ground
 int is_ground_counter_left = 0;         // Counter needed to have an effective detection of anomalies
 int is_ground_counter_rigth = 0;        // Counter needed to have an effective detection of anomalies
-int obstacle_limit = 4  ;               // Maximum distance for which the IR output is considered obstacle
+int obstacle_limit = 4;                 // Maximum distance for which the IR output is considered obstacle
+
+// Millis
+long starting_time_stop;                // Starting time for when I need to stop
+bool can_stop = false;                   // Can I stop looking for ground?
 
 // Sensors
 SharpIR left_IR(IR_PIN_LEFT, model);
@@ -135,18 +139,23 @@ void setLookForGround(bool b) {
     look_for_ground = b;
     // Get the sense of rotation;
     setRotateLeft(getRotation());
-    // K_STATE - Start looking for ground, state 2
-    setState(2);
+    // Reset can_stop
+    can_stop = false;
+    // K_STATE - Start looking for ground, state 5
+    setState(5);
+    stopRobot();
   } else {
     // Stop looking for ground
     look_for_ground = false;
     // K_ANIMATOR - I'm neutral
     setEyebrowPosition(1);
-    // K_STATE - Reset previous state
-    resetState();
+    // Set variables
+    can_stop = true;
+    starting_time_stop = millis();
   }
 }
 
+// Get the sense of rotation
 bool getRotation() {
   if (is_ground_counter_left == 0 && is_ground_counter_rigth != 0)
     return false;
@@ -154,4 +163,14 @@ bool getRotation() {
     return true;
   else
     return random(2);
+}
+
+// Can I stop?
+bool getCanStop() {
+  return can_stop;
+}
+
+// Get the stop starting time
+long getStartingTimeStop() {
+  return starting_time_stop;
 }
