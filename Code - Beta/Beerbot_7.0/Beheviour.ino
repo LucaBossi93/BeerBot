@@ -3,8 +3,8 @@
 // DEFINITIONS //
 
 #define WAIT_FOR_ANSWER 5000
-//#define CHANGE_RANDOMLY 100000
-//#define GUESS 42
+// #define CHANGE_RANDOMLY 100000
+// #define GUESS 42
 
 // VARIABLES //
 
@@ -41,11 +41,11 @@ void setState(int state) {
   previous_state = current_state;
   current_state = state;
   resetNeeded = true;
-  Serial.print(" reset: ");
-  Serial.println(resetNeeded);
+  Serial.print("State: ");
+  Serial.println(state);
 }
 
-// Sets the state as one of the two idle ones
+// Sets the state as one of the two idle  ones
 void setStateIdle() {
   if (random(2))
     // Go to state 3 (LOOK FOR PEOPLE)
@@ -80,10 +80,6 @@ void setAllAnimations(int a, int b, int c, boolean rep) {
 
 // Menage the animation of the robot
 void menageBeheviour() {
-  Serial.print("state: ");
-  Serial.print(current_state);
-  Serial.print(" reset: ");
-  Serial.print(resetNeeded);
   switch (current_state) {
     case 1:
       // FORWARD - I've detected a person and I'm moving towards him. I only detect the anomalies but I don't
@@ -104,7 +100,7 @@ void menageBeheviour() {
       // Process the information
       processAnomalyDetection();
       // Rotate in place
-      rotate(sp, rotate_left);
+      rotate(sp * 0.9, rotate_left);
       break;
     case 3:
       // LOOK FOR PEOPLE - I'm rotating looking for people. I rotate for some time, I cooldown and then I repeat
@@ -116,11 +112,11 @@ void menageBeheviour() {
       // Process the information
       processPeopleDetection();
       // Perform the rotation
-      rotateWithCooldownAnim(1500, 300);
+      rotate(sp * 0.8, rotate_left);
       // Process the information
       processPeopleDetection();
       // Manage unexpected touch
-      unexpectedTouchDetection();
+      // unexpectedTouchDetection();
       break;
     case 4:
       // ROAMING - Simply move forward and rotate when anomaly is found.
@@ -135,7 +131,7 @@ void menageBeheviour() {
       // Process the information
       processPeopleDetection();
       // Manage unexpected touch
-      unexpectedTouchDetection();
+      // unexpectedTouchDetection();
       break;
     case 5:
       // SCARED NO GROUND - I'm scared. Talk and move back a little.
@@ -147,7 +143,7 @@ void menageBeheviour() {
       // Setup the animation and talk
       beerFactAnim();
       // Move left and right
-      moveLeftRigth(500, sp * 1.2);
+      // moveLeftRigth(1000, sp * 1.2);
       break;
     case 7:
       // MUSTACHE SHOW - (TODO)
@@ -185,8 +181,8 @@ void menageBeheviour() {
       // COUNT PEOPLE - Count how much people there is
       // Setup the animation
       countPeopleAnim();
-      // Move left and right
-      moveLeftRigth(500, sp * 1.2);
+      // Rotate in place
+      rotate(sp * 0.9, rotate_left);
       // Count people
       peopleCount();
       break;
@@ -201,7 +197,7 @@ void menageBeheviour() {
       interactionMultiplePersonAnim();
       break;
     case 15:
-      // STATICPEOPLE - Be angy with people who are staying still looking at you
+      // STATICPEOPLE - Be angry with people who are staying still looking at you
       staticPeopleAnim();
       break;
     case 16:
@@ -384,7 +380,7 @@ void moveForwardWithTimeoutAnim(int timeout) {
     // Go to state 8 (GREET)
     setState(8);
   } else {
-    moveForward(sp);
+    moveForward(sp * 0.7);
   }
 }
 
@@ -552,6 +548,7 @@ void womanInteractionAnim() {
       setState(12);
   }
 }
+
 // Stay still and ask for clapping
 void requestClappingAnim() {
   // Reset the variables if needed
@@ -639,7 +636,7 @@ void requestScreamingAnim() {
     stopRobot();
   }
   // Wait for input or timeout
-  if (millis() - starting_time_state > getPlayDuration()) {
+  if (millis() - starting_time_state > getPlayDuration() + WAIT_FOR_ANSWER) {
     // Go to state 33 (LOWSCREAMING)
     setState(33);
   }
@@ -771,7 +768,7 @@ void beerGameSelectionAnim() {
       // K_ANIMATOR - Set the animations for this action
       setAllAnimations(1, 0, 0, false);
       // Set the rotation
-      rotate(50, random(2));
+      rotate(sp * 0.9, random(2));
       // Switch to the next action
       current_action = 2;
       starting_time_action = millis();
@@ -796,7 +793,7 @@ void beerGameSelectionAnim() {
         // K_ANIMATOR - Set the animations for this action
         setAllAnimations(1, 0, 0, false);
         // Set the rotation
-        rotate(50, random(2));
+        rotate(sp * 0.9, random(2));
         // Switch to the next action
         current_action = 4;
         starting_time_action = millis();
@@ -1130,7 +1127,7 @@ void roamingAnim() {
     // K_ANIMATOR - Set the animations for this state
     resetAndSet(1, 3, 0, false);
     // I'm moving forward
-    moveForward(sp);
+    moveForward(sp * 0.7);
   }
   // I randomly change animation
   /*if (random(CHANGE_RANDOMLY) == GUESS) {
@@ -1150,43 +1147,44 @@ void staticCheckAnim() {
     // Go to state 3 (LOOK FOR PEOPLE)
     setState(3);
   else if (millis() - starting_time_state > WAIT_FOR_ANSWER + getPlayDuration())
-    // Go to state 19 (STATIC CHECK)
-    setState(19);
+    // Go to state 15 (STATIC PEOPLE)
+    setState(15);
 }
 
 // MOVEMENTS //
 
 // Moves left and right
-void moveLeftRigth(int oscillation_time, int velocity) {
+void moveLeftRigth(int oscillation_time, int v) {
   switch (current_action) {
     case 1:
-      rotate(velocity, true);
+      rotate(v, true);
       current_action = 2;
       break;
     case 2:
       // If I've finished with this action perform the next one
-      if (millis() - starting_time_action > oscillation_time / 2) {
-        rotate(velocity, false);
+      if (millis() - starting_time_action > oscillation_time / 4) {
+        rotate(v, false);
         current_action = 3;
       }
       break;
     case 3:
       // If I've finished with this action perform the next one
-      if (millis() - starting_time_action > oscillation_time * 3 / 2) {
-        rotate(velocity, true);
-        current_action = 3;
+      if (millis() - starting_time_action > oscillation_time * 3 / 4) {
+        rotate(v, true);
+        current_action = 4;
       }
       break;
     case 4:
       // If I've finished with this action perform the next one
-      if (millis() - starting_time_action > oscillation_time * 2) {
+      if (millis() - starting_time_action > oscillation_time) {
         starting_time_action = millis();
-        rotate(velocity, true);
-        current_action = 3;
+        rotate(v, true);
+        current_action = 2;
       }
       break;
     default:
       current_action = 1;
       break;
   }
+
 }

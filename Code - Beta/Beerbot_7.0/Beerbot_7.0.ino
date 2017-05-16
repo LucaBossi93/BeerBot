@@ -5,7 +5,7 @@
 // Miscellaneous
 int backwardDelay = 300;                // Amount of time the robot has to move backward
 int forwardDelay = 2000;                // Amount of time the robot has to move forward
-int sp = 180;                           // Default speed
+int sp = 200;                           // Default speed
 bool rotate_left;                       // Tells if the robot has to rotate left or right
 
 // CODE //
@@ -14,7 +14,7 @@ void setup() {
   // Initialize the serial port
   Serial.begin(9600);
   // Set a seed for the random number generator
-  //randomSeed(1234);
+  randomSeed(analogRead(7));
 
   // Setup everything
   setupAll();
@@ -28,6 +28,8 @@ void setup() {
 void loop() {
   // Menage the beheviour of the robot depending on the current state
   menageBeheviour();
+  // Menage capacitive
+  // menageCapacitive();
   // K_ANIMATOR - Manage the mustache animation
   menageMustache();
   // K_ANIMATOR - Manage the eyebrows animation

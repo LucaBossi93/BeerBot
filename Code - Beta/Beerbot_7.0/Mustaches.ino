@@ -1,4 +1,4 @@
-// MUSTACHE TEMP SUPPORT FUNCTIONS //
+// MUSTACHES SUPPORT FUNCTIONS //
 
 // INCLUSIONS //
 
@@ -21,31 +21,13 @@ Servo motor;
 // Sensors
 
 // Positions
-int motorPosition = 90;                       // Default position of the servo (+25)
-int motorPositionHigh = 130;                  // High position of the servo (+25)
-int motorPositionLow = 85;                    // Low position of the servo (+25)
+int motorPosition = 90;                       // Default position of the servo
+int motorPositionHigh = 100;                  // High position of the servo
+int motorPositionLow = 80;                    // Low position of the servo
 int positionDelta = 0;                        // Delta to be applied on the default position
 
 // Millise
 long mustacheMillis;                          // Tells how often update position
-long mustacheChangeAnim;
-
-// CODE //
-
-void setup() {
-  // put your setup code here, to run once:
-  setupMustache();
-}
-
-void loop() {
-  // put your main code here, to run repeatedly:
-  menageMustache();
-
-  if (millis() - mustacheChangeAnim > 5000) {
-    setMustacheAnimin(random(2));
-    mustacheChangeAnim = millis();
-  }
-}
 
 // SUPPORT FUNCTIONS //
 
@@ -104,25 +86,27 @@ void menageMustache() {
 
 // ANIMATIONS //
 
+// ANIMATIONS //
+
 // Up and down, centered, normal width
 void mustacheTalk() {
   if (millis() - mustacheMillis > 10) {
     // Compute position
     switch (mustacheCurrentAction) {
       case 1:
-        positionDelta++;
+        positionDelta += 3;
         // If I've finished with this action perform the next one
         if (positionDelta > 14)
           mustacheCurrentAction = 2;
         break;
       case 2:
-        positionDelta--;
+        positionDelta -= 3;
         // If I've finished with this action perform the next one
         if (positionDelta < -14)
           mustacheCurrentAction = 3;
         break;
       case 3:
-        positionDelta++;
+        positionDelta += 3;
         // If I've finished with this action perform the next one
         if (positionDelta > 0)
           mustacheCurrentAction = 1;
@@ -145,19 +129,19 @@ void mustacheShout() {
     // Compute position
     switch (mustacheCurrentAction) {
       case 1:
-        positionDelta++;
+        positionDelta += 3;
         // If I've finished with this action perform the next one
         if (positionDelta > 9)
           mustacheCurrentAction = 2;
         break;
       case 2:
-        positionDelta--;
+        positionDelta -= 3;
         // If I've finished with this action perform the next one
         if (positionDelta < -9)
           mustacheCurrentAction = 3;
         break;
       case 3:
-        positionDelta++;
+        positionDelta += 3;
         // If I've finished with this action perform the next one
         if (positionDelta > 0)
           mustacheCurrentAction = 1;
@@ -167,7 +151,7 @@ void mustacheShout() {
         break;
     }
     // Set position
-    motor.write(motorPositionHigh + positionDelta - 40);
+    motor.write(motorPositionHigh + positionDelta + 15);
     // Reset time
     mustacheMillis = millis();
   }
@@ -179,19 +163,19 @@ void mustacheWhisper() {
     // Compute position
     switch (mustacheCurrentAction) {
       case 1:
-        positionDelta++;
+        positionDelta += 3;
         // If I've finished with this action perform the next one
         if (positionDelta > 12)
           mustacheCurrentAction = 2;
         break;
       case 2:
-        positionDelta--;
+        positionDelta -= 3;
         // If I've finished with this action perform the next one
         if (positionDelta < -12)
           mustacheCurrentAction = 3;
         break;
       case 3:
-        positionDelta++;
+        positionDelta += 3;
         // If I've finished with this action perform the next one
         if (positionDelta > 0)
           mustacheCurrentAction = 1;
@@ -201,7 +185,7 @@ void mustacheWhisper() {
         break;
     }
     // Set position
-    motor.write(motorPositionLow + positionDelta + 15);
+    motor.write(motorPositionLow + positionDelta - 5);
     // Reset time
     mustacheMillis = millis();
   }
@@ -213,19 +197,19 @@ void mustacheScared() {
     // Compute position
     switch (mustacheCurrentAction) {
       case 1:
-        positionDelta++;
+        positionDelta += 3;
         // If I've finished with this action perform the next one
         if (positionDelta > 12)
           mustacheCurrentAction = 2;
         break;
       case 2:
-        positionDelta--;
+        positionDelta -= 3;
         // If I've finished with this action perform the next one
         if (positionDelta < -12)
           mustacheCurrentAction = 3;
         break;
       case 3:
-        positionDelta++;
+        positionDelta += 3;
         // If I've finished with this action perform the next one
         if (positionDelta > 0)
           mustacheCurrentAction = 1;
@@ -247,19 +231,19 @@ void mustacheTips() {
     // Compute position
     switch (mustacheCurrentAction) {
       case 1:
-        positionDelta++;
+        positionDelta += 3;
         // If I've finished with this action perform the next one
         if (positionDelta > 25)
           mustacheCurrentAction = 2;
         break;
       case 2:
-        positionDelta--;
+        positionDelta -= 3;
         // If I've finished with this action perform the next one
         if (positionDelta < -25)
           mustacheCurrentAction = 3;
         break;
       case 3:
-        positionDelta++;
+        positionDelta += 3;
         // If I've finished with this action perform the next one
         if (positionDelta > 0)
           mustacheCurrentAction = 1;
