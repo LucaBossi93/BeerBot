@@ -82,7 +82,7 @@ void peopleDetect() {
   // Serial.print(" and counter: ");
   // Serial.println(no_detection_ping_counter);
   // Serial.print(temperature);
-  //  Serial.print(" and counter: ");
+  // Serial.print(" and counter: ");
   // Serial.println(no_detection_ping_counter);
 }
 

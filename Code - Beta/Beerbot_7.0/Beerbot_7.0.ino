@@ -21,7 +21,7 @@ void setup() {
   // K_ANIMATOR - Initialize animations
   setTalk(0, false);
   setEyebrowPosition(1);
-  setMustacheAnimin(0);
+  setMustacheAnimin(3);
 }
 
 void loop() {

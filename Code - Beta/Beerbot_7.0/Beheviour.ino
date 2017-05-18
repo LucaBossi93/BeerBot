@@ -90,7 +90,7 @@ void menageBeheviour() {
       // Calibrate the temperature sensor
       calibrateTemperature();
       // Process the information and start to operate
-      if (millis() - starting_time_state > 5000) {
+      if (millis() - starting_time_state > 1000) {
         processTemperatureCalibration();
         setState(4);
       }
@@ -386,7 +386,7 @@ void moveForwardWithTimeoutAnim(int timeout) {
   // Reset the variables if needed
   if (resetNeeded) {
     // K_ANIMATOR - Set the animations for this state
-    resetAndSet(2, 2, 1, false);
+    resetAndSet(2, 2, 3, false);
     moveForward(FORWARD_VELOCITY);
   }
   // If I don't have detected an anomaly or I've finished, go forward
@@ -476,7 +476,7 @@ void foamTouchedAnim() {
   // Reset the variables if needed
   if (resetNeeded) {
     // K_ANIMATOR - Set the animations for this state
-    resetAndSet(2, 1, 17, false);
+    resetAndSet(2, 4, 17, false);
     stopRobot();
   }
   if (millis() - starting_time_state > getPlayDuration()) {
@@ -494,7 +494,7 @@ void foamTouchedSurprisedAnim() {
   // Reset the variables if needed
   if (resetNeeded) {
     // K_ANIMATOR - Set the animations for this state
-    resetAndSet(2, 1, 18, false);
+    resetAndSet(2, 2, 18, false);
     stopRobot();
   }
   if (millis() - starting_time_state > getPlayDuration()) {
@@ -529,7 +529,7 @@ void manInteractionAnim() {
   // Reset the variables if needed
   if (resetNeeded) {
     // K_ANIMATOR - Set the animations for this state
-    resetAndSet(3, 1, 20, false);
+    resetAndSet(3, 4, 20, false);
     stopRobot();
   }
   if (millis() - starting_time_state > getPlayDuration())
@@ -548,7 +548,7 @@ void womanInteractionAnim() {
   // Reset the variables if needed
   if (resetNeeded) {
     // K_ANIMATOR - Set the animations for this state
-    resetAndSet(2, 1, 21, false);
+    resetAndSet(2, 5, 21, false);
     stopRobot();
   }
   if (millis() - starting_time_state > getPlayDuration())
@@ -582,7 +582,7 @@ void lowClappingAnim() {
   // Reset the variables if needed
   if (resetNeeded) {
     // K_ANIMATOR - Set the animations for this state
-    resetAndSet(3, 1, 29, false);
+    resetAndSet(3, 4, 29, false);
     stopRobot();
   }
   if (millis() - starting_time_state > getPlayDuration() && millis() - starting_time_state < WAIT_FOR_ANSWER + getPlayDuration()) {
@@ -614,7 +614,7 @@ void highClappingAnim() {
   // Reset the variables if needed
   if (resetNeeded) {
     // K_ANIMATOR - Set the animations for this state
-    resetAndSet(2, 1, 30, false);
+    resetAndSet(2, 4, 30, false);
     stopRobot();
   }
   if (millis() - starting_time_state > getPlayDuration())
@@ -630,7 +630,7 @@ void reactClappingAnim() {
   // Reset the variables if needed
   if (resetNeeded) {
     // K_ANIMATOR - Set the animations for this state
-    resetAndSet(3, 1, 35, false);
+    resetAndSet(3, 4, 35, false);
     stopRobot();
   }
   if (millis() - starting_time_state > getPlayDuration())
@@ -660,7 +660,7 @@ void lowScreamingAnim() {
   // Reset the variables if needed
   if (resetNeeded) {
     // K_ANIMATOR - Set the animations for this state
-    resetAndSet(3, 1, 32, false);
+    resetAndSet(3, 4, 32, false);
     stopRobot();
   }
   if (millis() - starting_time_state > getPlayDuration() && millis() - starting_time_state < WAIT_FOR_ANSWER + getPlayDuration()) {
@@ -688,7 +688,7 @@ void medScreamingAnim() {
   // Reset the variables if needed
   if (resetNeeded) {
     // K_ANIMATOR - Set the animations for this state
-    resetAndSet(3, 1, 33, false);
+    resetAndSet(3, 4, 33, false);
     stopRobot();
   }
   if (millis() - starting_time_state > getPlayDuration() && millis() - starting_time_state < WAIT_FOR_ANSWER + getPlayDuration()) {
@@ -716,7 +716,7 @@ void highScreamingAnim() {
   // Reset the variables if needed
   if (resetNeeded) {
     // K_ANIMATOR - Set the animations for this state
-    resetAndSet(2, 1, 34, false);
+    resetAndSet(2, 4, 34, false);
     stopRobot();
   }
   if (millis() - starting_time_state > getPlayDuration())
@@ -731,7 +731,7 @@ void timeoutAnim() {
   // Reset the variables if needed
   if (resetNeeded) {
     // K_ANIMATOR - Set the animations for this state
-    resetAndSet(3, 1, 38, false);
+    resetAndSet(3, 5, 38, false);
     stopRobot();
   }
   if (millis() - starting_time_state > getPlayDuration()) {
@@ -774,7 +774,7 @@ void beerGameSelectionAnim() {
   switch (current_action) {
     case 1:
       // K_ANIMATOR - Set the animations for this action
-      setAllAnimations(1, 0, 0, false);
+      setAllAnimations(1, 3, 0, false);
       // Set the rotation
       rotate(ROTATE_MEDIUM_VELOCITY, random(2));
       // Switch to the next action
@@ -783,7 +783,7 @@ void beerGameSelectionAnim() {
       break;
     case 2:
       // When a person is detected stop and talk
-      if (millis() - starting_time_action > random(100, 10000) && isPersonLazy()) {
+      if (millis() - starting_time_action > 1500 && isPersonLazy()) {
         stopRobot();
         // K_ANIMATOR - Set the animations for this action
         setAllAnimations(2, 1, 14, false);
@@ -799,7 +799,7 @@ void beerGameSelectionAnim() {
       // If I've finished with this action perform the next one
       if (millis() - starting_time_action > getPlayDuration()) {
         // K_ANIMATOR - Set the animations for this action
-        setAllAnimations(1, 0, 0, false);
+        setAllAnimations(1, 3, 0, false);
         // Set the rotation
         rotate(ROTATE_MEDIUM_VELOCITY, random(2));
         // Switch to the next action
@@ -809,7 +809,7 @@ void beerGameSelectionAnim() {
       break;
     case 4:
       // When a person is detected stop and talk
-      if (millis() - starting_time_action > random(100, 10000) && isPersonLazy()) {
+      if (millis() - starting_time_action > 1500 && isPersonLazy()) {
         stopRobot();
         // K_ANIMATOR - Set the animations for this action
         setAllAnimations(2, 1, 14, false);
@@ -839,7 +839,7 @@ void beerGameEndAnim() {
   // Reset the variables if needed
   if (resetNeeded) {
     // K_ANIMATOR - Set the animations for this state
-    resetAndSet(2, 1, 15, false);
+    resetAndSet(2, 4, 15, false);
     stopRobot();
   }
   // When I've finished talking change state
@@ -869,7 +869,7 @@ void countPeopleAnim() {
   // Reset the variables if needed
   if (resetNeeded) {
     // K_ANIMATOR - Set the animations for this state
-    resetAndSet(1, 0, 0, false);
+    resetAndSet(1, 3, 0, false);
     stopRobot();
   }
   if (millis() - starting_time_state > 5000) {
@@ -888,7 +888,7 @@ void interactionSinglePersonAnim() {
   // Reset the variables if needed
   if (resetNeeded) {
     // K_ANIMATOR - Set the animations for this state
-    resetAndSet(1, 1, 10, false);
+    resetAndSet(1, 5, 10, false);
     stopRobot();
   }
   // When I've finished talking change state
@@ -915,7 +915,7 @@ void interactionMultiplePersonAnim() {
   // Reset the variables if needed
   if (resetNeeded) {
     // K_ANIMATOR - Set the animations for this state
-    resetAndSet(1, 1, 11, false);
+    resetAndSet(1, 4, 11, false);
     stopRobot();
   }
   // When I've finished talking change state
@@ -933,7 +933,7 @@ void staticPeopleAnim() {
   // Reset the variables if needed
   if (resetNeeded) {
     // K_ANIMATOR - Set the animations for this state
-    resetAndSet(2, 2, 12, false);
+    resetAndSet(2, 4, 12, false);
     stopRobot();
   }
   // When I've finished talking change state
@@ -977,7 +977,7 @@ void magicShowEndAnim() {
   // Reset the variables if needed
   if (resetNeeded) {
     // K_ANIMATOR - Set the animations for this state
-    resetAndSet(2, 1, 37, false);
+    resetAndSet(2, 4, 37, false);
     stopRobot();
   }
   if (millis() - starting_time_state > getPlayDuration())
@@ -1026,7 +1026,7 @@ void handleTouchedSurprisedAnim() {
   // Reset the variables if needed
   if (resetNeeded) {
     // K_ANIMATOR - Set the animations for this state
-    resetAndSet(3, 4, 27, false);
+    resetAndSet(3, 2, 27, false);
     stopRobot();
   }
   if (millis() - starting_time_state > getPlayDuration()) {
@@ -1061,7 +1061,7 @@ void winePreferenceAnim() {
   // Reset the variables if needed
   if (resetNeeded) {
     // K_ANIMATOR - Set the animations for this state
-    resetAndSet(3, 1, 23, false);
+    resetAndSet(3, 5, 23, false);
     stopRobot();
   }
   if (millis() - starting_time_state > getPlayDuration())
@@ -1076,7 +1076,7 @@ void beerPreferenceAnim() {
   // Reset the variables if needed
   if (resetNeeded) {
     // K_ANIMATOR - Set the animations for this state
-    resetAndSet(2, 1, 24, false);
+    resetAndSet(2, 4, 24, false);
     stopRobot();
   }
   if (millis() - starting_time_state > getPlayDuration()) {
@@ -1090,7 +1090,7 @@ void lookForPeopleAnim()  {
   // Reset the variables if needed
   if (resetNeeded) {
     // K_ANIMATOR - Set the animations for this state
-    resetAndSet(1, 1, 3, true);
+    resetAndSet(1, 3, 3, true);
     stopRobot();
   }
   if (millis() - starting_time_state > 10000) {
@@ -1149,7 +1149,7 @@ void staticCheckAnim() {
   // Reset the variables if needed
   if (resetNeeded) {
     // K_ANIMATOR - Set the animations for this state
-    resetAndSet(1, 0, 0, false);
+    resetAndSet(1, 3, 0, false);
   }
   if (!isPersonLazy())
     // Go to state 3 (LOOK FOR PEOPLE)

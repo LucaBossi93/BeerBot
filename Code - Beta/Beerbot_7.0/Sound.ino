@@ -85,7 +85,7 @@ void setupSound()
   // Set Serial for DFPlayer-mini mp3 module
   mp3_set_serial(Serial);
   // Sets the volume of the speaker (30)
-  mp3_set_volume(30);
+  mp3_set_volume(20);
 }
 
 // Sets the current talk
@@ -100,7 +100,7 @@ void setTalk(int i, boolean rep) {
 
 // Return the duration of the current sound
 int getPlayDuration() {
-  return duration[currentSound] * 1000;
+  return duration[currentSound] * 1000 + 1000;
 }
 
 // CASE 0 - Silence

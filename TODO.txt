@@ -1,24 +1,24 @@
 MUSTACHE ANIMATIONS:
-0 -
-1 -
-2 - 
-3 - 
-4 - 
-5 - 
+0 - still
+1 - mustacheTalk
+2 - mustacheScared
+3 - mustacheIdle
+4 - mustacheShout
+5 - mustacheWhisper
 
 TODO:
 - Bottle game people detection
-- Capacitive sensors
-- When moving towards the customer it change state
+- When moving towards the customer it changes state
 - Hi -> hi -> hi
 - Mustache animations
-- Static aniamtions
+- Static animations
 
 MAYBE:
 - Implement emergency state
 - Do sing
 - Robot always moving
- 
+- Capacitive sensors
+
 DONE:
 - Set Arduino ports
 - Check if lookforpeople has reset
