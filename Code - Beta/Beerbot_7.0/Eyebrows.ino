@@ -50,10 +50,10 @@ void setEyebrowPosition(int i) {
 void menageEyebrow() {
   switch (eyebrowCurrentPosition) {
     case 1:
-      setPosition(10);
+      setPosition(-10);
       break;
     case 2:
-      setPosition(30);
+      setPosition(-30);
       break;
     case 3:
       setPosition(0);

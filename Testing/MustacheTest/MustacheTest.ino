@@ -39,7 +39,7 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  // menageMustache();
+  menageMustache();
 
   if (millis() - mustacheChangeAnim > 5000) {
     setMustacheAnimin(random(2));

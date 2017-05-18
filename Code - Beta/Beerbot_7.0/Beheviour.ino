@@ -8,7 +8,7 @@
 #define FORWARD_VELOCITY 180
 #define BACKWARD_VELOCITY 170
 #define ROTATE_FAST_VELOCITY 220
-#define ROTATE_MEDIUM_VELOCITY 190
+#define ROTATE_MEDIUM_VELOCITY 200
 
 // VARIABLES //
 
@@ -1105,7 +1105,7 @@ void scaredNoGroundAnim() {
   if (resetNeeded) {
     // K_ANIMATOR - Set the animations for this state
     resetAndSet(1, 2, 2, false);
-    moveBackward(BACKWARD_VELOCITY);
+    // moveBackward(BACKWARD_VELOCITY);
   }
   if (millis() - starting_time_state > getPlayDuration()) {
     // Go to state 2 (LOOK FOR GROUND)

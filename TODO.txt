@@ -7,17 +7,17 @@ MUSTACHE ANIMATIONS:
 5 - mustacheWhisper
 
 TODO:
-- Bottle game people detection
 - When moving towards the customer it changes state
 - Hi -> hi -> hi
-- Mustache animations
-- Static animations
+- Stop in front of person when rotating
+- Box
 
 MAYBE:
 - Implement emergency state
 - Do sing
 - Robot always moving
 - Capacitive sensors
+- Bottle game people detection
 
 DONE:
 - Set Arduino ports
@@ -29,6 +29,8 @@ DONE:
 - Make clapping wait
 - Eybrows
 - It falls
+- Mustache animations
+- Static animations
 
 REDO AUDIO:
 17 - Lo sapevi che nell'800 Londra fu letteralmente travolta dalla birra? Una delle cisterne della fabbrica di birra Meux si ruppe e la città venne invasa da circa un milione e mezzo di litri di birra.

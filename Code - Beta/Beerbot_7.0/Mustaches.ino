@@ -21,9 +21,9 @@ Servo motor;
 // Sensors
 
 // Positions
-int motorPosition = 90;                       // Default position of the servo
-int motorPositionHigh = 100;                  // High position of the servo
-int motorPositionLow = 80;                    // Low position of the servo
+int motorPosition = 70;                       // Default position of the servo
+int motorPositionHigh = 80;                   // High position of the servo
+int motorPositionLow = 60;                    // Low position of the servo
 int positionDelta = 0;                        // Delta to be applied on the default position
 
 // Millise
