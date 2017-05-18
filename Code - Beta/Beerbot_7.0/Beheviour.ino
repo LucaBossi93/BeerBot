@@ -141,9 +141,9 @@ void menageBeheviour() {
       // Process the information
       processAnomalyDetection();
       // Detect if there is a person
-      peopleDetect();
+      // peopleDetect();
       // Process the information
-      processPeopleDetection();
+      // processPeopleDetection();
       // Manage unexpected touch
       // unexpectedTouchDetection();
       break;
@@ -166,11 +166,11 @@ void menageBeheviour() {
       // GREET - I'm saying hi. I look for people, if the time is over or nobody is watching start looking
       // for people again
       // Say hi
-      greetAnim(5000);
+      greetAnim();
       // Detect if there is a person
-      peopleDetect();
+      // peopleDetect();
       // Process the information
-      processPeopleDetection();
+      // processPeopleDetection();
       break;
     case 9:
       // INVITE - Invite people inside
@@ -195,6 +195,10 @@ void menageBeheviour() {
       // COUNT PEOPLE - Count how much people there is
       // Setup the animation
       countPeopleAnim();
+      // Detect if there is a person
+      peopleDetect();
+      // Process the information
+      processPeopleDetectionLazy();
       // Rotate in place
       rotate(ROTATE_MEDIUM_VELOCITY, rotate_left);
       // Count people
@@ -232,6 +236,7 @@ void menageBeheviour() {
       // BEER GAME END - Stay still and invite to kiss or have a beer
       // Setup the animation
       beerGameEndAnim();
+      break;
     case 19:
       // STATIC CHECK - Stay still and wait for people to leave
       // Setup the animation
@@ -398,7 +403,7 @@ void moveForwardWithTimeoutAnim(int timeout) {
 }
 
 // Interact with the detected person
-void greetAnim(int timeout) {
+void greetAnim() {
   // Reset the variables if needed
   if (resetNeeded) {
     // K_ANIMATOR - Set the animations for this state
@@ -872,7 +877,7 @@ void countPeopleAnim() {
     resetAndSet(1, 3, 0, false);
     stopRobot();
   }
-  if (millis() - starting_time_state > 5000) {
+  if ((millis() - starting_time_state > 3500 && isPersonLazy()) || millis() - starting_time_state > 5000) {
     stopRobot();
     if (isCrowd()) {
       // Go to state 14 (INTERACTION MULTIPLE PERSON)
@@ -995,8 +1000,7 @@ void beerLiftRequestAnim() {
     resetAndSet(1, 1, 25, false);
     stopRobot();
   }
-  if (millis() - starting_time_state > getPlayDuration() && getHandleTouched())
-  {
+  if (millis() - starting_time_state > getPlayDuration() && getHandleTouched()) {
     // Go to state 27 (HANDLE TOUCHED INTERACTION)
     setState(27);
   } else if (millis() - starting_time_state > WAIT_FOR_ANSWER + getPlayDuration()) {
@@ -1105,12 +1109,12 @@ void scaredNoGroundAnim() {
   if (resetNeeded) {
     // K_ANIMATOR - Set the animations for this state
     resetAndSet(1, 2, 2, false);
-    // moveBackward(BACKWARD_VELOCITY);
+    moveBackward(BACKWARD_VELOCITY);
   }
   if (millis() - starting_time_state > getPlayDuration()) {
     // Go to state 2 (LOOK FOR GROUND)
     setState(2);
-  } else if (millis() - starting_time_state > 200) {
+  } else if (millis() - starting_time_state > 150) {
     stopRobot();
   }
 }
