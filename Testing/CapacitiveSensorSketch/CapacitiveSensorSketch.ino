@@ -13,10 +13,10 @@ CapacitiveSensor cs_handle = CapacitiveSensor(10, 11);    // Use pins 29 and 28
 // Miscellaneous
 int detection_treshold_handle = 3500;     // A person is detected if the input is higher than this
 int detection_treshold_foam = 5000;       // A person is detected if the input is higher than this
-bool person_detected_handle;            // Tells if a person is touching the handle
-bool person_detected_foam;              // Tells if a person is touching the foam
-long touch_handle;                      // Output of the handle touch sensor
-long touch_foam;                        // Output of the handle foam sensor
+bool person_detected_handle;              // Tells if a person is touching the handle
+bool person_detected_foam;                // Tells if a person is touching the foam
+long touch_handle;                        // Output of the handle touch sensor
+long touch_foam;                          // Output of the handle foam sensor
 
 // SUPPORT FUNCTIONS //
 
@@ -27,7 +27,7 @@ void setup() {
 
 void loop() {
   expectedTouchDetection();
-  delay(10);
+  delay(500);
 }
 // Setup touch detection
 void setupTouchDetection() {

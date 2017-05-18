@@ -67,8 +67,8 @@ void menageMustache() {
       mustacheScared();
       break;
     case 3:
-      // Tips
-      mustacheTips();
+      // Idle
+      mustacheIdle();
       break;
     case 4:
       // Shout
@@ -94,19 +94,19 @@ void mustacheTalk() {
     // Compute position
     switch (mustacheCurrentAction) {
       case 1:
-        positionDelta += 3;
+        positionDelta += 2;
         // If I've finished with this action perform the next one
         if (positionDelta > 14)
           mustacheCurrentAction = 2;
         break;
       case 2:
-        positionDelta -= 3;
+        positionDelta -= 2;
         // If I've finished with this action perform the next one
         if (positionDelta < -14)
           mustacheCurrentAction = 3;
         break;
       case 3:
-        positionDelta += 3;
+        positionDelta += 2;
         // If I've finished with this action perform the next one
         if (positionDelta > 0)
           mustacheCurrentAction = 1;
@@ -163,19 +163,19 @@ void mustacheWhisper() {
     // Compute position
     switch (mustacheCurrentAction) {
       case 1:
-        positionDelta += 3;
+        positionDelta += 1;
         // If I've finished with this action perform the next one
         if (positionDelta > 12)
           mustacheCurrentAction = 2;
         break;
       case 2:
-        positionDelta -= 3;
+        positionDelta -= 1;
         // If I've finished with this action perform the next one
         if (positionDelta < -12)
           mustacheCurrentAction = 3;
         break;
       case 3:
-        positionDelta += 3;
+        positionDelta += 1;
         // If I've finished with this action perform the next one
         if (positionDelta > 0)
           mustacheCurrentAction = 1;
@@ -226,24 +226,24 @@ void mustacheScared() {
 }
 
 // Up and down, centered lower, mini width
-void mustacheTips() {
+void mustacheIdle() {
   if (millis() - mustacheMillis > 10) {
     // Compute position
     switch (mustacheCurrentAction) {
       case 1:
-        positionDelta += 3;
+        positionDelta += 1;
         // If I've finished with this action perform the next one
         if (positionDelta > 25)
           mustacheCurrentAction = 2;
         break;
       case 2:
-        positionDelta -= 3;
+        positionDelta -= 1;
         // If I've finished with this action perform the next one
         if (positionDelta < -25)
           mustacheCurrentAction = 3;
         break;
       case 3:
-        positionDelta += 3;
+        positionDelta += 1;
         // If I've finished with this action perform the next one
         if (positionDelta > 0)
           mustacheCurrentAction = 1;

@@ -2,10 +2,9 @@
 
 // VARIABLES //
 
-// Miscellaneous
+// Miscellaneous 
 int backwardDelay = 300;                // Amount of time the robot has to move backward
 int forwardDelay = 2000;                // Amount of time the robot has to move forward
-int sp = 200;                           // Default speed
 bool rotate_left;                       // Tells if the robot has to rotate left or right
 
 // CODE //
@@ -22,7 +21,7 @@ void setup() {
   // K_ANIMATOR - Initialize animations
   setTalk(0, false);
   setEyebrowPosition(1);
-  setMustacheAnimin(2);
+  setMustacheAnimin(0);
 }
 
 void loop() {
@@ -53,6 +52,8 @@ void setupAll() {
   setupPeopleDetection();
   // Setup beheviour
   setupBeheviour();
+  // Setup touch
+  setupTouchDetection();
 }
 
 // Setter for the sense of rotation

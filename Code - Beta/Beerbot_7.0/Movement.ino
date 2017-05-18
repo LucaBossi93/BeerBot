@@ -45,11 +45,11 @@ void stopRobot() {
 // Rotation on the spot
 void rotate(int vel, boolean dir) {
   if (dir == LEFT) {
-    moveMotor(1, vel, DIR_BACKWARD);
-    moveMotor(0, vel, DIR_FORWARD);
-  } else {
     moveMotor(0, vel, DIR_BACKWARD);
     moveMotor(1, vel, DIR_FORWARD);
+  } else {
+    moveMotor(1, vel, DIR_BACKWARD);
+    moveMotor(0, vel, DIR_FORWARD);
   }
 }
 

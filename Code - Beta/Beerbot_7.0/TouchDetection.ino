@@ -17,8 +17,8 @@
 CapacitiveSensor cs_handle = CapacitiveSensor(HANDLE_PIN_A, HANDLE_PIN_B);
 CapacitiveSensor cs_foam = CapacitiveSensor(FOAM_PIN_A, FOAM_PIN_B);
 
-// Miscellaneous
-int detection_treshold_handle = 10000;  // A person is detected if the input has this value
+// Miscellaneous 
+int detection_treshold_handle = -2;     // A person is detected if the input has this value
 int detection_treshold_foam = 1000;     // A person is detected if the input is higher than this
 bool person_detected_handle;            // Tells if a person is touching the handle
 bool person_detected_foam;              // Tells if a person is touching the foam
@@ -57,8 +57,8 @@ void startDesaturation() {
 
 // Setup touch detection
 void setupTouchDetection() {
-  // cs_foam.set_CS_Timeout_Millis(50);
-  // cs_handle.set_CS_Timeout_Millis(50);
+  cs_foam.set_CS_Timeout_Millis(50);
+  cs_handle.set_CS_Timeout_Millis(50);
   person_detected_handle = false;
   person_detected_foam = false;
 }
@@ -72,7 +72,7 @@ void unexpectedTouchDetection() {
     touch_foam = cs_foam.capacitiveSensor(30);
 
     // Process the handle data
-    if (touch_handle > detection_treshold_handle && !person_detected_handle) {
+    if (touch_handle == detection_treshold_handle && !person_detected_handle) {
       person_detected_handle = true;
       Serial.print("Handle touched: ");
       Serial.println(touch_handle);
@@ -80,7 +80,7 @@ void unexpectedTouchDetection() {
       setState(28);
       // Start desaturation
       startDesaturation();
-    } else if (touch_handle <= detection_treshold_handle && person_detected_handle) {
+    } else if (touch_handle != detection_treshold_handle && person_detected_handle) {
       person_detected_handle = false;
     }
 
@@ -108,17 +108,17 @@ void expectedTouchDetection() {
   // Get the input
   touch_handle = cs_handle.capacitiveSensor(30);
   touch_foam = cs_foam.capacitiveSensor(30);
-  Serial.print("Touch values: handle = ");
-  Serial.print(touch_handle);
-  Serial.print(", foam = ");
-  Serial.println(touch_foam);
+  // Serial.print("Touch values: handle = ");
+  // Serial.print(touch_handle);
+  // Serial.print(", foam = ");
+  // Serial.println(touch_foam);
   
   // Process the handle data
-  if (touch_handle > detection_treshold_handle && !person_detected_handle) {
+  if (touch_handle == detection_treshold_handle && !person_detected_handle) {
     person_detected_handle = true;
     Serial.print("Handle touched: ");
     Serial.println(touch_handle);
-  } else if (touch_handle <= detection_treshold_handle && person_detected_handle) {
+  } else if (touch_handle != detection_treshold_handle && person_detected_handle) {
     person_detected_handle = false;
   }
 

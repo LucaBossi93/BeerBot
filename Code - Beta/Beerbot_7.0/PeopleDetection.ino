@@ -22,13 +22,14 @@ int detection_min = 10;                 // Minimum distance to be considered a p
 int detection_max = 200;                // Maximum distance to be considered a person
 int temperature_min = 10;               // Minimum temperature to be considered a person
 int temperature_max = 38;               // Maximum temperature to be considered a person
-int temperature;                        // Detected temperature
-int temperatureAmbient;                 // Detected ambient temperature
+float temperature;                      // Detected temperature
 int person_detected;                    // Tells if a person has been detected
 int person_detected_lazy;               // Tells if a person has been detected
 int peopleCounter = 0;                  // Counter for crowd detection
 int totalCounter = 0;                   // Counter for crowd detection
 int isCrowdPercentage = 0.5;            // Percentage for which a crowd is detected
+float calibrationSum = 0;               // Sum computed during calibration
+float calibrationCounter = 0;           // Samples considered in the mean
 
 // Sensors
 NewPing detection_sonar(TRIGGER_PIN_DETECTION, ECHO_PIN_DETECTION, MAX_DISTANCE_DETECTION);
@@ -42,32 +43,47 @@ void setupPeopleDetection() {
   mlx.begin();
 }
 
+// Compute the calibration data
+void calibrateTemperature() {
+  // Acquire the temperature and update the sum
+  calibrationSum += mlx.readObjectTempC();
+  // Increment the counter
+  calibrationCounter++;
+}
+
+// Process the calibration data
+void processTemperatureCalibration() {
+  // I use temperature as temp value to compute the mean
+  temperature = calibrationSum / calibrationCounter;
+  temperature_min = temperature - 1;
+  temperature_max = temperature + 1;
+  Serial.print("CALIBRATE TEMPERATURE SENSOR FROM ");
+  Serial.print(temperature_min);
+  Serial.print(" TO ");
+  Serial.println(temperature_max);
+}
+
 // Manage people detections via sonar
 void peopleDetect() {
   // Acquire the distance
-  detection_distance = detection_sonar.ping_cm();
+  // detection_distance = detection_sonar.ping_cm();
   // Acquire the temperature
   temperature = mlx.readObjectTempC();
-  temperatureAmbient = mlx.readAmbientTempC();
-  if ((temperature > temperatureAmbient * 0.95 + 0.5) && (temperature > temperature_min && temperature < temperature_max)) {
+  if (temperature > temperature_min && temperature < temperature_max) {
     no_detection_ping_counter = no_detection_ping_counter - awake_increment;
-    //Serial.print("Person detected, with distance: ");
-    Serial.print("Person detected, with temperature: ");
+    // Serial.print("Person detected, with distance: ");
+    // Serial.print("Person detected, with temperature: ");
   } else {
     // Otherwise decrese the idle counter
     no_detection_ping_counter++;
-    Serial.print("No person detected, with distance: ");
+    // Serial.print("No person detected, with distance: ");
   }
-  //Serial.print(detection_distance);
-  //Serial.print(" and counter: ");
-  //Serial.println(no_detection_ping_counter);
-
-  Serial.print(temperature);
-  Serial.print(" and counter: ");
-  Serial.print(no_detection_ping_counter);
-
-  Serial.print("and threshold temperature: ");
-  Serial.println(temperatureAmbient * 0.95 + 1);
+  // Serial.print(detection_distance);
+  // Serial.print(" and counter: ");
+  // Serial.println(no_detection_ping_counter);
+  // Serial.print(temperature);
+  //  Serial.print(" and counter: ");
+  // Serial.println(no_detection_ping_counter);
 }
 
 // Process the detection of people
@@ -134,7 +150,7 @@ void peopleCount() {
   // Acquire the temperature
   temperature = mlx.readObjectTempC();
   // Process
-  if ((temperature > temperatureAmbient * 0.95 + 0.5) && (temperature > temperature_min && temperature < temperature_max))
+  if (temperature > temperature_min && temperature < temperature_max)
     peopleCounter++;
   else
     totalCounter++;

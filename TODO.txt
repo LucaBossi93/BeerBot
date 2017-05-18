@@ -1,4 +1,18 @@
+MUSTACHE ANIMATIONS:
+0 -
+1 -
+2 - 
+3 - 
+4 - 
+5 - 
+
 TODO:
+- Bottle game people detection
+- Capacitive sensors
+- When moving towards the customer it change state
+- Hi -> hi -> hi
+- Mustache animations
+- Static aniamtions
 
 MAYBE:
 - Implement emergency state
@@ -12,6 +26,9 @@ DONE:
 - Check all random bisections (add state 0 with disambiguation)
 - 10 goes in 15?
 - When you get in 3 or 4, you should also get in 4 or 3 with 50%
+- Make clapping wait
+- Eybrows
+- It falls
 
 REDO AUDIO:
 17 - Lo sapevi che nell'800 Londra fu letteralmente travolta dalla birra? Una delle cisterne della fabbrica di birra Meux si ruppe e la città venne invasa da circa un milione e mezzo di litri di birra.

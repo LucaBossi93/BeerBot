@@ -2,9 +2,13 @@
 
 // DEFINITIONS //
 
-#define WAIT_FOR_ANSWER 5000
 // #define CHANGE_RANDOMLY 100000
 // #define GUESS 42
+#define WAIT_FOR_ANSWER 5000
+#define FORWARD_VELOCITY 180
+#define BACKWARD_VELOCITY 170
+#define ROTATE_FAST_VELOCITY 220
+#define ROTATE_MEDIUM_VELOCITY 190
 
 // VARIABLES //
 
@@ -27,8 +31,8 @@ long starting_time_action;             // Tells when the robot starts to perform
 // Setup the animation
 void setupBeheviour() {
   // Robot is initialized as looking for people
-  current_state = 4;
-  previous_state = 4;
+  current_state = 0;
+  previous_state = 0;
   resetNeeded = true;
   nextState = false;
 
@@ -81,6 +85,16 @@ void setAllAnimations(int a, int b, int c, boolean rep) {
 // Menage the animation of the robot
 void menageBeheviour() {
   switch (current_state) {
+    case 0:
+      // CALIBRATION - Claibrate the sensors staying still for 5 seconds
+      // Calibrate the temperature sensor
+      calibrateTemperature();
+      // Process the information and start to operate
+      if (millis() - starting_time_state > 5000) {
+        processTemperatureCalibration();
+        setState(4);
+      }
+      break;
     case 1:
       // FORWARD - I've detected a person and I'm moving towards him. I only detect the anomalies but I don't
       // process them since I just want to stop instead of starting looking for ground
@@ -100,7 +114,7 @@ void menageBeheviour() {
       // Process the information
       processAnomalyDetection();
       // Rotate in place
-      rotate(sp * 0.9, rotate_left);
+      rotate(ROTATE_MEDIUM_VELOCITY, rotate_left);
       break;
     case 3:
       // LOOK FOR PEOPLE - I'm rotating looking for people. I rotate for some time, I cooldown and then I repeat
@@ -112,7 +126,7 @@ void menageBeheviour() {
       // Process the information
       processPeopleDetection();
       // Perform the rotation
-      rotate(sp * 0.8, rotate_left);
+      rotate(ROTATE_MEDIUM_VELOCITY, rotate_left);
       // Process the information
       processPeopleDetection();
       // Manage unexpected touch
@@ -182,7 +196,7 @@ void menageBeheviour() {
       // Setup the animation
       countPeopleAnim();
       // Rotate in place
-      rotate(sp * 0.9, rotate_left);
+      rotate(ROTATE_MEDIUM_VELOCITY, rotate_left);
       // Count people
       peopleCount();
       break;
@@ -358,7 +372,7 @@ void rotateWithCooldownAnim(int rotationTime, int cooldown) {
   }
   // Rotate
   if (millis() - starting_time_state < rotationTime) {
-    rotate(sp, rotate_left);
+    rotate(ROTATE_MEDIUM_VELOCITY, rotate_left);
   } else {
     stopRobot();
     if (millis() - starting_time_state > rotationTime + cooldown) {
@@ -373,14 +387,13 @@ void moveForwardWithTimeoutAnim(int timeout) {
   if (resetNeeded) {
     // K_ANIMATOR - Set the animations for this state
     resetAndSet(2, 2, 1, false);
+    moveForward(FORWARD_VELOCITY);
   }
   // If I don't have detected an anomaly or I've finished, go forward
   if (millis() - starting_time_state > timeout || !isGroundLazy()) {
     stopRobot();
     // Go to state 8 (GREET)
     setState(8);
-  } else {
-    moveForward(sp * 0.7);
   }
 }
 
@@ -558,7 +571,7 @@ void requestClappingAnim() {
     stopRobot();
   }
   // Wait for input or timeout
-  if (millis() - starting_time_state > getPlayDuration()) {
+  if (millis() - starting_time_state > getPlayDuration() + WAIT_FOR_ANSWER) {
     // Go to state 30 (LOWCLAPPING)
     setState(30);
   }
@@ -716,18 +729,13 @@ void highScreamingAnim() {
 // Stay still and speak
 void timeoutAnim() {
   // Reset the variables if needed
-  Serial.print("resetNeeded: ");
-  Serial.println(resetNeeded);
   if (resetNeeded) {
     // K_ANIMATOR - Set the animations for this state
     resetAndSet(3, 1, 38, false);
     stopRobot();
   }
-  Serial.print("play duration: ");
-  Serial.println(getPlayDuration());
   if (millis() - starting_time_state > getPlayDuration()) {
     // Go to state 3 (LOOK FOR PEOPLE) or  4 (ROAMING)
-    Serial.println("set state idle");
     setStateIdle();
   }
 }
@@ -768,7 +776,7 @@ void beerGameSelectionAnim() {
       // K_ANIMATOR - Set the animations for this action
       setAllAnimations(1, 0, 0, false);
       // Set the rotation
-      rotate(sp * 0.9, random(2));
+      rotate(ROTATE_MEDIUM_VELOCITY, random(2));
       // Switch to the next action
       current_action = 2;
       starting_time_action = millis();
@@ -793,7 +801,7 @@ void beerGameSelectionAnim() {
         // K_ANIMATOR - Set the animations for this action
         setAllAnimations(1, 0, 0, false);
         // Set the rotation
-        rotate(sp * 0.9, random(2));
+        rotate(ROTATE_MEDIUM_VELOCITY, random(2));
         // Switch to the next action
         current_action = 4;
         starting_time_action = millis();
@@ -907,7 +915,7 @@ void interactionMultiplePersonAnim() {
   // Reset the variables if needed
   if (resetNeeded) {
     // K_ANIMATOR - Set the animations for this state
-    resetAndSet(1, 2, 11, false);
+    resetAndSet(1, 1, 11, false);
     stopRobot();
   }
   // When I've finished talking change state
@@ -1096,13 +1104,13 @@ void scaredNoGroundAnim() {
   // Reset the variables if needed
   if (resetNeeded) {
     // K_ANIMATOR - Set the animations for this state
-    resetAndSet(1, 1, 2, false);
-    moveBackward(sp);
+    resetAndSet(1, 2, 2, false);
+    moveBackward(BACKWARD_VELOCITY);
   }
   if (millis() - starting_time_state > getPlayDuration()) {
     // Go to state 2 (LOOK FOR GROUND)
     setState(2);
-  } else if (millis() - starting_time_state > 300) {
+  } else if (millis() - starting_time_state > 200) {
     stopRobot();
   }
 }
@@ -1127,7 +1135,7 @@ void roamingAnim() {
     // K_ANIMATOR - Set the animations for this state
     resetAndSet(1, 3, 0, false);
     // I'm moving forward
-    moveForward(sp * 0.7);
+    moveForward(FORWARD_VELOCITY);
   }
   // I randomly change animation
   /*if (random(CHANGE_RANDOMLY) == GUESS) {
