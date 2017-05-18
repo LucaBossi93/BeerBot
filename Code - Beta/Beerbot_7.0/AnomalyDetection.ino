@@ -18,7 +18,7 @@ bool ground_detected_lazy;              // Tells if there is ground on front of 
 bool look_for_ground;                   // Tells if the robot has to look for ground
 int anomaly_distance_left;              // Distance acquired by the left IR sensor
 int anomaly_distance_rigth;             // Distance acquired by the rigth IR sensor
-int ground_limit = 15;                  // Minimum distance for which the IR output is considered ground
+int ground_limit = 17;                  // Minimum distance for which the IR output is considered ground
 int is_ground_counter_left = 0;         // Counter needed to have an effective detection of anomalies
 int is_ground_counter_rigth = 0;        // Counter needed to have an effective detection of anomalies
 int obstacle_limit = 4;                 // Maximum distance for which the IR output is considered obstacle

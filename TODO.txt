@@ -7,9 +7,6 @@ MUSTACHE ANIMATIONS:
 5 - mustacheWhisper
 
 TODO:
-- When moving towards the customer it changes state
-- Hi -> hi -> hi
-- Stop in front of person when rotating
 - Box
 
 MAYBE:
@@ -18,6 +15,8 @@ MAYBE:
 - Robot always moving
 - Capacitive sensors
 - Bottle game people detection
+- When moving towards the customer it changes state
+- Hi -> hi -> hi
 
 DONE:
 - Set Arduino ports

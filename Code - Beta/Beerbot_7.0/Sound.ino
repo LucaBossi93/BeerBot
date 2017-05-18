@@ -85,7 +85,7 @@ void setupSound()
   // Set Serial for DFPlayer-mini mp3 module
   mp3_set_serial(Serial);
   // Sets the volume of the speaker (30)
-  mp3_set_volume(20);
+  mp3_set_volume(30);
 }
 
 // Sets the current talk

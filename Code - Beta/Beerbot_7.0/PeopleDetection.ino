@@ -72,7 +72,6 @@ void peopleDetect() {
   if (temperature > temperature_min && temperature < temperature_max) {
     no_detection_ping_counter = no_detection_ping_counter - awake_increment;
     // Serial.print("Person detected, with distance: ");
-    // Serial.print("Person detected, with temperature: ");
   } else {
     // Otherwise decrese the idle counter
     no_detection_ping_counter++;
@@ -81,7 +80,6 @@ void peopleDetect() {
   // Serial.print(detection_distance);
   // Serial.print(" and counter: ");
   // Serial.println(no_detection_ping_counter);
-  // Serial.print(temperature);
   // Serial.print(" and counter: ");
   // Serial.println(no_detection_ping_counter);
 }
