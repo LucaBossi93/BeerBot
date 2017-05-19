@@ -8,7 +8,9 @@
 #define FORWARD_VELOCITY 180
 #define BACKWARD_VELOCITY 170
 #define ROTATE_FAST_VELOCITY 220
-#define ROTATE_MEDIUM_VELOCITY 200
+#define ROTATE_MEDIUM_VELOCITY 210
+#define EXTRA_ROTATION_TIME 400
+#define EXTRA_BACKWARD_TIME 400
 
 // VARIABLES //
 
@@ -113,8 +115,6 @@ void menageBeheviour() {
       anomalyDetect();
       // Process the information
       processAnomalyDetection();
-      // Rotate in place
-      rotate(ROTATE_MEDIUM_VELOCITY, rotate_left);
       break;
     case 3:
       // LOOK FOR PEOPLE - I'm rotating looking for people. I rotate for some time, I cooldown and then I repeat
@@ -123,10 +123,6 @@ void menageBeheviour() {
       lookForPeopleAnim();
       // Detect if there is a person
       peopleDetect();
-      // Process the information
-      processPeopleDetection();
-      // Perform the rotation
-      rotate(ROTATE_MEDIUM_VELOCITY, rotate_left);
       // Process the information
       processPeopleDetection();
       // Manage unexpected touch
@@ -141,9 +137,9 @@ void menageBeheviour() {
       // Process the information
       processAnomalyDetection();
       // Detect if there is a person
-      // peopleDetect();
+      peopleDetect();
       // Process the information
-      // processPeopleDetection();
+      processPeopleDetection();
       // Manage unexpected touch
       // unexpectedTouchDetection();
       break;
@@ -1095,7 +1091,8 @@ void lookForPeopleAnim()  {
   if (resetNeeded) {
     // K_ANIMATOR - Set the animations for this state
     resetAndSet(1, 3, 3, true);
-    stopRobot();
+    // Perform the rotation
+    rotate(ROTATE_MEDIUM_VELOCITY, rotate_left);
   }
   if (millis() - starting_time_state > 10000) {
     // Go to state 4 (ROAMING)
@@ -1114,7 +1111,7 @@ void scaredNoGroundAnim() {
   if (millis() - starting_time_state > getPlayDuration()) {
     // Go to state 2 (LOOK FOR GROUND)
     setState(2);
-  } else if (millis() - starting_time_state > 150) {
+  } else if (millis() - starting_time_state > 200) {
     stopRobot();
   }
 }
@@ -1125,9 +1122,10 @@ void lookForGroundAnim() {
   if (resetNeeded) {
     // K_ANIMATOR - Set the animations for this state
     resetAndSet(1, 2, 0, false);
-    stopRobot();
+    // Rotate in place
+    rotate(ROTATE_MEDIUM_VELOCITY, rotate_left);
   }
-  if (getCanStop() && millis() - getStartingTimeStop() > 200) {
+  if (getCanStop() && millis() - getStartingTimeStop() > EXTRA_ROTATION_TIME) {
     setState(4);
   }
 }

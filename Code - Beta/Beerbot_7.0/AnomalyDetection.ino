@@ -158,9 +158,9 @@ void setLookForGround(bool b) {
 // Get the sense of rotation
 bool getRotation() {
   if (is_ground_counter_left == 0 && is_ground_counter_rigth != 0)
-    return false;
-  else if (is_ground_counter_left != 0 && is_ground_counter_rigth == 0)
     return true;
+  else if (is_ground_counter_left != 0 && is_ground_counter_rigth == 0)
+    return false;
   else
     return random(2);
 }
