@@ -1,4 +1,4 @@
-// BEERBOT 6.0 //
+// BEERBOT 7.0 //
 
 // VARIABLES //
 

@@ -1,4 +1,4 @@
-// SOUND DETECTION SUPPORT FUNCTIONS //
+ // SOUND DETECTION SUPPORT FUNCTIONS //
 
 // DEFINITIONS //
 #define MIC_PIN 12                       // Arduino pin connected to the microphone

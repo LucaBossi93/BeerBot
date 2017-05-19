@@ -4,8 +4,8 @@
 
 #define RIGHT 0                         // To turn right when rotating
 #define LEFT 1                          // To turn left when rotating
-#define DIR_FORWARD 1                   // Clockwise
-#define DIR_BACKWARD 0                  // Counter-clockwise
+#define DIR_FORWARD 0                   // Clockwise
+#define DIR_BACKWARD 1                  // Counter-clockwise
 #define MOVEMENT_TIME 1300              // Maximum time of movement
 
 #define MOTOR_PIN_PWMA 6                // Arduino digital pin 38 tied to motor A speed control

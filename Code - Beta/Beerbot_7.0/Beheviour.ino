@@ -156,7 +156,11 @@ void menageBeheviour() {
       // moveLeftRigth(1000, sp * 1.2);
       break;
     case 7:
-      // MUSTACHE SHOW - (TODO)
+      // MOVE BACKWARDS AFTER GREETING
+      if (millis() - starting_time_state > EXTRA_BACKWARD_TIME) {
+        stopRobot();
+         setState(8);
+      }
       break;
     case 8:
       // GREET - I'm saying hi. I look for people, if the time is over or nobody is watching start looking
@@ -391,7 +395,10 @@ void moveForwardWithTimeoutAnim(int timeout) {
     moveForward(FORWARD_VELOCITY);
   }
   // If I don't have detected an anomaly or I've finished, go forward
-  if (millis() - starting_time_state > timeout || !isGroundLazy()) {
+  if (!isGroundLazy()) {
+    moveBackward(BACKWARD_VELOCITY);
+    setState(7);
+  } else if (millis() - starting_time_state > timeout) {
     stopRobot();
     // Go to state 8 (GREET)
     setState(8);
@@ -1111,7 +1118,7 @@ void scaredNoGroundAnim() {
   if (millis() - starting_time_state > getPlayDuration()) {
     // Go to state 2 (LOOK FOR GROUND)
     setState(2);
-  } else if (millis() - starting_time_state > 200) {
+  } else if (millis() - starting_time_state > EXTRA_BACKWARD_TIME) {
     stopRobot();
   }
 }
